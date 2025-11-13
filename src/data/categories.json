@@ -1,0 +1,69 @@
+[
+  {
+    "id": 1,
+    "name": "Hair Care",
+    "slug": "hair-care",
+    "description": "Products designed to nourish, repair, and promote healthy hair growth.",
+    "image": "/assets/images/categories/hair-care.png",
+    "productIds": [
+      1,
+      2
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Skin Care",
+    "slug": "skin-care",
+    "description": "A range of products for cleansing, brightening, and protecting the skin.",
+    "image": "/assets/images/categories/skin-care.png",
+    "productIds": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Facial Treatments",
+    "slug": "facial-treatments",
+    "description": "Specialized products for facial cleansing, brightening, and rejuvenation.",
+    "image": "/assets/images/categories/facial-treatments.png",
+    "productIds": [
+      3,
+      5,
+      6
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Body Care",
+    "slug": "body-care",
+    "description": "Soaps and balms for exfoliating, moisturizing, and lightening the skin.",
+    "image": "/assets/images/categories/body-care.png",
+    "productIds": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Sun Protection",
+    "slug": "sun-protection",
+    "description": "Products to shield skin from harmful UV rays while hydrating.",
+    "image": "/assets/images/categories/sun-protection.png",
+    "productIds": [
+      4
+    ]
+  }
+]

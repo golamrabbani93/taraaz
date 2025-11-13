@@ -1,0 +1,82 @@
+.dynamic-wrapper {
+  /* max-width: 768px; */
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dynamic-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid #d1d5db;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.row-id {
+  font-weight: bold;
+  width: 24px;
+  margin-top: 6px;
+}
+
+.text-area {
+  flex: 1;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px;
+  max-width: 400px;
+  width: 100%;
+  min-height: 150px;
+  box-sizing: border-box;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.remove-btn-4 {
+  color: #ef4444;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-top: 6px;
+  width: 24px;
+  flex-shrink: 0;
+  border: 1px solid #ef4444;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.remove-btn-4:hover {
+  color: #b91c1c;
+}
+
+.add-btn {
+  padding: 10px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 200px;
+  width: 100%;
+}
+
+.add-btn:hover {
+  background-color: #2563eb;
+}
+
+/* ✅ Responsive (stack on mobile) */
+@media (max-width: 640px) {
+  .dynamic-row {
+    flex-direction: column;
+  }
+
+  .row-id {
+    margin-bottom: 4px;
+  }
+}

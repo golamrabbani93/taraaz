@@ -1,0 +1,566 @@
+[
+  {
+    "id": 1,
+    "name": "Zafran Hair Growth Therapy Oil",
+    "slug": "zafran-hair-growth-therapy-oil",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 570,
+    "image": "/assets/images/product/zafran-hair-growth-therapy-oil.jpg",
+    "weight": "200ml",
+    "categories": [
+      "Hair Care",
+      "Oil"
+    ],
+    "tags": [
+      "hair growth",
+      "therapy",
+      "natural"
+    ],
+    "type": "Hair",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Argan Oil, Vitamin E"
+      },
+      {
+        "key": "usage",
+        "value": "Apply to scalp, massage gently, leave for 2 hours, rinse."
+      },
+      {
+        "key": "benefits",
+        "value": "Promotes hair growth, reduces hair fall, nourishes scalp."
+      }
+    ],
+    "description": "Nourishing hair oil with saffron and argan to promote growth and reduce hair fall.",
+    "reviews": [
+      {
+        "rating": 4.5,
+        "comment": "Really helped my hair grow thicker in just a month!",
+        "user": "Sarah K."
+      },
+      {
+        "rating": 4.0,
+        "comment": "Great product, but takes time to see results.",
+        "user": "John M."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Zafran Hair Mask for hair Repair & Shine",
+    "slug": "zafran-hair-mask",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 335,
+    "image": "/assets/images/product/zafran-hair-mask.jpg",
+    "weight": "120ml",
+    "categories": [
+      "Hair Care",
+      "Mask"
+    ],
+    "tags": [
+      "hair repair",
+      "hydration",
+      "natural"
+    ],
+    "type": "Hair",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Shea Butter, Coconut Oil"
+      },
+      {
+        "key": "usage",
+        "value": "Apply to wet hair, leave for 15 minutes, rinse."
+      },
+      {
+        "key": "benefits",
+        "value": "Repairs damaged hair, adds shine, deeply hydrates."
+      }
+    ],
+    "description": "Hydrating hair mask with saffron and shea butter for repair and shine.",
+    "reviews": [
+      {
+        "rating": 4.8,
+        "comment": "My hair feels so soft and shiny after using this!",
+        "user": "Emma L."
+      },
+      {
+        "rating": 4.2,
+        "comment": "Good mask, but the scent is a bit strong.",
+        "user": "Liam P."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Zafran Anti Hair Fall Royal Shampoo",
+    "slug": "zafran-anti-hair-fall-royal-shampoo",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 478,
+    "image": "/assets/images/product/zafran-anti-hair-fall-royal-shampoo.jpg",
+    "weight": "45gm",
+    "categories": [
+      "Hair Care",
+      "Shampoo"
+    ],
+    "tags": [
+      "hair fall",
+      "nourishing",
+      "natural"
+    ],
+    "type": "Hair",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Turmeric, Kaolin Clay"
+      },
+      {
+        "key": "usage",
+        "value": "Apply to face, leave for 10 minutes, rinse off."
+      },
+      {
+        "key": "benefits",
+        "value": "Brightens skin, reduces blemishes, evens tone."
+      }
+    ],
+    "description": "Brightening face mask with saffron and turmeric for radiant skin.",
+    "reviews": [
+      {
+        "rating": 4.7,
+        "comment": "My skin feels refreshed and glowing after use!",
+        "user": "Aisha R."
+      },
+      {
+        "rating": 4.0,
+        "comment": "Nice product, but dries quickly on skin.",
+        "user": "Mark T."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Zafran Brightening Sunscreen",
+    "slug": "zafran-brightening-sunscreen",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 210,
+    "image": "/assets/images/product/zafran-brightening-sunscreen.jpg",
+    "weight": "70ml",
+    "categories": [
+      "Skin Care",
+      "Sunscreen"
+    ],
+    "tags": [
+      "sun protection",
+      "SPF",
+      "moisturizing"
+    ],
+    "type": "Sunscreen",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Zinc Oxide, Aloe Vera"
+      },
+      {
+        "key": "usage",
+        "value": "Apply on face and body before sun exposure."
+      },
+      {
+        "key": "benefits",
+        "value": "Protects from UV rays, hydrates skin."
+      }
+    ],
+    "description": "Sunscreen with saffron and zinc oxide for UV protection and hydration.",
+    "reviews": [
+      {
+        "rating": 4.6,
+        "comment": "Lightweight and non-greasy, perfect for daily use!",
+        "user": "Olivia S."
+      },
+      {
+        "rating": 4.3,
+        "comment": "Good protection, but needs reapplication.",
+        "user": "James W."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Zafran Advanced Whitening Serum",
+    "slug": "zafran-advanced-whitening-serum",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 210,
+    "image": "/assets/images/product/zafran-advanced-whitening-serum.jpg",
+    "weight": "60ml",
+    "categories": [
+      "Skin Care",
+      "Serum"
+    ],
+    "tags": [
+      "whitening",
+      "brightening",
+      "anti-aging"
+    ],
+    "type": "Serum",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Vitamin C, Hyaluronic Acid"
+      },
+      {
+        "key": "usage",
+        "value": "Apply 2-3 drops to face, massage gently."
+      },
+      {
+        "key": "benefits",
+        "value": "Brightens skin, reduces dark spots, hydrates."
+      }
+    ],
+    "description": "Brightening serum with saffron and vitamin C for radiant skin.",
+    "reviews": [
+      {
+        "rating": 4.9,
+        "comment": "My dark spots are fading, love this serum!",
+        "user": "Mia N."
+      },
+      {
+        "rating": 4.5,
+        "comment": "Great product, but a bit pricey even with discount.",
+        "user": "Ethan G."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Zafran Whitening Face Wash",
+    "slug": "zafran-whitening-face-wash",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 355,
+    "image": "/assets/images/product/zafran-whitening-face-wash.jpg",
+    "weight": "50gm",
+    "categories": [
+      "Skin Care",
+      "Cleanser"
+    ],
+    "tags": [
+      "whitening",
+      "cleansing",
+      "gentle"
+    ],
+    "type": "Face Wash",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Licorice Extract, Aloe Vera"
+      },
+      {
+        "key": "usage",
+        "value": "Lather on wet face, rinse thoroughly."
+      },
+      {
+        "key": "benefits",
+        "value": "Cleanses skin, brightens complexion, soothes."
+      }
+    ],
+    "description": "Gentle face wash with saffron for cleansing and brightening.",
+    "reviews": [
+      {
+        "rating": 4.4,
+        "comment": "Leaves my skin clean and fresh, love it!",
+        "user": "Sophia B."
+      },
+      {
+        "rating": 4.0,
+        "comment": "Good cleanser, but small size for price.",
+        "user": "Noah C."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Zafran Vitamin E & Salicylic Glycerin Soap",
+    "slug": "zafran-vitamin-e-salicylic-glycerin-soap",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 270,
+    "image": "/assets/images/product/zafran-vitamin-e-salicylic-glycerin-soap.jpg",
+    "weight": "20gm",
+    "categories": [
+      "Skin Care",
+      "Balm"
+    ],
+    "tags": [
+      "lightening",
+      "moisturizing",
+      "natural"
+    ],
+    "type": "Balm",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Saffron, Beeswax, Shea Butter"
+      },
+      {
+        "key": "usage",
+        "value": "Apply to dry areas, massage gently."
+      },
+      {
+        "key": "benefits",
+        "value": "Lightens skin, deeply moisturizes, soothes."
+      }
+    ],
+    "description": "Moisturizing balm with saffron for lightening and hydration.",
+    "reviews": [
+      {
+        "rating": 4.7,
+        "comment": "Perfect for dry skin, feels so nourishing!",
+        "user": "Isabella T."
+      },
+      {
+        "rating": 4.2,
+        "comment": "Nice balm, but a bit greasy initially.",
+        "user": "Lucas R."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Zafran Charcoal & Kojic Polishing Soap",
+    "slug": "zafran-charcoal-kojic-polishing-soap",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 240,
+    "image": "/assets/images/product/zafran-charcoal-kojic-polishing-soap.jpg",
+    "weight": "100gm",
+    "categories": [
+      "Skin Care",
+      "Soap"
+    ],
+    "tags": [
+      "charcoal",
+      "kojic acid",
+      "exfoliating"
+    ],
+    "type": "Soap",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Charcoal, Kojic Acid, Coconut Oil"
+      },
+      {
+        "key": "usage",
+        "value": "Lather on wet skin, rinse thoroughly."
+      },
+      {
+        "key": "benefits",
+        "value": "Exfoliates, brightens, removes impurities."
+      }
+    ],
+    "description": "Exfoliating soap with charcoal and kojic acid for bright skin.",
+    "reviews": [
+      {
+        "rating": 4.5,
+        "comment": "Really cleanses deeply, my skin feels smooth!",
+        "user": "Ava D."
+      },
+      {
+        "rating": 4.1,
+        "comment": "Good soap, but dries my skin slightly.",
+        "user": "William H."
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Zafran Goat Milk & Almond Glycerin Soap",
+    "slug": "zafran-goat-milk-almond-glycerin-soap",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 240,
+    "image": "/assets/images/product/zafran-goat-milk-almond-glycerin-soap.jpg",
+    "weight": "100gm",
+    "categories": [
+      "Skin Care",
+      "Soap"
+    ],
+    "tags": [
+      "turmeric",
+      "almond",
+      "exfoliating"
+    ],
+    "type": "Soap",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Turmeric, Almond Oil, Glycerin"
+      },
+      {
+        "key": "usage",
+        "value": "Lather on wet skin, rinse thoroughly."
+      },
+      {
+        "key": "benefits",
+        "value": "Exfoliates, brightens, nourishes skin."
+      }
+    ],
+    "description": "Exfoliating soap with turmeric and almond for bright, smooth skin.",
+    "reviews": [
+      {
+        "rating": 4.6,
+        "comment": "Love the glow it gives my skin!",
+        "user": "Charlotte E."
+      },
+      {
+        "rating": 4.3,
+        "comment": "Great soap, but scent could be milder.",
+        "user": "Henry L."
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Zafran Neem & Aloe Vera Soap",
+    "slug": "zafran-neem-aloe-vera-soap",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 240,
+    "image": "/assets/images/product/zafran-neem-aloe-vera-soap.jpg",
+    "weight": "100gm",
+    "categories": [
+      "Skin Care",
+      "Soap"
+    ],
+    "tags": [
+      "vitamin e",
+      "salicylic acid",
+      "exfoliating"
+    ],
+    "type": "Soap",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Vitamin E, Salicylic Acid, Shea Butter"
+      },
+      {
+        "key": "usage",
+        "value": "Lather on wet skin, rinse thoroughly."
+      },
+      {
+        "key": "benefits",
+        "value": "Exfoliates, reduces acne, nourishes skin."
+      }
+    ],
+    "description": "Exfoliating soap with vitamin E and salicylic acid for clear skin.",
+    "reviews": [
+      {
+        "rating": 4.4,
+        "comment": "Helped reduce my acne, feels great!",
+        "user": "Amelia F."
+      },
+      {
+        "rating": 4.0,
+        "comment": "Good for oily skin, but a bit drying.",
+        "user": "Jack M."
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Zafran Sandalwood Glycerin Soap",
+    "slug": "zafran-sandalwood-glycerin-soap",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 240,
+    "image": "/assets/images/product/zafran-sandalwood-glycerin-soap.jpg",
+    "weight": "100gm",
+    "categories": [
+      "Skin Care",
+      "Soap"
+    ],
+    "tags": [
+      "sandalwood",
+      "exfoliating",
+      "soothing"
+    ],
+    "type": "Soap",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Sandalwood Oil, Glycerin, Coconut Oil"
+      },
+      {
+        "key": "usage",
+        "value": "Lather on wet skin, rinse thoroughly."
+      },
+      {
+        "key": "benefits",
+        "value": "Exfoliates, soothes, hydrates skin."
+      }
+    ],
+    "description": "Soothing sandalwood soap for exfoliation and hydrated skin.",
+    "reviews": [
+      {
+        "rating": 4.8,
+        "comment": "Love the calming scent, skin feels soft!",
+        "user": "Lily G."
+      },
+      {
+        "rating": 4.2,
+        "comment": "Nice soap, but lathers less than expected.",
+        "user": "Oliver N."
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Zafran Papaaya Whitening Effect Soap",
+    "slug": "zafran-Papaaya-whitening-effect-soap",
+    "offer": "",
+    "discountPrice": 0,
+    "originalPrice": 570,
+    "image": "/assets/images/product/zafran-Papaaya-whitening-effect-soap.jpg",
+    "weight": "100gm",
+    "categories": [
+      "Skin Care",
+      "Soap"
+    ],
+    "tags": [
+      "papaya",
+      "whitening",
+      "exfoliating"
+    ],
+    "type": "Soap",
+    "productDetails": [
+      {
+        "key": "ingredients",
+        "value": "Papaya Extract, Glycerin, Vitamin C"
+      },
+      {
+        "key": "usage",
+        "value": "Lather on wet skin, rinse thoroughly."
+      },
+      {
+        "key": "benefits",
+        "value": "Brightens skin, exfoliates, hydrates."
+      }
+    ],
+    "description": "Whitening soap with papaya extract for brighter, smoother skin.",
+    "reviews": [
+      {
+        "rating": 4.5,
+        "comment": "My skin looks brighter after using this!",
+        "user": "Ella P."
+      },
+      {
+        "rating": 4.1,
+        "comment": "Good soap, but results take time.",
+        "user": "Mason K."
+      }
+    ]
+  }
+]
