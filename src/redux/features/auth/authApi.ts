@@ -8,7 +8,7 @@ const authManagementApi = baseApi.injectEndpoints({
 		userRegister: builder.mutation({
 			query: (data) => {
 				return {
-					url: `zafran1User/new`,
+					url: `tarazUser/new`,
 					method: 'POST',
 					body: data,
 				};
@@ -16,7 +16,6 @@ const authManagementApi = baseApi.injectEndpoints({
 			invalidatesTags: ['auth', 'user'],
 			transformResponse: (response) => {
 				if (response) {
-					toast.success('Registration Successful');
 					return response;
 				}
 			},
@@ -26,7 +25,7 @@ const authManagementApi = baseApi.injectEndpoints({
 				try {
 					// 1. Fetch all users
 					const response = await baseQuery({
-						url: `zafran1User/`,
+						url: `tarazUser/`,
 						method: 'GET',
 					});
 
@@ -51,7 +50,7 @@ const authManagementApi = baseApi.injectEndpoints({
 					}
 
 					// 4. Success
-					toast.success('Login Successful');
+
 					return {data: user}; // ✅ Return inside { data }
 				} catch (err: any) {
 					console.error(err);

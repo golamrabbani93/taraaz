@@ -18,6 +18,7 @@ import {selectLanguage} from '@/redux/features/language/languageSlice';
 import BottomNav from '@/components/BottomNav/BottomNav';
 import BottomCategory from '@/components/bottom-category/BottomCategory';
 import DeskCategory from '@/components/bottom-category/DeskCategory';
+import {toast} from 'react-toastify';
 
 export default function Home() {
 	const [loginUser, {isLoading}] = useUserLoginMutation();
@@ -29,6 +30,7 @@ export default function Home() {
 			const result = await loginUser(data);
 
 			if (result?.data) {
+				toast.success('Login Successful');
 				const token = await setToken(result?.data);
 				dispatch(setUser({...result?.data, token}));
 				//only navigate when url no redirect query

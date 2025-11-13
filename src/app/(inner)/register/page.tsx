@@ -30,6 +30,7 @@ export default function Home() {
 			const hashedPassword = await hashPassword(data.password);
 			const result = await registerUser({...data, password_hash: hashedPassword});
 			if (result?.data?.id) {
+				toast.success('Registration Successful');
 				const token = await setToken(result?.data);
 				dispatch(setUser({...result?.data, token}));
 				//only navigate when url no redirect query

@@ -1,7 +1,7 @@
 // fetch user information using native fetch
 export const fetchUserInformation = async (id: string) => {
 	try {
-		const res = await fetch(`https://fitback.shop/zafran1User/${id}`, {
+		const res = await fetch(`https://taraz.qwikbistro.shop/tarazUser/${id}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Token ${process.env.NEXT_PUBLIC_TOKEN}`,
