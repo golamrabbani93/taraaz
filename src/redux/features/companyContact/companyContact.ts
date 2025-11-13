@@ -6,7 +6,7 @@ const companyContactManagementApi = baseApi.injectEndpoints({
 		// ✅ Get all company contacts
 		getAllCompanyContacts: builder.query({
 			query: () => ({
-				url: `zafran1CompanyContact`,
+				url: `tarazCompanyContact`,
 				method: 'GET',
 			}),
 			providesTags: ['companyContact'],
@@ -16,7 +16,7 @@ const companyContactManagementApi = baseApi.injectEndpoints({
 		// ✅ Get single company contact by ID
 		getSingleCompanyContact: builder.query({
 			query: (id) => ({
-				url: `zafran1CompanyContact/${id}`,
+				url: `tarazCompanyContact/${id}`,
 				method: 'GET',
 			}),
 			providesTags: ['companyContact'],
@@ -26,7 +26,7 @@ const companyContactManagementApi = baseApi.injectEndpoints({
 		// ✅ Create new company contact
 		createCompanyContact: builder.mutation({
 			query: (data) => ({
-				url: `zafran1CompanyContact/new`,
+				url: `tarazCompanyContact/new`,
 				method: 'POST',
 				body: data,
 			}),
@@ -40,7 +40,7 @@ const companyContactManagementApi = baseApi.injectEndpoints({
 		// ✅ Update company contact
 		updateCompanyContact: builder.mutation({
 			query: ({id, data}) => ({
-				url: `zafran1CompanyContact/${id}`,
+				url: `tarazCompanyContact/${id}`,
 				method: 'PUT',
 				body: data,
 			}),
@@ -53,7 +53,7 @@ const companyContactManagementApi = baseApi.injectEndpoints({
 		// ✅ Delete company contact
 		deleteCompanyContact: builder.mutation({
 			query: (id) => ({
-				url: `zafran1CompanyContact/${id}`,
+				url: `tarazCompanyContact/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['companyContact'],

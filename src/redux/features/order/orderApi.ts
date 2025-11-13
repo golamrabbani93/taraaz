@@ -5,7 +5,7 @@ const orderManagementApi = baseApi.injectEndpoints({
 		createOrder: builder.mutation({
 			query: (data) => {
 				return {
-					url: `zafran1Order/new`,
+					url: `tarazOrder/new`,
 					method: 'POST',
 					body: data,
 				};
@@ -20,7 +20,7 @@ const orderManagementApi = baseApi.injectEndpoints({
 		getAllOrders: builder.query({
 			query: () => {
 				return {
-					url: `zafran1Order`,
+					url: `tarazOrder`,
 					method: 'GET',
 				};
 			},
@@ -29,7 +29,7 @@ const orderManagementApi = baseApi.injectEndpoints({
 		getSingleOrder: builder.query({
 			query: (id) => {
 				return {
-					url: `zafran1Order/${id}`,
+					url: `tarazOrder/${id}`,
 					method: 'GET',
 				};
 			},
@@ -37,7 +37,7 @@ const orderManagementApi = baseApi.injectEndpoints({
 		}),
 		updateOrderStatus: builder.mutation({
 			query: ({id, data}) => ({
-				url: `zafran1Order/${id}`,
+				url: `tarazOrder/${id}`,
 				method: 'PUT',
 				body: data,
 			}),

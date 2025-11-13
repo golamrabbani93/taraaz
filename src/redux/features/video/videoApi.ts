@@ -5,7 +5,7 @@ export const videoManagementApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getAllVideos: builder.query({
 			query: () => ({
-				url: `zafran1Video`,
+				url: `tarazVideo`,
 				method: 'GET',
 			}),
 			providesTags: ['video'],
@@ -13,7 +13,7 @@ export const videoManagementApi = baseApi.injectEndpoints({
 		}),
 		deleteVideo: builder.mutation({
 			query: (id) => ({
-				url: `zafran1Video/${id}`,
+				url: `tarazVideo/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['video'],
@@ -24,7 +24,7 @@ export const videoManagementApi = baseApi.injectEndpoints({
 		}),
 		createVideo: builder.mutation({
 			query: (data) => ({
-				url: `zafran1Video/new`,
+				url: `tarazVideo/new`,
 				method: 'POST',
 				body: data,
 			}),
@@ -38,7 +38,7 @@ export const videoManagementApi = baseApi.injectEndpoints({
 		}),
 		updateVideo: builder.mutation({
 			query: ({id, ...data}) => ({
-				url: `zafran1Video/${id}`,
+				url: `tarazVideo/${id}`,
 				method: 'PUT',
 				body: data,
 			}),

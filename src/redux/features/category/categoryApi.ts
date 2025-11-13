@@ -6,7 +6,7 @@ const zafran3CategoryApi = baseApi.injectEndpoints({
 		// ✅ Get all categories
 		getAllCategories: builder.query({
 			query: () => ({
-				url: `zafran1Category/`,
+				url: `tarazCategory/`,
 				method: 'GET',
 			}),
 			providesTags: ['category'],
@@ -16,7 +16,7 @@ const zafran3CategoryApi = baseApi.injectEndpoints({
 		// ✅ Get single category by ID
 		getSingleCategory: builder.query({
 			query: (id) => ({
-				url: `zafran1Category/${id}/`,
+				url: `tarazCategory/${id}/`,
 				method: 'GET',
 			}),
 			providesTags: ['category'],
@@ -26,7 +26,7 @@ const zafran3CategoryApi = baseApi.injectEndpoints({
 		// ✅ Create new category
 		createCategory: builder.mutation({
 			query: (data) => ({
-				url: `zafran1Category/new`,
+				url: `tarazCategory/new`,
 				method: 'POST',
 				body: data,
 			}),
@@ -40,7 +40,7 @@ const zafran3CategoryApi = baseApi.injectEndpoints({
 		// ✅ Update category
 		updateCategory: builder.mutation({
 			query: ({id, data}) => ({
-				url: `zafran1Category/${id}`,
+				url: `tarazCategory/${id}`,
 				method: 'PUT',
 				body: data,
 			}),
@@ -54,7 +54,7 @@ const zafran3CategoryApi = baseApi.injectEndpoints({
 		// ✅ Delete category
 		deleteCategory: builder.mutation({
 			query: (id) => ({
-				url: `zafran1Category/${id}`,
+				url: `tarazCategory/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['category'],

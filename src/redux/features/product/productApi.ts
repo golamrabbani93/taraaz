@@ -6,7 +6,7 @@ export const productManagementApi = baseApi.injectEndpoints({
 		getSingleProduct: builder.query({
 			query: (id) => {
 				return {
-					url: `zafran1Product/${id}`,
+					url: `tarazProduct/${id}`,
 					method: 'GET',
 				};
 			},
@@ -16,7 +16,7 @@ export const productManagementApi = baseApi.injectEndpoints({
 		updateProduct: builder.mutation({
 			query: ({id, data}) => {
 				return {
-					url: `zafran1Product/${id}`,
+					url: `tarazProduct/${id}`,
 					method: 'PUT',
 					body: data,
 				};
@@ -31,7 +31,7 @@ export const productManagementApi = baseApi.injectEndpoints({
 		createProduct: builder.mutation({
 			query: (data) => {
 				return {
-					url: `zafran1Product/new`,
+					url: `tarazProduct/new`,
 					method: 'POST',
 					body: data,
 				};
@@ -45,7 +45,7 @@ export const productManagementApi = baseApi.injectEndpoints({
 		getAllProducts: builder.query({
 			query: () => {
 				return {
-					url: `zafran1Product`,
+					url: `tarazProduct`,
 					method: 'GET',
 				};
 			},
@@ -55,7 +55,7 @@ export const productManagementApi = baseApi.injectEndpoints({
 		deleteProduct: builder.mutation({
 			query: (id) => {
 				return {
-					url: `zafran1Product/${id}`,
+					url: `tarazProduct/${id}`,
 					method: 'DELETE',
 				};
 			},

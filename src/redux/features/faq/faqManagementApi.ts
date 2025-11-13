@@ -6,7 +6,7 @@ const faqManagementApi = baseApi.injectEndpoints({
 		// ✅ Get all FAQs
 		getAllFAQs: builder.query({
 			query: () => ({
-				url: `zafran1FAQ`,
+				url: `tarazFAQ`,
 				method: 'GET',
 			}),
 			providesTags: ['faq'],
@@ -16,7 +16,7 @@ const faqManagementApi = baseApi.injectEndpoints({
 		// ✅ Get single FAQ by ID
 		getSingleFAQ: builder.query({
 			query: (id) => ({
-				url: `zafran1FAQ/${id}`,
+				url: `tarazFAQ/${id}`,
 				method: 'GET',
 			}),
 			providesTags: ['faq'],
@@ -26,7 +26,7 @@ const faqManagementApi = baseApi.injectEndpoints({
 		// ✅ Create new FAQ
 		createFAQ: builder.mutation({
 			query: (data) => ({
-				url: `zafran1FAQ/new`,
+				url: `tarazFAQ/new`,
 				method: 'POST',
 				body: data,
 			}),
@@ -40,7 +40,7 @@ const faqManagementApi = baseApi.injectEndpoints({
 		// ✅ Update FAQ
 		updateFAQ: builder.mutation({
 			query: ({id, data}) => ({
-				url: `zafran1FAQ/${id}`,
+				url: `tarazFAQ/${id}`,
 				method: 'PUT',
 				body: data,
 			}),
@@ -54,7 +54,7 @@ const faqManagementApi = baseApi.injectEndpoints({
 		// ✅ Delete FAQ
 		deleteFAQ: builder.mutation({
 			query: (id) => ({
-				url: `zafran1FAQ/${id}`,
+				url: `tarazFAQ/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['faq'],

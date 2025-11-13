@@ -57,7 +57,7 @@ export async function prefetchVideos() {
 
 //use next js fetch for prefetch products
 export async function getProductsSSR() {
-	const res = await fetch(`https://fitback.shop/zafran1Product/`, {
+	const res = await fetch(`https://taraz.qwikbistro.shop/tarazProduct/`, {
 		cache: 'no-store', // Disable caching for SSR
 		next: {revalidate: 0}, // Ensure no revalidation
 	});

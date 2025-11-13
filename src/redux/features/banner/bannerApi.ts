@@ -5,7 +5,7 @@ export const bannerManagementApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getAllBanners: builder.query({
 			query: () => ({
-				url: `zafran1Banner`,
+				url: `tarazBanner`,
 				method: 'GET',
 			}),
 			providesTags: ['banner'],
@@ -13,7 +13,7 @@ export const bannerManagementApi = baseApi.injectEndpoints({
 		}),
 		deleteBanner: builder.mutation({
 			query: (id) => ({
-				url: `zafran1Banner/${id}`,
+				url: `tarazBanner/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['banner'],
@@ -24,7 +24,7 @@ export const bannerManagementApi = baseApi.injectEndpoints({
 		}),
 		createBanner: builder.mutation({
 			query: (data) => ({
-				url: `zafran1Banner/new`,
+				url: `tarazBanner/new`,
 				method: 'POST',
 				body: data,
 			}),

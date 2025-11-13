@@ -5,7 +5,7 @@ const blogManagementApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		createBlog: builder.mutation({
 			query: (data) => ({
-				url: `zafran1Blog/new`,
+				url: `tarazBlog/new`,
 				method: 'POST',
 				body: data,
 			}),
@@ -19,7 +19,7 @@ const blogManagementApi = baseApi.injectEndpoints({
 
 		getAllBlogs: builder.query({
 			query: () => ({
-				url: `zafran1Blog`,
+				url: `tarazBlog`,
 				method: 'GET',
 			}),
 			transformResponse: (response) => response,
@@ -28,7 +28,7 @@ const blogManagementApi = baseApi.injectEndpoints({
 
 		getSingleBlog: builder.query({
 			query: (id) => ({
-				url: `zafran1Blog/${id}`,
+				url: `tarazBlog/${id}`,
 				method: 'GET',
 			}),
 			transformResponse: (response) => response,
@@ -37,7 +37,7 @@ const blogManagementApi = baseApi.injectEndpoints({
 
 		updateBlog: builder.mutation({
 			query: ({id, data}) => ({
-				url: `zafran1Blog/${id}`,
+				url: `tarazBlog/${id}`,
 				method: 'PUT',
 				body: data,
 			}),
@@ -52,7 +52,7 @@ const blogManagementApi = baseApi.injectEndpoints({
 
 		deleteBlog: builder.mutation({
 			query: (id) => ({
-				url: `zafran1Blog/${id}`,
+				url: `tarazBlog/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['blog'],

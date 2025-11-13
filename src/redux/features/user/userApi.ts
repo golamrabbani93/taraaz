@@ -6,7 +6,7 @@ const userManagementApi = baseApi.injectEndpoints({
 		getMyProfile: builder.query({
 			query: (id) => {
 				return {
-					url: `zafran1User/${id}`,
+					url: `tarazUser/${id}`,
 					method: 'GET',
 				};
 			},
@@ -17,7 +17,7 @@ const userManagementApi = baseApi.injectEndpoints({
 			query: ({id, ...data}) => {
 				console.log(data);
 				return {
-					url: `zafran1User/${id}`,
+					url: `tarazUser/${id}`,
 					method: 'PUT',
 					body: data,
 				};
@@ -46,7 +46,7 @@ const userManagementApi = baseApi.injectEndpoints({
 		}),
 		getAllUsers: builder.query({
 			query: () => ({
-				url: 'zafran1User/',
+				url: 'tarazUser/',
 				method: 'GET',
 			}),
 			providesTags: ['user'],
@@ -54,7 +54,7 @@ const userManagementApi = baseApi.injectEndpoints({
 		}),
 		deleteUser: builder.mutation({
 			query: (id) => ({
-				url: `zafran1User/${id}`,
+				url: `tarazUser/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['user'],

@@ -6,7 +6,7 @@ export const websiteTitleManagementApi = baseApi.injectEndpoints({
 		// ✅ Get all website titles
 		getAllWebsiteTitles: builder.query({
 			query: () => ({
-				url: `zafran1WebsiteTitle`,
+				url: `tarazWebsiteTitle`,
 				method: 'GET',
 			}),
 			providesTags: ['websiteTitle'],
@@ -16,7 +16,7 @@ export const websiteTitleManagementApi = baseApi.injectEndpoints({
 		// ✅ Get single website title by ID
 		getSingleWebsiteTitle: builder.query({
 			query: (id) => ({
-				url: `zafran1WebsiteTitle/${id}`,
+				url: `tarazWebsiteTitle/${id}`,
 				method: 'GET',
 			}),
 			providesTags: ['websiteTitle'],
@@ -26,7 +26,7 @@ export const websiteTitleManagementApi = baseApi.injectEndpoints({
 		// ✅ Create new website title
 		createWebsiteTitle: builder.mutation({
 			query: (data) => ({
-				url: `zafran1WebsiteTitle/new`,
+				url: `tarazWebsiteTitle/new`,
 				method: 'POST',
 				body: data,
 			}),
@@ -40,7 +40,7 @@ export const websiteTitleManagementApi = baseApi.injectEndpoints({
 		// ✅ Update website title
 		updateWebsiteTitle: builder.mutation({
 			query: ({id, data}) => ({
-				url: `zafran1WebsiteTitle/${id}`,
+				url: `tarazWebsiteTitle/${id}`,
 				method: 'PUT',
 				body: data,
 			}),
@@ -54,7 +54,7 @@ export const websiteTitleManagementApi = baseApi.injectEndpoints({
 		// ✅ Delete website title
 		deleteWebsiteTitle: builder.mutation({
 			query: (id) => ({
-				url: `zafran1WebsiteTitle/${id}`,
+				url: `tarazWebsiteTitle/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['websiteTitle'],

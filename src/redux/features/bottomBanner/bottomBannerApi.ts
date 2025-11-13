@@ -5,7 +5,7 @@ export const bottomBannerManagementApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getAllBottomBanners: builder.query({
 			query: () => ({
-				url: `zafran1BottomBanner`,
+				url: `tarazBottomBanner`,
 				method: 'GET',
 			}),
 			providesTags: ['BottomBanners'],
@@ -13,7 +13,7 @@ export const bottomBannerManagementApi = baseApi.injectEndpoints({
 		}),
 		deleteBottomBanner: builder.mutation({
 			query: (id) => ({
-				url: `zafran1BottomBanner/${id}`,
+				url: `tarazBottomBanner/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['BottomBanners'],
@@ -24,7 +24,7 @@ export const bottomBannerManagementApi = baseApi.injectEndpoints({
 		}),
 		createBottomBanner: builder.mutation({
 			query: (data) => ({
-				url: `zafran1BottomBanner/new`,
+				url: `tarazBottomBanner/new`,
 				method: 'POST',
 				body: data,
 			}),

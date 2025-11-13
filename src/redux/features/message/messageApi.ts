@@ -5,7 +5,7 @@ const messageManagementApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getAllMessages: builder.query({
 			query: () => ({
-				url: `zafran1Contact`,
+				url: `tarazContact`,
 				method: 'GET',
 			}),
 			providesTags: ['message'],
@@ -13,7 +13,7 @@ const messageManagementApi = baseApi.injectEndpoints({
 		}),
 		deleteMessage: builder.mutation({
 			query: (id) => ({
-				url: `zafran1Contact/${id}`,
+				url: `tarazContact/${id}`,
 				method: 'DELETE',
 			}),
 			invalidatesTags: ['message'],
@@ -24,7 +24,7 @@ const messageManagementApi = baseApi.injectEndpoints({
 		}),
 		createMessage: builder.mutation({
 			query: (data) => ({
-				url: `zafran1Contact/new`,
+				url: `tarazContact/new`,
 				method: 'POST',
 				body: data,
 			}),
