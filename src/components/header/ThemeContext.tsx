@@ -164,7 +164,7 @@ const themes: Record<string, Theme> = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{children: ReactNode}> = ({children}) => {
-	const [theme, setTheme] = useState<string>('red');
+	const [theme, setTheme] = useState<string>('green');
 
 	useEffect(() => {
 		const root = document.documentElement;

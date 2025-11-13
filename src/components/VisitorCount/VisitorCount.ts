@@ -31,7 +31,7 @@ const VisitorCount = () => {
 	}, [isLoading]);
 	useEffect(() => {
 		if (location.country === 'BD') {
-			dispatch(setLanguage('bn'));
+			dispatch(setLanguage('en'));
 		} else {
 			dispatch(setLanguage('en'));
 		}
