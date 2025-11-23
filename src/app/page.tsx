@@ -45,18 +45,19 @@ export default async function Home() {
 						<DeskCategory />
 						<BannerFive data={bannerState} />
 						<FeatureCard />
-						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState : []} />
+						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState[0] : null} />
 						<BestPickForYou
 							data={productData}
 							title={Array.isArray(titleState) ? titleState : []}
 						/>
+						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState[2] : null} />
 						<BestVideos
 							data={Array.isArray(videoState) ? videoState : []}
 							title={Array.isArray(titleState) ? titleState : []}
 						/>
 						{/* <FeatureCategory /> */}
 						{/* <BestDiscount /> */}
-
+						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState[1] : null} />
 						<BestSellingWrap
 							head={true}
 							data={productData}

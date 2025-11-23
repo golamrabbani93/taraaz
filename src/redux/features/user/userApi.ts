@@ -15,7 +15,6 @@ const userManagementApi = baseApi.injectEndpoints({
 		}),
 		updateMyProfile: builder.mutation({
 			query: ({id, ...data}) => {
-				console.log(data);
 				return {
 					url: `tarazUser/${id}`,
 					method: 'PUT',

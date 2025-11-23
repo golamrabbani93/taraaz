@@ -92,11 +92,8 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 			<div className={styles.container} ref={componentRef}>
 				{/* Header */}
 				<div className={styles.header}>
-					<img src="/assets/images/logo/1.png" alt="" />
-					<p>
-						98/A, 3rd Colony, Mazar Road, Mirpur, Dhaka 1216, Bangladesh | Phone: +8801711113039 |
-						Email: zafranoil@yahoo.com
-					</p>
+					<img src="/assets/images/tz-main-logo.png" alt="" />
+					<p>Dhaka Bangladesh| Email: admin@taraaz.com</p>
 				</div>
 
 				{/* Invoice Details */}
@@ -172,7 +169,7 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 				{/* Footer */}
 				<div className={styles.footer}>
 					<p style={{margin: 0}}>
-						Powered by <span style={{fontWeight: 'bold'}}> ZafranShopBD</span>
+						Powered by <span style={{fontWeight: 'bold'}}>Taraaz</span>
 					</p>
 					<span>Note: This is a computer-generated document and does not require a signature.</span>
 				</div>

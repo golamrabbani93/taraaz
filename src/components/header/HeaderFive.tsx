@@ -93,13 +93,6 @@ function HeaderFive() {
 							<div className="row">
 								<div className="col-lg-12">
 									<div className="bwtween-area-header-top">
-										<div className="discount-area">
-											<p className="disc" suppressHydrationWarning>
-												{language === 'en'
-													? 'Place your First Order and get Surprise on next 3 Orders!'
-													: 'প্রথম অর্ডার করুন, আর পরের ৩ অর্ডারে পান বিশেষ চমক!'}
-											</p>
-										</div>
 										<div className="contact-number-area d-flex align-items-center">
 											<p>
 												<Link className="me-3" href="/shop">
@@ -108,11 +101,7 @@ function HeaderFive() {
 												<Link className="me-3" href="/videos">
 													{language === 'en' ? 'VIDEOS' : 'ভিডিওসমূহ'}
 												</Link>
-												<Link
-													className="me-3"
-													href="https://api.whatsapp.com/send?phone=8801905050505&app_absent=0"
-													target="_blank"
-												>
+												<Link className="me-3" href="#" target="_blank">
 													{language === 'en' ? 'WHATSAPP' : 'হোয়াটসঅ্যাপ'}
 												</Link>
 												<Link className="me-3" href="/contact">
@@ -122,9 +111,9 @@ function HeaderFive() {
 												<Link className="me-3" href="/blog">
 													{language === 'en' ? 'BLOGS' : 'ব্লগ'}
 												</Link>
-												<Link className="me-3" href="/faq">
+												{/* <Link className="me-3" href="/faq">
 													{language === 'en' ? 'FAQ' : 'প্রশ্নাবলী'}
-												</Link>
+												</Link> */}
 												{user?.id ? (
 													<Link className="me-3" href="#" onClick={() => handleLogOut()}>
 														{language === 'en' ? 'LOGOUT' : 'লগআউট'}
@@ -144,7 +133,14 @@ function HeaderFive() {
 													</span>
 												</Link> */}
 											</p>
-											<LanguageDropdown />
+											{/* <LanguageDropdown /> */}
+										</div>
+										<div className="discount-area">
+											<p className="disc" suppressHydrationWarning>
+												{language === 'en'
+													? 'Oreder first, get special surprise on next 3 orders!'
+													: ''}
+											</p>
 										</div>
 									</div>
 								</div>
@@ -167,7 +163,7 @@ function HeaderFive() {
 														<div className="logo-search-category-wrapper style-five-call-us">
 															<Link href="/" className="logo-area">
 																<img
-																	src="/assets/images/logo/1.png"
+																	src="/assets/images/logo/tz-main-logo.png"
 																	alt="logo-main"
 																	className="logo"
 																	style={{zIndex: '1000', position: 'relative'}}
@@ -180,8 +176,8 @@ function HeaderFive() {
 																		type="text"
 																		placeholder={
 																			language === 'en'
-																				? 'Search in Zafran'
-																				: 'জাফরানে অনুসন্ধান করুন'
+																				? 'Search in Taraaz'
+																				: 'তারাজে অনুসন্ধান করুন'
 																		}
 																		required
 																		value={searchTerm}
@@ -308,13 +304,13 @@ function HeaderFive() {
 										className="mobile-search-input"
 										ref={inputRef}
 										type="text"
-										placeholder={language === 'en' ? 'Search in Zafran' : 'জাফরানে অনুসন্ধান করুন'}
+										placeholder={language === 'en' ? 'Search in Taraaz' : 'তারাজে অনুসন্ধান করুন'}
 										required
 										value={searchTerm}
 										onChange={(e) => setSearchTerm(e.target.value)}
 										onFocus={() => searchTerm.length > 0 && setShowSuggestions(true)}
 									/>
-									<LanguageSwitcher />
+									{/* <LanguageSwitcher /> */}
 									{showSuggestions && suggestions.length > 0 && (
 										<ul
 											className="autocomplete-suggestions"

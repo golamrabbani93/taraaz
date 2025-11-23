@@ -20,7 +20,7 @@ export default function ZTextArea({name, isReadOnly = false, disabled = false}: 
 			<textarea
 				id={name}
 				{...register(name)}
-				placeholder={`Hydrating hair mask with saffron and shea butter for repair and shine.`}
+				placeholder={`Taraaz is the best eCommerce platform...`}
 				readOnly={isReadOnly}
 				disabled={disabled}
 				className={`${disabled ? '!bg-gray-200' : ''}`}

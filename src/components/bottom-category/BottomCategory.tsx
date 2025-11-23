@@ -18,35 +18,36 @@ const BottomCategory = () => {
 						className=""
 						href="#"
 						target="_self"
-						onClick={() => {
-							setCollapsed(true);
-							setText('hair-care-products');
-						}}
+						// onClick={() => {
+						// 	setCollapsed(true);
+						// 	setText('hair-care-products');
+						// }}
 					>
-						{language === 'en' ? 'Hair Care Products' : 'হেয়ার কেয়ার পণ্য'}
+						{language === 'en' ? 'Taraaz Fashion' : 'হেয়ার কেয়ার পণ্য'}
 					</Link>
+
 					<Link
 						className=""
 						href="#"
 						target="_self"
-						onClick={() => {
-							setCollapsed(true);
-							setText('skin-care-products');
-						}}
+						// onClick={() => {
+						// 	setCollapsed(true);
+						// 	setText('skin-care-products');
+						// }}
 					>
-						{language === 'en' ? 'Skin Care Products' : 'স্কিন কেয়ার পণ্য'}
+						{language === 'en' ? 'Indian Wear' : 'স্কিন কেয়ার পণ্য'}
 					</Link>
 					<Link
 						className="d-flex align-items-center"
 						href="#"
 						target="_self"
-						onClick={() => {
-							setCollapsed(true);
-							setText('');
-						}}
+						// onClick={() => {
+						// 	setCollapsed(true);
+						// 	setText('');
+						// }}
 					>
-						{language === 'en' ? 'All Products' : 'সমস্ত পণ্য'}
-						<svg
+						{language === 'en' ? 'Saree' : 'সমস্ত পণ্য'}
+						{/* <svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -61,7 +62,7 @@ const BottomCategory = () => {
 							<path d="M4 5h16" />
 							<path d="M4 12h16" />
 							<path d="M4 19h16" />
-						</svg>
+						</svg>*/}
 					</Link>
 				</div>
 			</div>

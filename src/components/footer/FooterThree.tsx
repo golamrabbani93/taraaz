@@ -77,9 +77,9 @@ function FooterThree() {
 											<li>
 												<Link href="/register">{language === 'en' ? 'Register' : 'রেজিস্টার'}</Link>
 											</li>
-											<li>
+											{/* <li>
 												<Link href="/faq">{language === 'en' ? 'FAQ' : 'প্রশ্নোত্তর'}</Link>
-											</li>
+											</li> */}
 											<li>
 												<Link href="#">{language === 'en' ? 'Blogs' : 'ব্লগ'}</Link>
 											</li>
@@ -102,9 +102,9 @@ function FooterThree() {
 											<li>
 												<a href="/wishlist">{language === 'en' ? 'Wishlist' : 'ইচ্ছা তালিকা'}</a>
 											</li>
-											<li style={{marginLeft: '-14px'}}>
+											{/* <li style={{marginLeft: '-14px'}}>
 												<LanguageSelector />
-											</li>
+											</li> */}
 										</ul>
 									</div>
 								</div>
@@ -121,21 +121,11 @@ function FooterThree() {
 										<br />
 										{language === 'en' ? (
 											<>
-												Help Line Number:{' '}
-												<Link
-													href={'https://api.whatsapp.com/send?phone=8801999302970&app_absent=0'}
-												>
-													+8801999302970
-												</Link>
+												Help Line Number: <Link href={'#'}>+8801234567890</Link>
 											</>
 										) : (
 											<>
-												হেল্প লাইন নম্বর:{' '}
-												<Link
-													href={'https://api.whatsapp.com/send?phone=8801999302970&app_absent=0'}
-												>
-													+8801999302970
-												</Link>
+												হেল্প লাইন নম্বর: <Link href={'#'}>+8801234567890</Link>
 											</>
 										)}
 									</p>
@@ -181,11 +171,7 @@ function FooterThree() {
 												<i className="fa-brands fa-instagram" />
 											</a>
 										</li>
-										<li>
-											<a href="https://twitter.com/zafran_hair" target="_blank">
-												<i className="fa-brands fa-twitter" />
-											</a>
-										</li>
+										{/* */}
 										<li>
 											<a
 												href={companyContact && !isLoading ? companyContact[1]?.youtube : '#'}
@@ -213,7 +199,7 @@ function FooterThree() {
 									</ul>
 								</div>
 								<div className="payment-access">
-									<span>Copyright © 2025 ZafranShopBD </span>
+									<span>Copyright © 2025 Taraaz | All rights reserved.</span>
 								</div>
 							</div>
 						</div>

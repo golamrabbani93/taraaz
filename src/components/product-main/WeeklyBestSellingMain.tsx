@@ -89,21 +89,21 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 						</div>
 					)}
 					{/* <img src={`${ProductImage}`} alt="grocery" /> */}
-					<Image
-						src={
-							imgError
-								? 'https://fitback.shop/media/product/image/image3_LspSwgq.jpg'
-								: ProductImage ?? 'https://fitback.shop/media/product/image/image3_LspSwgq.jpg'
-						}
-						alt={ProductTitle}
-						layout="responsive"
-						width={1200}
-						height={600}
-						onError={() => {
-							setImgError(true);
-						}}
-						// style={{borderRadius: '10px'}}
-					/>
+					{imgError ? (
+						<img src={ProductImage} alt={ProductTitle} />
+					) : (
+						<Image
+							src={ProductImage || '/images/placeholder/image-404.png'}
+							alt={ProductTitle}
+							layout="responsive"
+							width={1200}
+							height={600}
+							onError={() => {
+								setImgError(true);
+							}}
+							// style={{borderRadius: '10px'}}
+						/>
+					)}
 				</Link>
 				<div className="action-share-option">
 					<span

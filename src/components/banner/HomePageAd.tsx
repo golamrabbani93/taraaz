@@ -3,12 +3,19 @@ import {useGetAllBottomBannersQuery} from '@/redux/features/bottomBanner/bottomB
 import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
 
-const HomePageAd = ({data}: {data: any[]}) => {
+interface HomePageAdProps {
+	data: {
+		image: string;
+		name?: string;
+	} | null;
+}
+
+const HomePageAd = ({data}: HomePageAdProps) => {
 	return (
 		<div className="container  rounded-lg overflow-hidden p-xl-0">
 			<Image
-				src={data?.[0]?.image}
-				alt={data?.[0]?.name || 'Home Page Ad'}
+				src={data?.image || '/assets/images/banner/homepage-ad.jpg'}
+				alt={data?.name || 'Home Page Ad'}
 				layout="responsive"
 				width={1200}
 				height={600}
