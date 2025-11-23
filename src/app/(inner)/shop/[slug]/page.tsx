@@ -133,7 +133,9 @@ const CompareElements: React.FC = () => {
 
 												<div className="contents">
 													<div className="product-status">
-														{/* <span className="product-catagory">{blogPost?.type}</span> */}
+														<span className="product-catagory">
+															{blogPost?.categories[0].value}
+														</span>
 														{/* <div className="rating-stars-group">
 															<div className="rating-star">
 																<i className="fas fa-star" />
@@ -153,10 +155,7 @@ const CompareElements: React.FC = () => {
 													<p className="mt--20 mb--20">
 														{language === 'en' ? blogPost.description : blogPost.b_description}
 													</p>
-													<span
-														className="product-price mb--15 d-block"
-														style={{color: '#DC2626', fontWeight: 600}}
-													>
+													<span className="product-price mb--15 d-block" style={{fontWeight: 800}}>
 														{blogPost.discount_price > 0
 															? blogPost.discount_price
 															: blogPost.original_price.split('.')[0]}{' '}
@@ -183,12 +182,12 @@ const CompareElements: React.FC = () => {
 														{/* <span className="tags product-unipue mb--10">
 															<strong>Tags:</strong> {blogPost.tags.join(', ')}
 														</span> */}
-														<span className="tags product-unipue mb--10">
+														{/* <span className="tags product-unipue mb--10">
 															<strong>Weight:</strong> {blogPost.weight}
-														</span>
-														<span className="tags product-unipue mb--10">
+														</span> */}
+														{/* <span className="tags product-unipue mb--10">
 															<strong>Type:</strong> {blogPost.type}
-														</span>
+														</span> */}
 													</div>
 													<div className="d-flex w-100 flex-wrap align-items-center gap-3 mb--20">
 														<div className="product-bottom-action justify-content-start align-items-start m-0 d-block">
