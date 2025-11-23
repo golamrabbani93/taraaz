@@ -17,7 +17,7 @@ function DemoContent() {
 		<div className="body-root-inner">
 			<div className="transection">
 				<div className="title-right-actioin-btn-wrapper-product-list">
-					<h3 className="title">Zafran Admin Dashboard</h3>
+					<h3 className="title">Taraaz Admin Dashboard</h3>
 				</div>
 			</div>
 
