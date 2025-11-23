@@ -50,7 +50,7 @@ const AddProductPage = () => {
 								<ZForm onSubmit={handleSubmit} resolver={zodResolver(videoSchema)}>
 									<div className="single-input">
 										<label htmlFor="productName">Title</label>
-										<ZInput name="title" label="Zafran Hair Growth Therapy Oil" type="text" />
+										<ZInput name="title" label="Taraaz Cotton Saree" type="text" />
 									</div>
 									<div className="single-input">
 										<label htmlFor="productName">just copy youtube video url And paste here</label>
