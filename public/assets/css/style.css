@@ -48,25 +48,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
-  /* === Brand Colors === */
-  --color-primary: #2E7D32;
-  /* Deep Forest Green */
-  --color-secondary: #0A1F0F;
-  /* Dark Moss */
-  --color-body: #78909C;
-  /* Muted Gray-Green */
-  --color-heading-1: #1B3C1F;
-  /* Rich Leaf Green */
-  --color-white: #E8F5E9;
-  /* Soft Mint White */
+  --color-primary: #b4842d;
+  /* Gold base tone */
+  --color-secondary: #2E1A47;
+  /* Deep royal purple */
+  --color-accent: #7B1FA2;
+  /* Vibrant purple accent */
 
-  /* === Feedback Colors === */
+  /* 🖋 Text & Backgrounds */
+  --color-body: #b4842d;
+  /* Muted lavender for text or soft sections */
+  --color-heading-1: #1C0B2B;
+  /* Very dark purple for headings */
+  --color-white: #F9F6EF;
+  /* Warm off-white with a golden tint */
+  --color-background: #150820;
+  /* Dark background to make gold pop */
+
+  /* ✅ Functional Colors */
   --color-success: #3EB75E;
   --color-danger: #DC2626;
-  --color-warning: #FF8F3C;
+  --color-warning: #FFB84C;
+  /* warmer gold-orange tone */
   --color-info: #1BA2DB;
 
-  /* === Social Colors === */
+  /* 🌐 Social Colors (kept classic but harmonized slightly) */
   --color-facebook: #3B5997;
   --color-twitter: #1BA1F2;
   --color-youtube: #ED4141;
@@ -75,10 +81,11 @@
   --color-instagram: #C231A1;
   --color-vimeo: #00ADEF;
   --color-twitch: #6441A3;
-  --color-discord: #7289DA;
+  --color-discord: #7289da;
 
-  /* === Neutral === */
-  --color-border: #C8E6C9;
+  /* 🧱 Border & Divider */
+  --color-border: #e8d7a2;
+  /*
   /* Pale Green Border */
 
   /* === Typography Weights === */
@@ -15721,7 +15728,7 @@ body.sal-disabled [data-sal|='flip'] {
 
 .logo-search-category-wrapper .logo {
   height: 60px;
-  scale: 3.8;
+  scale: 2.5;
   margin-left: 60px;
 }
 
@@ -18607,7 +18614,7 @@ li.with-megamenu:hover .rts-megamenu {
   height: 180px !important;
   transition: 0.3s;
   transform: scale(1.01);
-  object-fit: contain;
+  object-fit: cover;
 }
 
 @media only screen and (max-width: 321px) {
@@ -18729,7 +18736,8 @@ li.with-megamenu:hover .rts-megamenu {
 
 .single-shopping-card-one .body-content .price-area .current {
   font-weight: 600;
-  color: var(--color-danger);
+  color: var(--color-primary);
+  ;
   font-size: 18px;
   margin-bottom: 0;
 }
