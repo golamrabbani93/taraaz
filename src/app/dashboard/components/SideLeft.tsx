@@ -15,7 +15,7 @@ function SideLeft({collapsed}: SideLeftProps) {
 				className="logo text-center d-block "
 				style={{fontSize: '24px', fontWeight: '700'}}
 			>
-				Zafran-brand
+				Taraaz
 			</a>
 			<SideMenu />
 		</div>
