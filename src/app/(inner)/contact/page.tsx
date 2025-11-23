@@ -80,7 +80,7 @@ export default function Home() {
 										</>
 									) : data && data.length > 0 ? (
 										<>
-											{data.map((contact: ICompanyContact) => (
+											{data.slice(0, 1).map((contact: ICompanyContact) => (
 												<div key={contact.id} className="location-single-card">
 													<div className="icon">
 														<i className="fa-light fa-location-dot" />
@@ -179,7 +179,7 @@ export default function Home() {
 										</div>
 										<div className="col-lg-5 mt_md--30 mt_sm--30">
 											<div className="thumbnail-area">
-												<img src="assets/images/contact/04.png" alt="contact_form" />
+												<img src="assets/images/contact/contact.jpg" alt="contact_form" />
 											</div>
 										</div>
 									</div>
@@ -190,10 +190,10 @@ export default function Home() {
 				</div>
 				{/* rts contact-form area end */}
 			</>
-			<div className="container">
+			{/* <div className="container">
 				<h2>{language === 'en' ? 'Frequently Asked Questions' : 'সাধারণ জিজ্ঞাসা'}</h2>
 				<FAQ />
-			</div>
+			</div> */}
 			<BottomNav />
 			<ShortService />
 			<FooterThree />
