@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: 'ZafranshopBD Dashboard',
+	title: 'Taraaz Dashboard',
 	description: 'Bangladesh No. 1 Online Hair Oil Shop',
 	icons: {
 		icon: [
