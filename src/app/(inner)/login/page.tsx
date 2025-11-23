@@ -61,7 +61,7 @@ export default function Home() {
 							<div className="col-lg-12">
 								<div className="registration-wrapper-1">
 									<div className="logo-area mb--0">
-										<img className="mb--10" src="/assets/images/logo/1.png" alt="logo" />
+										<img className="mb--10" src="/assets/images/logo/tz-main-logo.png" alt="logo" />
 									</div>
 									<h3 className="title">
 										{language === 'en' ? 'Login Into Your Account' : 'আপনার অ্যাকাউন্টে লগইন করুন'}
