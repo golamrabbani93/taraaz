@@ -24,6 +24,7 @@ const menuItems: MenuItem[] = [
 		children: [
 			{title: 'Product List', href: '/dashboard/product-list'},
 			{title: 'Add Product', href: '/dashboard/add-product'},
+			{title: 'Product Management', href: '/dashboard/pos'},
 		],
 	},
 	{
