@@ -66,6 +66,8 @@ const AddProductPage = () => {
 		if (result.data?.id) {
 			setUploadedImages([]);
 			router.push('/dashboard/product-list');
+		} else {
+			toast.error('Failed to add product. Please try again.');
 		}
 	};
 
@@ -99,15 +101,19 @@ const AddProductPage = () => {
 										</div>
 									</div>
 									<div className="row">
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Price </label>
 											<ZInput name="original_price" label="Price" type="text" />
 										</div>
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
+											<label htmlFor="productName">Stocks</label>
+											<ZInput name="stocks" label="20" type="text" />
+										</div>
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Material</label>
 											<ZInput name="material" label="Cotton, Silk, Wool" type="text" />
 										</div>
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Fit</label>
 											<ZInput name="fit" label="Slim, Regular, Loose" type="text" />
 										</div>
