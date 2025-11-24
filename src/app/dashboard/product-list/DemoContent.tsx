@@ -1,6 +1,8 @@
 'use client';
 
 import DeleteModal from '@/components/DeleteModal/DeleteModal';
+import AddStockModal from '@/components/AddStockModal/AddStockModal'; // Adjust path
+import BarcodeModal from '@/components/BarcodeModal/BarcodeModal'; // Adjust path
 import DashboardLoader from '@/components/Loader/DashboardLoader/DashboardLoader';
 import {
 	useDeleteProductMutation,
@@ -12,6 +14,7 @@ import Link from 'next/link';
 import React, {useState, useEffect} from 'react';
 import DataTable, {TableColumn} from 'react-data-table-component';
 import {toast} from 'react-toastify';
+import {generateBarcodeImage} from '@/utils/generateBarcodeImage';
 
 interface Product {
 	id: number;
@@ -19,6 +22,8 @@ interface Product {
 	original_price: string;
 	image1: string;
 	pin?: boolean;
+	stocks: number;
+	barcode?: string;
 }
 
 const ProductTable = () => {
@@ -32,6 +37,15 @@ const ProductTable = () => {
 	const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 	const [updateProduct, {isLoading: videoUpdating}] = useUpdateProductMutation();
 	const [id, setId] = useState<number | null>(null);
+	const [rowsPerPage, setRowsPerPage] = useState<number | 'All'>(10);
+
+	// New states for modals
+	const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
+	const [selectedProductForStock, setSelectedProductForStock] = useState<Product | null>(null);
+	const [stockToAdd, setStockToAdd] = useState<number>(0);
+	const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
+	const [selectedProductForBarcode, setSelectedProductForBarcode] = useState<Product | null>(null);
+
 	// Update products state when productsData changes
 	useEffect(() => {
 		if (productsData && Array.isArray(productsData)) {
@@ -65,6 +79,43 @@ const ProductTable = () => {
 			toast.success(`Product ${row?.pin ? 'unpinned' : 'pinned'} successfully`);
 		}
 	};
+
+	const handleFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFilterText(e.target.value);
+	};
+
+	const handleAddStock = (row: Product) => {
+		setSelectedProductForStock(row);
+		setStockToAdd(0); // Reset input
+		setIsAddStockModalOpen(true);
+	};
+
+	//barcode modal
+	const handleViewBarcode = (row: Product) => {
+		const barcodeImage = generateBarcodeImage(row.barcode || '');
+
+		setSelectedProductForBarcode({...row, barcode: barcodeImage});
+		setIsBarcodeModalOpen(true);
+	};
+
+	const confirmAddStock = async () => {
+		if (!selectedProductForStock || stockToAdd <= 0) return;
+		try {
+			const newStock = selectedProductForStock.stocks + stockToAdd;
+			const res = await updateProduct({
+				id: selectedProductForStock.id,
+				data: {stocks: newStock, name: selectedProductForStock.name},
+			}).unwrap();
+			if (res?.id) {
+				toast.success(`Stock added successfully. New stock: ${newStock}`);
+				setIsAddStockModalOpen(false);
+			}
+		} catch (error) {
+			toast.error('Failed to add stock');
+		}
+	};
+
+	// Define table columns
 	const columns: TableColumn<Product>[] = [
 		{
 			name: 'Product Name',
@@ -96,39 +147,120 @@ const ProductTable = () => {
 			),
 		},
 		{
+			name: 'Stocks',
+			selector: (row) => row.stocks,
+			sortable: true,
+			cell: (row) => (
+				<div className="d-flex flex-column align-items-start">
+					<span
+						className={`badge ${
+							row.stocks === 0
+								? 'bg-secondary'
+								: row.stocks < 10
+								? 'bg-danger'
+								: row.stocks < 20
+								? 'bg-warning text-dark'
+								: 'bg-success'
+						} mb-1`}
+						style={{fontSize: '16px'}}
+					>
+						{row.stocks === 0
+							? 'Out of Stock'
+							: row.stocks < 10
+							? 'Low Stock'
+							: row.stocks < 20
+							? 'Medium Stock'
+							: 'In Stock'}{' '}
+						({row.stocks})
+					</span>
+					<button
+						className="btn btn-sm btn-primary mt-2"
+						style={{fontSize: '14px', padding: '4px 8px'}}
+						title="Add Stock"
+						data-bs-toggle="tooltip"
+						data-bs-placement="top"
+						onClick={() => handleAddStock(row)}
+					>
+						Add Stock
+					</button>
+				</div>
+			),
+		},
+
+		{
 			name: 'Action',
 			cell: (row) => (
-				<>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '8px',
+						justifyContent: 'start',
+						alignItems: 'start',
+					}}
+				>
 					{/* add edit button  */}
-					<button
-						onClick={() => handlePinVideo(row)}
-						className="edit-button btn btn-success"
-						style={{height: '36px', width: '150px', fontSize: '12px', marginRight: '8px'}}
-					>
-						{row?.pin
-							? id === row.id && videoUpdating
-								? 'Unpinning...'
-								: 'Unpin Product'
-							: id === row.id && videoUpdating
-							? 'Pinning...'
-							: 'Pin Product'}
-					</button>
-					<Link href={`/dashboard/edit-product/${row.id}`}>
+					<div className="d-flex justify-content-center align-items-center">
 						<button
-							className="edit-button btn btn-primary"
-							style={{height: '36px', width: '100px', fontSize: '14px'}}
+							className="btn btn-outline-info"
+							style={{
+								height: '36px',
+								width: 'max-content',
+								fontSize: '14px',
+								border: '1px solid #17a2b8',
+							}}
+							onClick={() => handleViewBarcode(row)}
 						>
-							Edit
+							View Barcode
 						</button>
-					</Link>
-					<button
-						onClick={() => openDeleteModal(row.id.toString())}
-						className="delete-button btn btn-danger ms-3"
-						style={{height: '36px', width: '100px', fontSize: '14px'}}
-					>
-						Delete
-					</button>
-				</>
+						<button
+							onClick={() => handlePinVideo(row)}
+							className="btn btn-outline-success ms-4"
+							type="button"
+							style={{
+								height: '36px',
+								width: 'max-content',
+								fontSize: '14px',
+								border: '1px solid #28a745',
+							}}
+						>
+							{row?.pin
+								? id === row.id && videoUpdating
+									? 'Unpinning...'
+									: 'Unpin Product'
+								: id === row.id && videoUpdating
+								? 'Pinning...'
+								: 'Pin Product'}
+						</button>
+					</div>
+					<div className="d-flex justify-content-center align-items-center">
+						<Link href={`/dashboard/edit-product/${row.id}`}>
+							<button
+								className="edit-button btn btn-outline-primary"
+								style={{
+									height: '36px',
+									width: '100px',
+									fontSize: '14px',
+									border: '1px solid #007bff',
+								}}
+							>
+								Edit
+							</button>
+						</Link>
+						<button
+							onClick={() => openDeleteModal(row.id.toString())}
+							className="delete-button btn btn-outline-danger ms-4"
+							style={{
+								height: '36px',
+								width: '100px',
+								fontSize: '14px',
+								border: '1px solid #dc3545',
+							}}
+						>
+							Delete
+						</button>
+					</div>
+				</div>
 			),
 		},
 	];
@@ -162,21 +294,59 @@ const ProductTable = () => {
 							<span>All {products.length}</span>
 						</div>
 					</div>
-					<div className="right-area-search">
-						<input
-							type="text"
-							placeholder="Search..."
-							value={filterText}
-							onChange={(e) => setFilterText(e.target.value)}
-						/>
-					</div>
 				</div>
 				<div className="vendor-list-main-wrapper product-wrapper">
-					<div className="table-responsive">
-						<DataTable columns={columns} data={filteredItems} noDataComponent="No products found" />
+					<div className="card-body table-product-select">
+						<div className="table-responsive">
+							<div id="example_wrapper" className="dataTables_wrapper no-footer">
+								<div id="example_filter" className="dataTables_filter">
+									<label>
+										Search:
+										<input
+											type="search"
+											placeholder="Search products..."
+											aria-controls="example"
+											value={filterText}
+											onChange={handleFilter}
+										/>
+									</label>
+								</div>
+
+								<DataTable
+									columns={columns}
+									data={filteredItems}
+									pagination
+									paginationPerPage={rowsPerPage === 'All' ? filteredItems.length : rowsPerPage}
+									paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 50]}
+									paginationComponentOptions={{
+										rowsPerPageText: 'Show',
+										rangeSeparatorText: 'of',
+									}}
+									noDataComponent="No products found"
+									className="table table-hover dataTable no-footer"
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<AddStockModal
+				isOpen={isAddStockModalOpen}
+				onClose={() => setIsAddStockModalOpen(false)}
+				onConfirm={confirmAddStock}
+				product={selectedProductForStock}
+				stockToAdd={stockToAdd}
+				setStockToAdd={setStockToAdd}
+				loader={videoUpdating}
+			/>
+
+			<BarcodeModal
+				isOpen={isBarcodeModalOpen}
+				onClose={() => setIsBarcodeModalOpen(false)}
+				product={selectedProductForBarcode}
+			/>
+
 			<DeleteModal
 				isOpen={isModalOpen}
 				onClose={closeDeleteModal}
