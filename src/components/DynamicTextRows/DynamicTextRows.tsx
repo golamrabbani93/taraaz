@@ -87,7 +87,7 @@ const DynamicTextRows = ({
 			))}
 
 			{rows.length < 9 && (
-				<button className="add-btn" onClick={addRow}>
+				<button type="button" className="add-btn" onClick={addRow}>
 					Add Item
 				</button>
 			)}
