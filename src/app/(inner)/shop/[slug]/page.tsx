@@ -134,7 +134,7 @@ const CompareElements: React.FC = () => {
 												<div className="contents">
 													<div className="product-status">
 														<span className="product-catagory">
-															{blogPost?.categories[0].value}
+															{blogPost?.categories[0]?.value}
 														</span>
 														{/* <div className="rating-stars-group">
 															<div className="rating-star">
