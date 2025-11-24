@@ -477,3 +477,9 @@ ul.submenu.mm-collapse.mm-show {
 .desk-icon-view {
   color: var(--color-primary);
 }
+
+/* when aria-level show add backfround */
+.ehyRh {
+  background: black !important;
+  color: white;
+}
