@@ -17,6 +17,7 @@ import {useRouter} from 'next/navigation';
 import ZMultiSelect from '@/components/form/ZMultiSelect';
 import DynamicTextRows from '@/components/DynamicTextRows/DynamicTextRows';
 import {colorOptions, sizeOptions} from '../edit-product/[id]/options';
+import {generateBarcode} from '@/utils/generateBarcode';
 
 const AddProductPage = () => {
 	const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
@@ -37,6 +38,8 @@ const AddProductPage = () => {
 			return;
 		}
 
+		const barcode = generateBarcode();
+
 		data.faqs = JSON.stringify(rows);
 		//make slug from name
 		const slug = data.name
@@ -49,6 +52,7 @@ const AddProductPage = () => {
 		data.categories = data?.categories ? JSON.stringify(data.categories) : null;
 		data.size = data?.size ? JSON.stringify(data.size) : null;
 		data.color = data?.color ? JSON.stringify(data.color) : null;
+		data.barcode = barcode;
 		// append images to data
 		uploadedImages.forEach((image, index) => {
 			data[`image${index + 1}`] = image.file;
