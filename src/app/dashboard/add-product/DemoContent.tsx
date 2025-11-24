@@ -16,6 +16,7 @@ import {useGetAllCategoriesQuery} from '@/redux/features/category/categoryApi';
 import {useRouter} from 'next/navigation';
 import ZMultiSelect from '@/components/form/ZMultiSelect';
 import DynamicTextRows from '@/components/DynamicTextRows/DynamicTextRows';
+import {colorOptions, sizeOptions} from '../edit-product/[id]/options';
 
 const AddProductPage = () => {
 	const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
@@ -35,7 +36,7 @@ const AddProductPage = () => {
 			toast.error('You can upload maximum 4 images');
 			return;
 		}
-		data.categories = JSON.stringify(data.type);
+
 		data.faqs = JSON.stringify(rows);
 		//make slug from name
 		const slug = data.name
@@ -44,7 +45,10 @@ const AddProductPage = () => {
 			.replace(/[^\w-]+/g, '');
 		data.slug = slug;
 		const tag = data.tags as string;
-		data.tags = JSON.stringify(tag.split(','));
+		data.tags = tag ? JSON.stringify(tag.split(',')) : null;
+		data.categories = data?.categories ? JSON.stringify(data.categories) : null;
+		data.size = data?.size ? JSON.stringify(data.size) : null;
+		data.color = data?.color ? JSON.stringify(data.color) : null;
 		// append images to data
 		uploadedImages.forEach((image, index) => {
 			data[`image${index + 1}`] = image.file;
@@ -91,17 +95,29 @@ const AddProductPage = () => {
 										</div>
 									</div>
 									<div className="row">
-										<div className="single-input col-md-6">
+										<div className="single-input col-md-4">
 											<label htmlFor="productName">Price </label>
 											<ZInput name="original_price" label="Price" type="text" />
 										</div>
+										<div className="single-input col-md-4">
+											<label htmlFor="productName">Material</label>
+											<ZInput name="material" label="Cotton, Silk, Wool" type="text" />
+										</div>
+										<div className="single-input col-md-4">
+											<label htmlFor="productName">Fit</label>
+											<ZInput name="fit" label="Slim, Regular, Loose" type="text" />
+										</div>
 										<div className="single-input col-md-6">
-											<label htmlFor="productName">Product weight </label>
-											<ZInput name="weight" label="Product weight" type="text" />
+											<label htmlFor="productName">Size</label>
+											<ZMultiSelect name="size" label="Size" options={sizeOptions} />
+										</div>
+										<div className="single-input col-md-6">
+											<label htmlFor="productName">Product Category </label>
+											<ZMultiSelect name="categories" label="Product Category" options={options} />
 										</div>
 										<div className="single-input col-md-12">
-											<label htmlFor="productName">Product Category</label>
-											<ZMultiSelect name="type" label="Product Category" options={options} />
+											<label htmlFor="productName">Product Color </label>
+											<ZMultiSelect name="color" label="Product Color" options={colorOptions} />
 										</div>
 									</div>
 
@@ -115,7 +131,6 @@ const AddProductPage = () => {
 											<ZTextArea name="b_description" />
 										</div>
 									</div>
-
 									<h2 className="title">
 										Image Uploader
 										<p style={{fontSize: '12px', color: '#666'}}>
@@ -140,17 +155,16 @@ const AddProductPage = () => {
 											<label htmlFor="productName">Product Tags</label>
 											<ZInput label="Product Tags" name="tags" type="text" />
 										</div>
+										<div className="row">
+											<label className="fw-bold" style={{color: '#000'}}>
+												Enter FAQ Question And Answer
+											</label>
+											<DynamicTextRows rows={rows} setRows={setRows} required={false} />
+										</div>
 									</div>
-									<div className="row">
-										<label className="fw-bold" style={{color: '#000'}}>
-											Enter FAQ Question And Answer
-										</label>
-										<DynamicTextRows rows={rows} setRows={setRows} />
-									</div>
-
 									<div className="button-area-botton-wrapper-p-list">
 										<button type="submit" className="rts-btn btn-primary" disabled={isLoading}>
-											{isLoading ? 'Saving...' : 'Save Product'}
+											{isLoading ? 'Adding...' : ' Add Product'}
 										</button>
 									</div>
 								</ZForm>
