@@ -11,7 +11,6 @@ import {toast} from 'react-toastify';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {productSchema} from '@/schemas/product.schema';
 import {
-	useCreateProductMutation,
 	useGetSingleProductQuery,
 	useUpdateProductMutation,
 } from '@/redux/features/product/productApi';
@@ -21,6 +20,7 @@ import {useRouter} from 'next/navigation';
 import {useGetAllCategoriesQuery} from '@/redux/features/category/categoryApi';
 import ZMultiSelect from '@/components/form/ZMultiSelect';
 import DynamicTextRows from '@/components/DynamicTextRows/DynamicTextRows';
+import {colorOptions, sizeOptions} from './options';
 const AddProductPage = () => {
 	const {id} = useParams();
 	const router = useRouter();
@@ -38,20 +38,24 @@ const AddProductPage = () => {
 			label: category.name,
 			value: category.value,
 		})) || [];
+
 	useEffect(() => {
 		if (!getSingleProduct) return;
 		// Set default values for the form fields
 		setDefaultValues({
 			original_price: getSingleProduct?.original_price.split('.')[0] || '',
 			name: getSingleProduct?.name || '',
-			weight: getSingleProduct?.weight || '',
-			type: getSingleProduct?.categories || [],
+			categories: getSingleProduct?.categories || [],
 			description: getSingleProduct?.description || '',
 			b_name: getSingleProduct?.b_name || '',
 			b_description: getSingleProduct?.b_description || '',
 			meta_description: getSingleProduct?.meta_description || '',
 			b_meta_description: getSingleProduct?.b_meta_description || '',
 			tags: getSingleProduct?.tags?.join(',') || '',
+			size: getSingleProduct?.size || [],
+			color: getSingleProduct?.color || [],
+			material: getSingleProduct?.material || '',
+			fit: getSingleProduct?.fit || '',
 		});
 		const imageFields = ['image1', 'image2', 'image3', 'image4', 'image5', 'image6'];
 		const images = imageFields
@@ -87,10 +91,13 @@ const AddProductPage = () => {
 			.replace(/ /g, '-')
 			.replace(/[^\w-]+/g, '');
 		data.slug = slug;
-		const tag = data.tags as string;
-		data.tags = JSON.stringify(tag.split(','));
-		data.categories = JSON.stringify(data.type);
-		// append images to data
+		const tag = data?.tags as string;
+		data.tags = tag ? JSON.stringify(tag.split(',')) : null;
+		data.categories = data?.categories ? JSON.stringify(data.categories) : null;
+		data.size = data?.size ? JSON.stringify(data.size) : null;
+		data.pin = getSingleProduct?.pin;
+		data.color = data?.color ? JSON.stringify(data.color) : null;
+		// append images to dat
 		uploadedImages.forEach((image, index) => {
 			if (!image.file) return;
 			data[`image${index + 1}`] = image.file;
@@ -138,17 +145,29 @@ const AddProductPage = () => {
 										</div>
 									</div>
 									<div className="row">
-										<div className="single-input col-md-6">
+										<div className="single-input col-md-4">
 											<label htmlFor="productName">Price </label>
 											<ZInput name="original_price" label="Price" type="text" />
 										</div>
+										<div className="single-input col-md-4">
+											<label htmlFor="productName">Material</label>
+											<ZInput name="material" label="Cotton, Silk, Wool" type="text" />
+										</div>
+										<div className="single-input col-md-4">
+											<label htmlFor="productName">Fit</label>
+											<ZInput name="fit" label="Slim, Regular, Loose" type="text" />
+										</div>
 										<div className="single-input col-md-6">
-											<label htmlFor="productName">Product weight </label>
-											<ZInput name="weight" label="Product weight" type="text" />
+											<label htmlFor="productName">Size</label>
+											<ZMultiSelect name="size" label="Size" options={sizeOptions} />
+										</div>
+										<div className="single-input col-md-6">
+											<label htmlFor="productName">Product Category </label>
+											<ZMultiSelect name="categories" label="Product Category" options={options} />
 										</div>
 										<div className="single-input col-md-12">
-											<label htmlFor="productName">Product Category </label>
-											<ZMultiSelect name="type" label="Product Category" options={options} />
+											<label htmlFor="productName">Product Color </label>
+											<ZMultiSelect name="color" label="Product Color" options={colorOptions} />
 										</div>
 									</div>
 
@@ -190,7 +209,7 @@ const AddProductPage = () => {
 											<label className="fw-bold" style={{color: '#000'}}>
 												Enter FAQ Question And Answer
 											</label>
-											<DynamicTextRows rows={rows} setRows={setRows} />
+											<DynamicTextRows rows={rows} setRows={setRows} required={false} />
 										</div>
 									</div>
 									<div className="button-area-botton-wrapper-p-list">
