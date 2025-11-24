@@ -5,8 +5,11 @@ export const productSchema = z.object({
 		.string('Product English name is required')
 		.min(2, 'Product English name must be at least 2 characters')
 		.max(100, 'Product English name must be under 100 characters'),
-	original_price: z.string().min(1, 'Original price is required'),
-	type: z
+	original_price: z.string().min(1, 'Price is required'),
+	material: z.string('Material is required').optional(),
+	fit: z.string('Fit is required').optional(),
+
+	categories: z
 		.array(
 			z.object({
 				label: z.string(),
@@ -14,31 +17,31 @@ export const productSchema = z.object({
 			}),
 		)
 		.optional(),
-	weight: z.string().min(1, 'Product weight is required'),
-	description: z
-		.string()
-		.min(10, 'Product description must be at least 10 characters')
-		.max(1000, 'Product description must be under 1000 characters'),
+	size: z
+		.array(
+			z.object({
+				label: z.string(),
+				value: z.string(),
+			}),
+		)
+		.optional(),
+	color: z
+		.array(
+			z.object({
+				label: z.string(),
+				value: z.string(),
+			}),
+		)
+		.optional(),
+	description: z.string().optional(),
 	b_name: z
 		.string('Product Bangla name is required')
 		.min(2, 'Product Bangla name must be at least 2 characters')
 		.max(100, 'Product Bangla name must be under 100 characters'),
-	b_description: z
-		.string()
-		.min(10, 'Product Bangla description must be at least 10 characters')
-		.max(1000, 'Product Bangla description must be under 1000 characters'),
-	meta_description: z
-		.string('Product Meta Description Is required')
-		.min(10, 'Meta description must be at least 10 characters')
-		.max(2000, 'Meta description must be under 2000 characters'),
-	b_meta_description: z
-		.string('Product Bangla Meta Description Is required')
-		.min(10, 'Bangla Meta description must be at least 10 characters')
-		.max(2000, 'Bangla Meta description must be under 2000 characters'),
-	tags: z
-		.string('Product tags are required')
-		.min(2, 'Product tags must be at least 2 characters')
-		.max(500, 'Product tags must be under 500 characters'),
+	b_description: z.string().optional(),
+	meta_description: z.string('Product Meta Description Is required').optional(),
+	b_meta_description: z.string('Product Bangla Meta Description Is required').optional(),
+	tags: z.string('Product tags are required').optional(),
 });
 
 export const categorySchema = z.object({
