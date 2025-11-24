@@ -8,7 +8,7 @@ export const productSchema = z.object({
 	original_price: z.string().min(1, 'Price is required'),
 	material: z.string('Material is required').optional(),
 	fit: z.string('Fit is required').optional(),
-
+	stocks: z.string().min(1, 'Stocks are required'),
 	categories: z
 		.array(
 			z.object({
