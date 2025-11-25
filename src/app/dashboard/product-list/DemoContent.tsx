@@ -9,7 +9,6 @@ import {
 	useGetAllProductsQuery,
 	useUpdateProductMutation,
 } from '@/redux/features/product/productApi';
-import {IProduct} from '@/types/product.types';
 import Link from 'next/link';
 import React, {useState, useEffect} from 'react';
 import DataTable, {TableColumn} from 'react-data-table-component';
@@ -24,6 +23,7 @@ interface Product {
 	pin?: boolean;
 	stocks: number;
 	barcode?: string;
+	isPublish?: boolean;
 }
 
 const ProductTable = () => {
@@ -42,9 +42,11 @@ const ProductTable = () => {
 	// New states for modals
 	const [isAddStockModalOpen, setIsAddStockModalOpen] = useState(false);
 	const [selectedProductForStock, setSelectedProductForStock] = useState<Product | null>(null);
-	const [stockToAdd, setStockToAdd] = useState<number>(0);
+	const [stockToAdd, setStockToAdd] = useState<string | number>('');
 	const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
 	const [selectedProductForBarcode, setSelectedProductForBarcode] = useState<Product | null>(null);
+	const [publishedLoading, setPublishedLoading] = useState(false);
+	const [pinLoader, setPinLoader] = useState(false);
 
 	// Update products state when productsData changes
 	useEffect(() => {
@@ -69,6 +71,7 @@ const ProductTable = () => {
 	};
 
 	const handlePinVideo = async (row: Product) => {
+		setPinLoader(true);
 		// Implement pin video logic here
 		setId(row.id);
 		const res = await updateProduct({
@@ -77,6 +80,20 @@ const ProductTable = () => {
 		}).unwrap();
 		if (res?.id) {
 			toast.success(`Product ${row?.pin ? 'unpinned' : 'pinned'} successfully`);
+			setPinLoader(false);
+		}
+	};
+	const handlePublishToggle = async (row: Product) => {
+		setPublishedLoading(true);
+		// Implement pin video logic here
+		setId(row.id);
+		const res = await updateProduct({
+			id: row.id,
+			data: {isPublish: row?.isPublish ? false : true, name: row.name},
+		}).unwrap();
+		if (res?.id) {
+			toast.success(`Product ${row?.isPublish ? 'unpublished' : 'published'} successfully`);
+			setPublishedLoading(false);
 		}
 	};
 
@@ -86,7 +103,7 @@ const ProductTable = () => {
 
 	const handleAddStock = (row: Product) => {
 		setSelectedProductForStock(row);
-		setStockToAdd(0); // Reset input
+		setStockToAdd(''); // Reset input
 		setIsAddStockModalOpen(true);
 	};
 
@@ -99,9 +116,9 @@ const ProductTable = () => {
 	};
 
 	const confirmAddStock = async () => {
-		if (!selectedProductForStock || stockToAdd <= 0) return;
+		if (!selectedProductForStock || parseInt(stockToAdd as string) <= 0) return;
 		try {
-			const newStock = selectedProductForStock.stocks + stockToAdd;
+			const newStock = selectedProductForStock.stocks + parseInt(stockToAdd as string);
 			const res = await updateProduct({
 				id: selectedProductForStock.id,
 				data: {stocks: newStock, name: selectedProductForStock.name},
@@ -225,12 +242,31 @@ const ProductTable = () => {
 							}}
 						>
 							{row?.pin
-								? id === row.id && videoUpdating
+								? id === row.id && pinLoader
 									? 'Unpinning...'
 									: 'Unpin Product'
-								: id === row.id && videoUpdating
+								: id === row.id && pinLoader
 								? 'Pinning...'
 								: 'Pin Product'}
+						</button>
+						<button
+							onClick={() => handlePublishToggle(row)}
+							className="btn btn-outline-warning ms-4"
+							type="button"
+							style={{
+								height: '36px',
+								width: 'max-content',
+								fontSize: '14px',
+								border: '1px solid #ffc107',
+							}}
+						>
+							{row?.isPublish
+								? id === row.id && publishedLoading
+									? 'Unpublishing...'
+									: 'Unpublish'
+								: id === row.id && publishedLoading
+								? 'Publishing...'
+								: 'Publish'}
 						</button>
 					</div>
 					<div className="d-flex justify-content-center align-items-center">
