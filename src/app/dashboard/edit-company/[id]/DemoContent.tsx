@@ -81,7 +81,11 @@ const AddProductPage = () => {
 									<div className="row">
 										<div className="single-input col-md-6">
 											<label htmlFor="productName">WhatsApp Url</label>
-											<ZInput name="facebook" label="WhatsApp URL" type="text" />
+											<ZInput name="whatsapp" label="WhatsApp URL" type="text" />
+										</div>
+										<div className="single-input col-md-6">
+											<label htmlFor="productName">Facebook Url</label>
+											<ZInput name="facebook" label="Facebook URL" type="text" />
 										</div>
 										<div className="single-input col-md-6">
 											<label htmlFor="productName">Instagram Url</label>
@@ -92,8 +96,12 @@ const AddProductPage = () => {
 											<ZInput name="youtube" label="Youtube URL" type="text" />
 										</div>
 										<div className="single-input col-md-6">
-											<label htmlFor="productName">Pinterest Url</label>
-											<ZInput name="linkedin" label="Pinterest URL" type="text" />
+											<label htmlFor="productName">Tiktok Url</label>
+											<ZInput name="tiktok" label="Tiktok URL" type="text" />
+										</div>
+										<div className="single-input col-md-6">
+											<label htmlFor="productName">Imo Url</label>
+											<ZInput name="imo" label="Imo URL" type="text" />
 										</div>
 									</div>
 
