@@ -107,7 +107,11 @@ export default function Home() {
 							</div>
 							<div className="col-lg-8 pl--50 pl_sm--5 pl_md--5">
 								<iframe
-									src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d467297.4282741894!2d90.348517!3d23.791518!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c0ec6bd8f501%3A0xecb20b6904793773!2sMazar%20Rd%2C%20Dhaka%2C%20Bangladesh!5e0!3m2!1sen!2sus!4v1757508448039!5m2!1sen!2sus"
+									src={
+										data && data.length > 0
+											? data[0].map
+											: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9026062638853!2d90.3917186750662!3d23.750903394616736!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b0876f5f6b%3A0x8fae6b3f4e4c5b6!2sTaraaz%20Limited!5e0!3m2!1sen!2sbd!4v1696224567890!5m2!1sen!2sbd'
+									}
 									width={600}
 									height={540}
 									style={{border: 0}}
