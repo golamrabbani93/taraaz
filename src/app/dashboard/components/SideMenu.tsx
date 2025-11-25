@@ -45,17 +45,17 @@ const menuItems: MenuItem[] = [
 		children: [{title: 'User List', href: '/dashboard/user-list'}],
 	},
 
-	{
-		title: 'FAQ',
-		icon: 'far fa-user',
-		children: [
-			{
-				title: 'FAQ List',
-				href: '/dashboard/faq-list',
-			},
-			{title: 'Add FAQ', href: '/dashboard/add-faq'},
-		],
-	},
+	// {
+	// 	title: 'FAQ',
+	// 	icon: 'far fa-user',
+	// 	children: [
+	// 		{
+	// 			title: 'FAQ List',
+	// 			href: '/dashboard/faq-list',
+	// 		},
+	// 		{title: 'Add FAQ', href: '/dashboard/add-faq'},
+	// 	],
+	// },
 	{
 		title: 'Banners',
 		icon: 'fas fa-photo-video',
@@ -92,8 +92,8 @@ const menuItems: MenuItem[] = [
 		title: 'Company Contact',
 		icon: 'fas fa-address-book',
 		children: [
-			{title: 'Company Contact', href: '/dashboard/company-contact'},
-			{title: 'Add Company Contact', href: '/dashboard/add-company-contact'},
+			{title: 'View Company Contact', href: '/dashboard/company-contact'},
+			// {title: 'Add Company Contact', href: '/dashboard/add-company-contact'},
 		],
 	},
 	{
