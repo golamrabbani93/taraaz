@@ -83,13 +83,13 @@ const CompanyTable = () => {
 							Edit
 						</button>
 					</Link>
-					<button
+					{/* <button
 						onClick={() => openDeleteModal(row.id.toString())}
 						className="delete-button btn btn-danger ms-3"
 						style={{height: '36px', width: '100px', fontSize: '14px'}}
 					>
 						Delete
-					</button>
+					</button> */}
 				</>
 			),
 		},
@@ -113,20 +113,19 @@ const CompanyTable = () => {
 				<div className="title-right-actioin-btn-wrapper-product-list">
 					<div>
 						<h3 className="title">Company Contacts</h3>
-						<span className="d-block">Do Not Delete Only Update</span>
 					</div>
-					<div className="button-wrapper d-block">
+					{/* <div className="button-wrapper d-block">
 						<Link href="/dashboard/add-company">
 							<button className="rts-btn btn-primary">+ Add Company</button>
 						</Link>
-					</div>
+					</div> */}
 				</div>
 				<div className="product-top-filter-area-l">
-					<div className="left-area-button-fiulter">
+					{/* <div className="left-area-button-fiulter">
 						<div className="signle-product-single-button">
 							<span>All {companies.length}</span>
 						</div>
-					</div>
+					</div> */}
 					<div className="right-area-search">
 						<input
 							type="text"
