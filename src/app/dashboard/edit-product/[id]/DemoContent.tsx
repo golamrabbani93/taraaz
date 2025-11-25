@@ -56,7 +56,7 @@ const AddProductPage = () => {
 			color: getSingleProduct?.color || [],
 			material: getSingleProduct?.material || '',
 			fit: getSingleProduct?.fit || '',
-			stocks: getSingleProduct?.stocks || '',
+			stocks: String(getSingleProduct?.stocks) || '',
 		});
 		const imageFields = ['image1', 'image2', 'image3', 'image4', 'image5', 'image6'];
 		const images = imageFields
