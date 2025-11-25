@@ -1,5 +1,5 @@
 'use client';
-import {useGetAllCompanyContactsQuery} from '@/redux/features/companyContact/companyContact';
+import {useGetSingleCompanyContactQuery} from '@/redux/features/companyContact/companyContact';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
 import {useAppSelector} from '@/redux/hooks';
 import React from 'react';
@@ -9,7 +9,7 @@ import LanguageSelector from '../header/LanguageDropdown';
 import Link from 'next/link';
 
 function FooterThree() {
-	const {data: companyContact, isLoading} = useGetAllCompanyContactsQuery('');
+	const {data: companyContact, isLoading} = useGetSingleCompanyContactQuery('1');
 	const language = useAppSelector(selectLanguage);
 	return (
 		<div>
@@ -33,13 +33,13 @@ function FooterThree() {
 													? 'Have Question? Call Us 24/7'
 													: 'প্রশ্ন আছে? আমাদের কল করুন 24/7'}
 											</span>
-											<a href="#" className="number">
+											<Link href={companyContact?.whatsapp || '#'} className="number text-white">
 												{isLoading
 													? 'Loading...'
 													: language === 'en'
-													? companyContact[1]?.phone
-													: companyContact[1]?.b_phone || '01905050505'}
-											</a>
+													? companyContact?.phone
+													: companyContact?.b_phone || 'Loading...'}
+											</Link>
 										</div>
 									</div>
 									<div className="opening-hour">
@@ -49,8 +49,8 @@ function FooterThree() {
 											) : (
 												<p style={{width: '80%'}}>
 													{language === 'en'
-														? companyContact[1]?.address
-														: companyContact[1]?.b_address || 'Loading...'}
+														? companyContact?.address
+														: companyContact?.b_address || 'Loading...'}
 												</p>
 											)}
 										</div>
@@ -58,7 +58,7 @@ function FooterThree() {
 											{isLoading ? (
 												<Skeleton className="w-full h-4 rounded-md d-block bg-white" />
 											) : (
-												<p> Email: {companyContact[1]?.email || 'Loading...'}</p>
+												<p> Email: {companyContact?.email || 'Loading...'}</p>
 											)}
 										</div>
 									</div>
@@ -102,6 +102,12 @@ function FooterThree() {
 											<li>
 												<a href="/wishlist">{language === 'en' ? 'Wishlist' : 'ইচ্ছা তালিকা'}</a>
 											</li>
+											<li>
+												<Link href="/shop">{language === 'en' ? 'Products' : 'পণ্য'}</Link>
+											</li>
+											<li>
+												<Link href="/videos">{language === 'en' ? 'Videos' : 'ভিডিও'}</Link>
+											</li>
 											{/* <li style={{marginLeft: '-14px'}}>
 												<LanguageSelector />
 											</li> */}
@@ -121,37 +127,20 @@ function FooterThree() {
 										<br />
 										{language === 'en' ? (
 											<>
-												Help Line Number: <Link href={'#'}>+8801234567890</Link>
+												Help Line Number:{' '}
+												<Link href={companyContact?.whatsapp || '#'}>
+													<u> {companyContact?.phone || 'Loading...'}</u>
+												</Link>
 											</>
 										) : (
 											<>
-												হেল্প লাইন নম্বর: <Link href={'#'}>+8801234567890</Link>
+												হেল্প লাইন নম্বর:{' '}
+												<Link href={companyContact?.whatsapp || '#'}>
+													<u> {companyContact?.b_phone || 'Loading...'}</u>
+												</Link>
 											</>
 										)}
 									</p>
-									{/* <form
-										className="footersubscribe-form"
-										onSubmit={(e) => {
-											e.preventDefault();
-											toast.success('Subscribed Successfully');
-											(e.target as HTMLFormElement).reset();
-										}}
-									>
-										<input
-											required
-											type="email"
-											placeholder={language === 'en' ? 'Enter your email' : 'আপনার ইমেইল লিখুন'}
-											className="text-white"
-										/>
-										<button className="rts-btn btn-primary">
-											{language === 'en' ? 'Subscribe' : 'সাবস্ক্রাইব করুন'}
-										</button>
-									</form> */}
-									{/* <p className="dsic">
-										{language === 'en'
-											? 'I would like to receive news and special offers'
-											: 'আমি খবর এবং বিশেষ অফার পেতে চাই'}
-									</p> */}
 								</div>
 								{/* single footer area wrapper */}
 							</div>
@@ -163,39 +152,68 @@ function FooterThree() {
 											: 'আইকনে ট্যাপ করুন সরাসরি যোগাযোগের জন্য।'}
 									</span>
 									<ul>
-										<li>
-											<a
-												href={companyContact && !isLoading ? companyContact[1]?.instagram : '#'}
-												target="_blank"
-											>
-												<i className="fa-brands fa-instagram" />
-											</a>
-										</li>
+										{companyContact && !isLoading && companyContact?.whatsapp.length > 0 && (
+											<li>
+												<Link
+													href={companyContact && !isLoading ? companyContact?.whatsapp : '#'}
+													target="_blank"
+												>
+													<i className="fa-brands fa-whatsapp" />
+												</Link>
+											</li>
+										)}
+
+										{companyContact && !isLoading && companyContact?.instagram.length > 0 && (
+											<li>
+												<Link
+													href={companyContact && !isLoading ? companyContact?.instagram : '#'}
+													target="_blank"
+												>
+													<i className="fa-brands fa-instagram" />
+												</Link>
+											</li>
+										)}
 										{/* */}
-										<li>
-											<a
-												href={companyContact && !isLoading ? companyContact[1]?.youtube : '#'}
-												target="_blank"
-											>
-												<i className="fa-brands fa-youtube" />
-											</a>
-										</li>
-										<li>
-											<a
-												href={companyContact && !isLoading ? companyContact[1]?.facebook : '#'}
-												target="_blank"
-											>
-												<i className="fa-brands fa-whatsapp" />
-											</a>
-										</li>
-										<li>
-											<a
-												href={companyContact && !isLoading ? companyContact[1]?.linkedin : '#'}
-												target="_blank"
-											>
-												<i className="fa-brands fa-pinterest" />
-											</a>
-										</li>
+										{companyContact && !isLoading && companyContact?.youtube.length > 0 && (
+											<li>
+												<Link
+													href={companyContact && !isLoading ? companyContact?.youtube : '#'}
+													target="_blank"
+												>
+													<i className="fa-brands fa-youtube" />
+												</Link>
+											</li>
+										)}
+										{companyContact && !isLoading && companyContact?.facebook.length > 0 && (
+											<li>
+												<Link
+													href={companyContact && !isLoading ? companyContact?.facebook : '#'}
+													target="_blank"
+												>
+													<i className="fa-brands fa-facebook" />
+												</Link>
+											</li>
+										)}
+										{companyContact && !isLoading && companyContact?.tiktok.length > 0 && (
+											<li>
+												<Link
+													href={companyContact && !isLoading ? companyContact?.tiktok : '#'}
+													target="_blank"
+												>
+													<i className="fa-brands fa-tiktok" />
+												</Link>
+											</li>
+										)}
+										{companyContact && !isLoading && companyContact?.imo.length > 0 && (
+											<li>
+												<Link
+													href={companyContact && !isLoading ? companyContact?.imo : '#'}
+													target="_blank"
+												>
+													<i className="fas fa-envelope"></i>
+												</Link>
+											</li>
+										)}
 									</ul>
 								</div>
 								<div className="payment-access">
