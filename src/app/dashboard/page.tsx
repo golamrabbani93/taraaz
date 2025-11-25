@@ -17,7 +17,7 @@ export default function Home() {
 			<SideLeft collapsed={sidebarCollapsed} />
 			<div className={`right-area-body-content ${sidebarCollapsed ? 'collapsed' : ''}`}>
 				<Header onToggleSidebar={toggleSidebar} />
-				{/* <DemoContent /> */}
+				<DemoContent />
 			</div>
 		</div>
 	);
