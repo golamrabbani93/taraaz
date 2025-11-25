@@ -6,8 +6,8 @@ interface AddStockModalProps {
 	onClose: () => void;
 	onConfirm: () => void;
 	product: {name: string; stocks: number} | null;
-	stockToAdd: number;
-	setStockToAdd: (value: number) => void;
+	stockToAdd: string | number;
+	setStockToAdd: (value: string | number) => void;
 	loader?: boolean;
 }
 
@@ -37,12 +37,17 @@ const AddStockModal: React.FC<AddStockModalProps> = ({
 						Quantity to Add
 					</label>
 					<input
-						type="number"
+						type="text"
 						id="stockInput"
 						value={stockToAdd}
-						onChange={(e) => setStockToAdd(parseInt(e.target.value) || 0)}
+						onChange={(e) => setStockToAdd(e.target.value)}
 						min="1"
-						style={{width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '4px'}}
+						style={{
+							width: '100%',
+							padding: '8px',
+							border: '1px solid #ccc',
+							borderRadius: '4px',
+						}}
 					/>
 				</div>
 				<p>Current Stock: {product?.stocks}</p>
@@ -56,7 +61,7 @@ const AddStockModal: React.FC<AddStockModalProps> = ({
 					<button
 						className={`${deleteModalStyles.btn} ${deleteModalStyles.btnDelete}`}
 						onClick={onConfirm}
-						disabled={stockToAdd <= 0}
+						disabled={parseInt(stockToAdd as string) <= 0}
 					>
 						{loader ? 'Adding...' : 'Add Stock'}
 					</button>
