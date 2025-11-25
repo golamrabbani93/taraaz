@@ -4,6 +4,10 @@ import {
 	useGetAllCompanyContactsQuery,
 	useUpdateCompanyContactMutation,
 } from '@/redux/features/companyContact/companyContact';
+import {
+	useGetSingleHitCounterQuery,
+	useUpdateHitCounterMutation,
+} from '@/redux/features/hitCounter/hitcounter';
 import {setLanguage} from '@/redux/features/language/languageSlice';
 import {useEffect} from 'react';
 import useGeoLocation from 'react-ipgeolocation';
@@ -11,24 +15,22 @@ import {useDispatch} from 'react-redux';
 
 const VisitorCount = () => {
 	const dispatch = useDispatch();
-	const {data, isLoading} = useGetAllCompanyContactsQuery(undefined);
-	const [updateCount] = useUpdateCompanyContactMutation();
+	const {data: hit, isLoading: hitLoading} = useGetSingleHitCounterQuery(1);
+	const [updateCount] = useUpdateHitCounterMutation();
 	const location = useGeoLocation();
 	const incrementVisitorCount = async () => {
-		if (data && data.length > 0) {
-			const contact = data[0];
+		if (hit) {
 			const updatedContact = {
-				...contact,
-				country: (Number(contact.country) || 0) + 1,
+				total_visitor: (hit.total_visitor || 0) + 1,
 			};
-			await updateCount({id: contact.id, data: updatedContact});
+			await updateCount({id: hit.id, data: updatedContact});
 		}
 	};
 	useEffect(() => {
-		if (!isLoading) {
+		if (!hitLoading) {
 			incrementVisitorCount();
 		}
-	}, [isLoading]);
+	}, [hitLoading]);
 	useEffect(() => {
 		if (location.country === 'BD') {
 			dispatch(setLanguage('en'));
