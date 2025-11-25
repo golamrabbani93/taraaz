@@ -4,9 +4,11 @@ import Link from 'next/link';
 import SingleCard from './SingleCard';
 import {useAppSelector} from '@/redux/hooks';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
+import {useGetSingleCompanyContactQuery} from '@/redux/features/companyContact/companyContact';
 
 const FeatureCard = () => {
 	const language = useAppSelector(selectLanguage);
+	const {data: companyContact} = useGetSingleCompanyContactQuery('1');
 	const features = [
 		{
 			imgSrc: '/assets/images/feature-card/whatsapp.png', // top-up icon
@@ -33,7 +35,7 @@ const FeatureCard = () => {
 				{features.map((feature, index) => (
 					<div key={index} className="col-lg-4 mb-3">
 						{feature.title === 'Order via WhatsApp' ? (
-							<Link className="d-flex" href="#" target="_blank">
+							<Link className="d-flex" href={companyContact?.whatsapp || '#'} target="_blank">
 								<SingleCard
 									key={index}
 									imgSrc={feature.imgSrc}
