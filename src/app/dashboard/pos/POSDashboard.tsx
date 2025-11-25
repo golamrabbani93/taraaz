@@ -292,6 +292,33 @@ const POSDashboard = () => {
 					</div>
 				</div>
 			)}
+			{/* show low stock products */}
+			{products.filter((product) => product.stocks > 0 && product.stocks <= 10).length > 0 && (
+				<div className="mt-5 d-flex flex-column align-items-center">
+					<div className="card shadow-sm border-0 w-50 mt-4">
+						<div className="card-body">
+							<h5 className="card-title text-danger fw-bold mb-3 h1">⚠️ Low Stock Products</h5>
+
+							<ul className="list-group">
+								{products
+									.filter((p) => p.stocks > 0 && p.stocks <= 10)
+									.map((p) => (
+										<li
+											key={p.id}
+											className="list-group-item d-flex justify-content-between align-items-center"
+										>
+											<span className="fw-medium h3">{p.name}</span>
+
+											<span className="badge bg-danger rounded-pill text-white h4">
+												{p.stocks} left
+											</span>
+										</li>
+									))}
+							</ul>
+						</div>
+					</div>
+				</div>
+			)}
 
 			{/* Modals */}
 			<SuccessModal
