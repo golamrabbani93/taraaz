@@ -15,6 +15,7 @@ import LanguageDropdown from './LanguageDropdown';
 import {toast} from 'react-toastify';
 import {removeToken} from '@/services/token/getToken';
 import LanguageSwitcher from './LanguageSwitcher';
+import {useGetSingleCompanyContactQuery} from '@/redux/features/companyContact/companyContact';
 
 function HeaderFive() {
 	const [user, setUser] = useState<any>(null);
@@ -28,7 +29,7 @@ function HeaderFive() {
 	const dispatch = useAppDispatch();
 	const language = useAppSelector(selectLanguage);
 	const inputRef = useRef<HTMLInputElement>(null);
-
+	const {data: companyContact} = useGetSingleCompanyContactQuery('1');
 	// Countdown setup
 	useEffect(() => {
 		setUser(userdata);
@@ -101,7 +102,11 @@ function HeaderFive() {
 												<Link className="me-3" href="/videos">
 													{language === 'en' ? 'VIDEOS' : 'ভিডিওসমূহ'}
 												</Link>
-												<Link className="me-3" href="#" target="_blank">
+												<Link
+													className="me-3"
+													href={companyContact?.whatsapp || '#'}
+													target="_blank"
+												>
 													{language === 'en' ? 'WHATSAPP' : 'হোয়াটসঅ্যাপ'}
 												</Link>
 												<Link className="me-3" href="/contact">
