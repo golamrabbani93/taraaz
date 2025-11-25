@@ -26,4 +26,5 @@ export interface IProduct {
 	views?: number;
 	pin?: boolean;
 	system_date?: string;
+	isPublish?: boolean;
 }
