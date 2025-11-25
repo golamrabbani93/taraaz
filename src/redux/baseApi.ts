@@ -28,6 +28,7 @@ export const baseApi = createApi({
 		'websiteTitle',
 		'faq',
 		'category',
+		'hitCounter',
 	],
 	endpoints: (builder) => ({}),
 });
