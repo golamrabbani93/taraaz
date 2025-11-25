@@ -4,9 +4,7 @@ import './DynamicTextRows.css';
 type RowData = {
 	id: number;
 	question: string;
-	b_question: string;
 	answer: string;
-	b_answer: string;
 };
 
 const DynamicTextRows = ({
@@ -30,9 +28,8 @@ const DynamicTextRows = ({
 			{
 				id: newId,
 				question: '',
-				b_question: '',
+
 				answer: '',
-				b_answer: '',
 			},
 		]);
 	};
@@ -54,14 +51,6 @@ const DynamicTextRows = ({
 							className="text-area mb-2"
 							required={required}
 						></textarea>
-
-						<textarea
-							placeholder="Enter Question (BN)"
-							value={row.b_question}
-							onChange={(e) => handleChange(row.id, 'b_question', e.target.value)}
-							className="text-area"
-							required={required}
-						></textarea>
 					</div>
 					<div className="col">
 						<textarea
@@ -69,14 +58,6 @@ const DynamicTextRows = ({
 							value={row.answer}
 							onChange={(e) => handleChange(row.id, 'answer', e.target.value)}
 							className="text-area mb-2"
-							required={required}
-						></textarea>
-
-						<textarea
-							placeholder="Enter Answer (BN)"
-							value={row.b_answer}
-							onChange={(e) => handleChange(row.id, 'b_answer', e.target.value)}
-							className="text-area"
 							required={required}
 						></textarea>
 					</div>

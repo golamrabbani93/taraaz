@@ -23,9 +23,7 @@ const AddProductPage = () => {
 	const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
 	const [createProduct, {isLoading}] = useCreateProductMutation();
 	const {data: categories} = useGetAllCategoriesQuery('');
-	const [rows, setRows] = useState([
-		{id: 1, question: '', b_question: '', answer: '', b_answer: ''},
-	]);
+	const [rows, setRows] = useState([{id: 1, question: '', answer: ''}]);
 	const router = useRouter();
 	const handleSubmit = async (data: FieldValues) => {
 		// get images name images like : image1:file1 , image2:file2
@@ -95,10 +93,6 @@ const AddProductPage = () => {
 											<label htmlFor="productName">Product English Name</label>
 											<ZInput name="name" label="Product English Name" type="text" />
 										</div>
-										<div className="single-input col-md-6 col-12">
-											<label htmlFor="productName">Product Bangla Name</label>
-											<ZInput name="b_name" label="Product Bangla Name" type="text" />
-										</div>
 									</div>
 									<div className="row">
 										<div className="single-input col-md-3">
@@ -137,8 +131,8 @@ const AddProductPage = () => {
 											<ZTextArea name="description" />
 										</div>
 										<div className="single-input col-md-6 col-12">
-											<label htmlFor="productName">Bangla Short Description</label>
-											<ZTextArea name="b_description" />
+											<label htmlFor="productName">English Meta Description</label>
+											<ZTextArea name="meta_description" />
 										</div>
 									</div>
 									<h2 className="title">
@@ -153,14 +147,6 @@ const AddProductPage = () => {
 										maxImages={4}
 									/>
 									<div className="row">
-										<div className="single-input col-md-6 col-12">
-											<label htmlFor="productName">English Meta Description</label>
-											<ZTextArea name="meta_description" />
-										</div>
-										<div className="single-input col-md-6 col-12">
-											<label htmlFor="productName">Bangla Meta Description</label>
-											<ZTextArea name="b_meta_description" />
-										</div>
 										<div className="single-input ol-12">
 											<label htmlFor="productName">Product Tags</label>
 											<ZInput label="Product Tags" name="tags" type="text" />
