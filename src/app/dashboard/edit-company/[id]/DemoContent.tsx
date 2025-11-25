@@ -12,6 +12,7 @@ import {catchAsync} from '@/utils/catchAsync';
 import {toast} from 'react-toastify';
 import {useParams, useRouter} from 'next/navigation';
 import DashboardLoader from '@/components/Loader/DashboardLoader/DashboardLoader';
+import ZTextArea from '@/components/form/ZTextArea';
 
 const AddProductPage = () => {
 	const {id} = useParams();
@@ -102,6 +103,10 @@ const AddProductPage = () => {
 										<div className="single-input col-md-6">
 											<label htmlFor="productName">Imo Url</label>
 											<ZInput name="imo" label="Imo URL" type="text" />
+										</div>
+										<div className="single-input col-md-12">
+											<label htmlFor="productName">Google Map Url</label>
+											<ZTextArea name="map" />
 										</div>
 									</div>
 
