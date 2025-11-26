@@ -8,23 +8,42 @@ export const productSchema = z.object({
 	original_price: z.string().min(1, 'Price is required'),
 	material: z.string('Material is required').optional(),
 	fit: z.string('Fit is required').optional(),
-	stocks: z.string().min(1, 'Stocks are required'),
+	stock_S: z.any().optional(),
+	stock_M: z.any().optional(),
+	stock_L: z.any().optional(),
+	stock_XL: z.any().optional(),
+	stock_XXL: z.any().optional(),
 	categories: z
-		.array(
-			z.object({
-				label: z.string(),
-				value: z.string(),
-			}),
-		)
+		.object({
+			label: z.string().min(1, 'Label is required'),
+			value: z.string().min(1, 'Value is required'),
+		})
+		.nullable()
+		.optional(),
+	isPublish: z
+		.object({
+			label: z.string().min(1, 'Label is required'),
+			value: z.boolean().optional(),
+		})
+		.nullable()
+		.optional(),
+	isSizeable: z
+		.object({
+			label: z.string().min(1, 'Label is required'),
+			value: z.boolean().optional(),
+		})
+		.nullable()
 		.optional(),
 	size: z
 		.array(
 			z.object({
-				label: z.string(),
-				value: z.string(),
+				label: z.string().min(1, 'Label is required'),
+				value: z.string().min(1, 'Size is required'),
 			}),
 		)
 		.optional(),
+	stocks: z.any().optional(),
+
 	color: z
 		.array(
 			z.object({
@@ -34,13 +53,8 @@ export const productSchema = z.object({
 		)
 		.optional(),
 	description: z.string().optional(),
-	b_name: z
-		.string('Product Bangla name is required')
-		.min(2, 'Product Bangla name must be at least 2 characters')
-		.max(100, 'Product Bangla name must be under 100 characters'),
-	b_description: z.string().optional(),
+
 	meta_description: z.string('Product Meta Description Is required').optional(),
-	b_meta_description: z.string('Product Bangla Meta Description Is required').optional(),
 	tags: z.string('Product tags are required').optional(),
 });
 
