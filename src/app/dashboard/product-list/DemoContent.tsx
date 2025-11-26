@@ -10,10 +10,12 @@ import {
 	useUpdateProductMutation,
 } from '@/redux/features/product/productApi';
 import Link from 'next/link';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, use} from 'react';
 import DataTable, {TableColumn} from 'react-data-table-component';
 import {toast} from 'react-toastify';
 import {generateBarcodeImage} from '@/utils/generateBarcodeImage';
+import {generateBarcode} from '@/utils/generateBarcode';
+import {getStockStatus} from '@/utils/getStockStatus';
 
 interface Product {
 	id: number;
@@ -24,6 +26,8 @@ interface Product {
 	stocks: number;
 	barcode?: string;
 	isPublish?: boolean;
+	stocks_size?: {size: string; stock: number; barcode: number}[];
+	isSizeable?: boolean;
 }
 
 const ProductTable = () => {
@@ -70,6 +74,26 @@ const ProductTable = () => {
 		}
 	};
 
+	// useEffect(() => {
+	// 	//update all products barcode
+
+	// 	const updateBarcodes = async () => {
+	// 		if (products.length === 0) return;
+	// 		for (const product of products) {
+	// 			const newBarcode = generateBarcode('11');
+	// 			try {
+	// 				await updateProduct({
+	// 					id: product.id,
+	// 					data: {barcode: newBarcode, name: product.name},
+	// 				}).unwrap();
+	// 				toast.success(`Barcode updated for product: ${product.name}`);
+	// 			} catch (error) {
+	// 				toast.error(`Failed to update barcode for product: ${product.name}`);
+	// 			}
+	// 		}
+	// 	};
+	// 	updateBarcodes();
+	// }, [isLoading, products]);
 	const handlePinVideo = async (row: Product) => {
 		setPinLoader(true);
 		// Implement pin video logic here
@@ -167,41 +191,66 @@ const ProductTable = () => {
 			name: 'Stocks',
 			selector: (row) => row.stocks,
 			sortable: true,
-			cell: (row) => (
-				<div className="d-flex flex-column align-items-start">
-					<span
-						className={`badge ${
-							row.stocks === 0
-								? 'bg-secondary'
-								: row.stocks < 10
-								? 'bg-danger'
-								: row.stocks < 20
-								? 'bg-warning text-dark'
-								: 'bg-success'
-						} mb-1`}
-						style={{fontSize: '16px'}}
-					>
-						{row.stocks === 0
-							? 'Out of Stock'
-							: row.stocks < 10
-							? 'Low Stock'
-							: row.stocks < 20
-							? 'Medium Stock'
-							: 'In Stock'}{' '}
-						({row.stocks})
-					</span>
-					<button
-						className="btn btn-sm btn-primary mt-2"
-						style={{fontSize: '14px', padding: '4px 8px'}}
-						title="Add Stock"
-						data-bs-toggle="tooltip"
-						data-bs-placement="top"
-						onClick={() => handleAddStock(row)}
-					>
-						Add Stock
-					</button>
-				</div>
-			),
+			cell: (row) => {
+				const {totalStock, status, badgeClass} = getStockStatus(row.stocks_size ?? []);
+
+				return (
+					<>
+						{row.isSizeable ? (
+							<div className="d-flex flex-column align-items-start">
+								<span className={`badge ${badgeClass} mb-1`} style={{fontSize: '16px'}}>
+									{status} ({totalStock})
+								</span>
+
+								<button
+									className="btn btn-sm btn-primary mt-2"
+									style={{fontSize: '14px', padding: '4px 8px'}}
+									title="Add Stock"
+									data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									onClick={() => handleAddStock(row)}
+								>
+									Add Stock
+								</button>
+							</div>
+						) : (
+							<div className="d-flex flex-column align-items-start">
+								<span
+									className={`badge ${
+										row.stocks === 0
+											? 'bg-secondary'
+											: row.stocks < 10
+											? 'bg-danger'
+											: row.stocks < 20
+											? 'bg-warning text-dark'
+											: 'bg-success'
+									} mb-1`}
+									style={{fontSize: '16px'}}
+								>
+									{row.stocks === 0
+										? 'Out of Stock'
+										: row.stocks < 10
+										? 'Low Stock'
+										: row.stocks < 20
+										? 'Medium Stock'
+										: 'In Stock'}{' '}
+									({row.stocks})
+								</span>
+								<button
+									className="btn btn-sm btn-primary mt-2"
+									style={{fontSize: '14px', padding: '4px 8px'}}
+									title="Add Stock"
+									data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									onClick={() => handleAddStock(row)}
+								>
+									Add Stock
+								</button>
+							</div>
+						)}
+					</>
+				);
+			},
 		},
 
 		{
