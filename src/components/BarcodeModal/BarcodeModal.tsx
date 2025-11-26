@@ -1,96 +1,87 @@
+'use client';
+
 import React from 'react';
 import deleteModalStyles from '../DeleteModal/DeleteModal.module.css';
+import {formatPrice} from '@/utils/formatPrice';
 
 interface BarcodeModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	product: {name: string; barcode?: string} | null;
+	product: {name: string; barcode?: string; original_price?: string | number} | null;
 	shopName?: string;
 }
 
 const BarcodeModal: React.FC<BarcodeModalProps> = ({isOpen, onClose, product, shopName}) => {
 	if (!isOpen) return null;
 
-	const stickerCount = 24;
-	const stickerHeight = 20; // mm
-
-	const handlePrintStickers = () => {
-		if (!product?.barcode) return;
-
+	const handlePrintForSize = () => {
 		const printWindow = window.open('', '_blank');
 		if (!printWindow) return;
 
+		const formattedPrice = formatPrice(product?.original_price || '');
+
 		printWindow.document.write(`
-			<html>
-			<head>
-				<title>Print Stickers</title>
-				<style>
-					@page { size: A4; margin: 8mm; }
-					body { margin: 0; font-family: Arial, sans-serif; }
-					.a4-page {
-						width: 210mm;
-						min-height: 297mm;
-						display: grid;
-						grid-template-columns: repeat(3, 1fr);
-						grid-template-rows: repeat(7, 1fr); /* 21 stickers = 3 x 7 */
-						gap: 4mm;
-						box-sizing: border-box;
-						padding: 8mm;
-					}
-					.sticker {
-						width: 100%;
-						height: ${stickerHeight}mm;
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						justify-content: center;
-						border: 1px dashed #bbb;
-						padding: 2mm;
-						box-sizing: border-box;
-					}
-					.sticker img {
-						width: 100%;
-						height: auto;
-					}
-					.sticker-text {
-						font-size: 10px;
-						margin-top: 3px;
-						text-align: center;
-					}
-					.sticker-shop {
-						font-size: 8px;
-						margin-top: 1px;
-						text-align: center;
-						color: #555;
-					}
-					@media print {
-						.print-btn { display: none; }
-					}
-				</style>
-			</head>
-			<body>
-				<div class="a4-page">
-					${Array.from({length: stickerCount})
-						.map(
-							() => `
-						<div class="sticker">
-							<img src="${product.barcode}" />
-							<p class="sticker-text">${product.name}</p>
-							${shopName ? `<p class="sticker-shop">${shopName}</p>` : ''}
-						</div>
-					`,
-						)
-						.join('')}
-				</div>
-				<script>
-					window.onload = function() {
-						window.print();
-						setTimeout(() => window.close(), 500);
-					}
-				</script>
-			</body>
-			</html>
-		`);
+  <html>
+  <head>
+    <title>Thermal Stickers</title>
+    <style>
+      @page { size: 58mm auto; margin: 0; }
+      body {
+        margin: 0;
+        padding: 0;
+        width: 58mm;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .sticker {
+        width: 54mm;
+        padding: 3mm 0;
+        text-align: center;
+        border-bottom: 1px dashed #ccc;
+      }
+      .sticker img {
+        width: 90%;
+        height: auto;
+      }
+      .sticker-text {
+        font-size: 10px;
+        font-weight: 500;
+        margin-top: 3px;
+      }
+      .sticker-price {
+        font-size: 10px;
+        margin-top: 2px;
+        color: #000;
+        font-weight:bold;
+      }
+      @media print { .no-print { display: none; } }
+    </style>
+  </head>
+  <body>
+    ${Array.from({length: 1})
+			.map(
+				() => `
+      <div class="sticker">
+        <img src="${product?.barcode}" />
+        <div class="sticker-text">${product?.name}</div>
+        <div class="sticker-price">${formattedPrice}</div>
+      </div>
+    `,
+			)
+			.join('')}
+
+    <script>
+      window.onload = function() {
+        window.print();
+        setTimeout(() => window.close(), 300);
+      }
+    </script>
+  </body>
+  </html>
+  `);
+
 		printWindow.document.close();
 	};
 
@@ -116,7 +107,7 @@ const BarcodeModal: React.FC<BarcodeModalProps> = ({isOpen, onClose, product, sh
 				<div className={deleteModalStyles.modalButtons}>
 					<button
 						className={`${deleteModalStyles.btn} ${deleteModalStyles.btnDelete}`}
-						onClick={handlePrintStickers}
+						onClick={() => handlePrintForSize()}
 						disabled={!product?.barcode}
 					>
 						Print Barcodes
