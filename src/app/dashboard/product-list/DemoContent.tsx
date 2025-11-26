@@ -17,6 +17,7 @@ import {generateBarcodeImage} from '@/utils/generateBarcodeImage';
 import {generateBarcode} from '@/utils/generateBarcode';
 import {getStockStatus} from '@/utils/getStockStatus';
 import AddSizeStockModal from '@/components/AddStockModal/AddSizeStockModal';
+import SizeWiseBarcodeModal from '@/components/BarcodeModal/SizeBarcodeModal';
 
 interface Product {
 	id: number;
@@ -33,7 +34,13 @@ interface Product {
 
 const ProductTable = () => {
 	// Get all product data from database
-	const {data: productsData, isLoading, isError} = useGetAllProductsQuery('');
+	const {
+		data: productsData,
+		isLoading,
+		isError,
+	} = useGetAllProductsQuery('', {
+		refetchOnMountOrArgChange: true,
+	});
 
 	const [products, setProducts] = useState<Product[]>([]);
 	const [filterText, setFilterText] = useState('');
@@ -50,10 +57,12 @@ const ProductTable = () => {
 	const [stockToAdd, setStockToAdd] = useState<string | number>('');
 	const [isBarcodeModalOpen, setIsBarcodeModalOpen] = useState(false);
 	const [selectedProductForBarcode, setSelectedProductForBarcode] = useState<Product | null>(null);
+
 	const [publishedLoading, setPublishedLoading] = useState(false);
 	const [pinLoader, setPinLoader] = useState(false);
 	const [selectedSizeAbleProduct, setSelectedSizeAbleProduct] = useState<Product | null>(null);
 	const [selectedSizeModalOpen, setSelectedSizeModalOpen] = useState(false);
+	const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
 	// Update products state when productsData changes
 	useEffect(() => {
 		if (productsData && Array.isArray(productsData)) {
@@ -270,59 +279,118 @@ const ProductTable = () => {
 						alignItems: 'start',
 					}}
 				>
+					{row.isSizeable ? (
+						<div className="d-flex justify-content-center align-items-center">
+							<button
+								className="btn btn-outline-info"
+								style={{
+									height: '36px',
+									width: 'max-content',
+									fontSize: '14px',
+									border: '1px solid #17a2b8',
+								}}
+								onClick={() => {
+									setSelectedSizeAbleProduct(row);
+									setIsSizeModalOpen(true);
+								}}
+							>
+								View Barcode
+							</button>
+							<button
+								onClick={() => handlePinVideo(row)}
+								className="btn btn-outline-success ms-4"
+								type="button"
+								style={{
+									height: '36px',
+									width: 'max-content',
+									fontSize: '14px',
+									border: '1px solid #28a745',
+								}}
+							>
+								{row?.pin
+									? id === row.id && pinLoader
+										? 'Unpinning...'
+										: 'Unpin Product'
+									: id === row.id && pinLoader
+									? 'Pinning...'
+									: 'Pin Product'}
+							</button>
+							<button
+								onClick={() => handlePublishToggle(row)}
+								className="btn btn-outline-warning ms-4"
+								type="button"
+								style={{
+									height: '36px',
+									width: 'max-content',
+									fontSize: '14px',
+									border: '1px solid #ffc107',
+								}}
+							>
+								{row?.isPublish
+									? id === row.id && publishedLoading
+										? 'Unpublishing...'
+										: 'Unpublish'
+									: id === row.id && publishedLoading
+									? 'Publishing...'
+									: 'Publish'}
+							</button>
+						</div>
+					) : (
+						<div className="d-flex justify-content-center align-items-center">
+							<button
+								className="btn btn-outline-info"
+								style={{
+									height: '36px',
+									width: 'max-content',
+									fontSize: '14px',
+									border: '1px solid #17a2b8',
+								}}
+								onClick={() => handleViewBarcode(row)}
+							>
+								View Barcode
+							</button>
+							<button
+								onClick={() => handlePinVideo(row)}
+								className="btn btn-outline-success ms-4"
+								type="button"
+								style={{
+									height: '36px',
+									width: 'max-content',
+									fontSize: '14px',
+									border: '1px solid #28a745',
+								}}
+							>
+								{row?.pin
+									? id === row.id && pinLoader
+										? 'Unpinning...'
+										: 'Unpin Product'
+									: id === row.id && pinLoader
+									? 'Pinning...'
+									: 'Pin Product'}
+							</button>
+							<button
+								onClick={() => handlePublishToggle(row)}
+								className="btn btn-outline-warning ms-4"
+								type="button"
+								style={{
+									height: '36px',
+									width: 'max-content',
+									fontSize: '14px',
+									border: '1px solid #ffc107',
+								}}
+							>
+								{row?.isPublish
+									? id === row.id && publishedLoading
+										? 'Unpublishing...'
+										: 'Unpublish'
+									: id === row.id && publishedLoading
+									? 'Publishing...'
+									: 'Publish'}
+							</button>
+						</div>
+					)}
 					{/* add edit button  */}
-					<div className="d-flex justify-content-center align-items-center">
-						<button
-							className="btn btn-outline-info"
-							style={{
-								height: '36px',
-								width: 'max-content',
-								fontSize: '14px',
-								border: '1px solid #17a2b8',
-							}}
-							onClick={() => handleViewBarcode(row)}
-						>
-							View Barcode
-						</button>
-						<button
-							onClick={() => handlePinVideo(row)}
-							className="btn btn-outline-success ms-4"
-							type="button"
-							style={{
-								height: '36px',
-								width: 'max-content',
-								fontSize: '14px',
-								border: '1px solid #28a745',
-							}}
-						>
-							{row?.pin
-								? id === row.id && pinLoader
-									? 'Unpinning...'
-									: 'Unpin Product'
-								: id === row.id && pinLoader
-								? 'Pinning...'
-								: 'Pin Product'}
-						</button>
-						<button
-							onClick={() => handlePublishToggle(row)}
-							className="btn btn-outline-warning ms-4"
-							type="button"
-							style={{
-								height: '36px',
-								width: 'max-content',
-								fontSize: '14px',
-								border: '1px solid #ffc107',
-							}}
-						>
-							{row?.isPublish
-								? id === row.id && publishedLoading
-									? 'Unpublishing...'
-									: 'Unpublish'
-								: id === row.id && publishedLoading
-								? 'Publishing...'
-								: 'Publish'}
-						</button>
-					</div>
+
 					<div className="d-flex justify-content-center align-items-center">
 						<Link href={`/dashboard/edit-product/${row.id}`}>
 							<button
@@ -439,6 +507,13 @@ const ProductTable = () => {
 				isOpen={isBarcodeModalOpen}
 				onClose={() => setIsBarcodeModalOpen(false)}
 				product={selectedProductForBarcode}
+			/>
+			<SizeWiseBarcodeModal
+				isOpen={isSizeModalOpen}
+				onClose={() => setIsSizeModalOpen(false)}
+				productName={selectedSizeAbleProduct?.name || ''}
+				stocks_size={selectedSizeAbleProduct?.stocks_size ?? []}
+				price={selectedSizeAbleProduct?.original_price ?? ''}
 			/>
 
 			<DeleteModal
