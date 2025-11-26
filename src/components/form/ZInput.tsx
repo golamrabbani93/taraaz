@@ -32,6 +32,7 @@ export default function ZInput({
 				readOnly={isReadOnly}
 				disabled={disabled}
 				className={``}
+				style={{height: '75px'}}
 			/>
 			{errors[name]?.message && (
 				<span className="text-danger mt-1" style={{fontSize: '12px'}}>
