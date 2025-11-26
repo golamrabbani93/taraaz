@@ -24,6 +24,8 @@ const AddProductPage = () => {
 	const [createProduct, {isLoading}] = useCreateProductMutation();
 	const {data: categories} = useGetAllCategoriesQuery('');
 	const [rows, setRows] = useState([{id: 1, question: '', answer: ''}]);
+	const [selectedSizes, setSelectedSizes] = useState<{label: string; value: string}[]>([]);
+	const [isSizeable, setIsSizeable] = useState<boolean | null>(null);
 	const router = useRouter();
 	const handleSubmit = async (data: FieldValues) => {
 		// get images name images like : image1:file1 , image2:file2
@@ -36,10 +38,15 @@ const AddProductPage = () => {
 			return;
 		}
 
-		const barcode = generateBarcode();
-
+		const barcode = generateBarcode('11');
+		// Build size-wise stock and barcode array
+		const sizeStocks = selectedSizes.map((size, index) => ({
+			size: size.value,
+			stock: Number(data[`stock_${size.value}`] || 0),
+			barcode: Number(generateBarcode('22')), // dynamically generate barcode per size
+		}));
 		data.faqs = JSON.stringify(rows);
-		//make slug from name
+		//make slug from name field for product slug
 		const slug = data.name
 			.toLowerCase()
 			.replace(/ /g, '-')
@@ -51,11 +58,15 @@ const AddProductPage = () => {
 		data.size = data?.size ? JSON.stringify(data.size) : null;
 		data.color = data?.color ? JSON.stringify(data.color) : null;
 		data.barcode = barcode;
+		data.stocks_size = isSizeable ? JSON.stringify(sizeStocks) : JSON.stringify([]);
+		data.isSizeable = isSizeable;
+		data.stocks = isSizeable ? 0 : data.stocks;
+		data.barcode = barcode;
+		data.isPublish = data.isPublish?.value ?? false;
 		// append images to data
 		uploadedImages.forEach((image, index) => {
 			data[`image${index + 1}`] = image.file;
 		});
-
 		const formData = new FormData();
 		for (const key in data) {
 			formData.append(key, data[key]);
@@ -64,8 +75,12 @@ const AddProductPage = () => {
 		if (result.data?.id) {
 			setUploadedImages([]);
 			router.push('/dashboard/product-list');
+			setIsSizeable(null);
+			setSelectedSizes([]);
 		} else {
 			toast.error('Failed to add product. Please try again.');
+			setIsSizeable(null);
+			setSelectedSizes([]);
 		}
 	};
 
@@ -87,38 +102,112 @@ const AddProductPage = () => {
 							</div>
 
 							<div className="input-main-wrapper">
-								<ZForm onSubmit={handleSubmit} resolver={zodResolver(productSchema)}>
+								<ZForm
+									onSubmit={handleSubmit}
+									resolver={zodResolver(productSchema)}
+									// defaultValues={{
+									// 	name: 'Hello',
+									// 	categories: [
+									// 		{
+									// 			label: 'Taraaz Clothing',
+									// 			value: 'Taraaz Clothing',
+									// 		},
+									// 	],
+									// 	size: selectedSizes,
+									// }}
+								>
 									<div className="row">
 										<div className="single-input col-md-6 col-12">
 											<label htmlFor="productName">Product English Name</label>
 											<ZInput name="name" label="Product English Name" type="text" />
 										</div>
+										<div className="single-input col-md-6" style={{height: '60px'}}>
+											<label htmlFor="productName">Are You Publish This Product</label>
+											<ZMultiSelect
+												label="Select Sizes"
+												name="publish"
+												isMulti={false}
+												options={[
+													{label: 'Yes', value: true},
+													{label: 'No', value: false},
+												]}
+												style={{height: '60px'}}
+											/>
+										</div>
 									</div>
 									<div className="row">
-										<div className="single-input col-md-3">
+										<div className="single-input col-md-4">
 											<label htmlFor="productName">Price </label>
 											<ZInput name="original_price" label="Price" type="text" />
 										</div>
-										<div className="single-input col-md-3">
-											<label htmlFor="productName">Stocks</label>
-											<ZInput name="stocks" label="20" type="text" />
-										</div>
-										<div className="single-input col-md-3">
+
+										<div className="single-input col-md-4">
 											<label htmlFor="productName">Material</label>
 											<ZInput name="material" label="Cotton, Silk, Wool" type="text" />
 										</div>
-										<div className="single-input col-md-3">
+										<div className="single-input col-md-4">
 											<label htmlFor="productName">Fit</label>
 											<ZInput name="fit" label="Slim, Regular, Loose" type="text" />
 										</div>
-										<div className="single-input col-md-6">
-											<label htmlFor="productName">Size</label>
-											<ZMultiSelect name="size" label="Size" options={sizeOptions} />
-										</div>
+
 										<div className="single-input col-md-6">
 											<label htmlFor="productName">Product Category </label>
-											<ZMultiSelect name="categories" label="Product Category" options={options} />
+											<ZMultiSelect
+												isMulti={false}
+												name="categories"
+												label="Product Category"
+												options={options}
+											/>
 										</div>
+										<div className="single-input col-md-6">
+											<label htmlFor="productName">Is This Product Sizeable?</label>
+											<ZMultiSelect
+												isMulti={false}
+												name="isSizeable"
+												label="Is This Product Sizeable?"
+												options={[
+													{label: 'Yes', value: true},
+													{label: 'No', value: false},
+												]}
+												onChange={(values: any) => setIsSizeable(values.value)}
+											/>
+										</div>
+
+										{isSizeable && (
+											<div className="single-input col-md-12">
+												<label htmlFor="productName">Size</label>
+												<ZMultiSelect
+													label="Select Sizes"
+													name="size"
+													options={sizeOptions}
+													onChange={(values: any) => setSelectedSizes(values)}
+												/>
+											</div>
+										)}
+										{isSizeable === false && (
+											<div className="single-input col-md-12">
+												<label htmlFor="productName">Add Total Stocks </label>
+												<ZInput name="stocks" label="Stocks" type="text" />
+											</div>
+										)}
+										{selectedSizes.length > 0 && (
+											<div className="row mt-3">
+												<h5>Enter Stocks Per Size</h5>
+												<div className="d-flex gap-3 ">
+													{selectedSizes.map((size, i) => (
+														<div key={i} className="single-input ">
+															<label>{size.label} Stock</label>
+															<ZInput
+																name={`stock_${size.value}`}
+																type="number"
+																label={`Stock for size ${size.label}`}
+															/>
+														</div>
+													))}
+												</div>
+											</div>
+										)}
+
 										<div className="single-input col-md-12">
 											<label htmlFor="productName">Product Color </label>
 											<ZMultiSelect name="color" label="Product Color" options={colorOptions} />
