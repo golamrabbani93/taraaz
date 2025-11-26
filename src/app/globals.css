@@ -483,3 +483,16 @@ ul.submenu.mm-collapse.mm-show {
   background: black !important;
   color: white;
 }
+
+
+.css-b62m3t-container input,
+.css-b62m3t-container input:active,
+.css-b62m3t-container textarea,
+.css-b62m3t-container textarea:active {
+  border: none !important;
+}
+
+label {
+  font-weight: 600 !important;
+  color: black !important;
+}
