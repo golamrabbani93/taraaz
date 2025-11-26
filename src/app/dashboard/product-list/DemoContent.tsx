@@ -16,6 +16,7 @@ import {toast} from 'react-toastify';
 import {generateBarcodeImage} from '@/utils/generateBarcodeImage';
 import {generateBarcode} from '@/utils/generateBarcode';
 import {getStockStatus} from '@/utils/getStockStatus';
+import AddSizeStockModal from '@/components/AddStockModal/AddSizeStockModal';
 
 interface Product {
 	id: number;
@@ -51,7 +52,8 @@ const ProductTable = () => {
 	const [selectedProductForBarcode, setSelectedProductForBarcode] = useState<Product | null>(null);
 	const [publishedLoading, setPublishedLoading] = useState(false);
 	const [pinLoader, setPinLoader] = useState(false);
-
+	const [selectedSizeAbleProduct, setSelectedSizeAbleProduct] = useState<Product | null>(null);
+	const [selectedSizeModalOpen, setSelectedSizeModalOpen] = useState(false);
 	// Update products state when productsData changes
 	useEffect(() => {
 		if (productsData && Array.isArray(productsData)) {
@@ -208,7 +210,10 @@ const ProductTable = () => {
 									title="Add Stock"
 									data-bs-toggle="tooltip"
 									data-bs-placement="top"
-									onClick={() => handleAddStock(row)}
+									onClick={() => {
+										setSelectedSizeAbleProduct(row);
+										setSelectedSizeModalOpen(true);
+									}}
 								>
 									Add Stock
 								</button>
@@ -415,7 +420,11 @@ const ProductTable = () => {
 					</div>
 				</div>
 			</div>
-
+			<AddSizeStockModal
+				isOpen={selectedSizeModalOpen}
+				onClose={() => setSelectedSizeModalOpen(false)}
+				product={selectedSizeAbleProduct}
+			/>
 			<AddStockModal
 				isOpen={isAddStockModalOpen}
 				onClose={() => setIsAddStockModalOpen(false)}
