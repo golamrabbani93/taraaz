@@ -6,7 +6,7 @@ import {useFormContext, Controller} from 'react-hook-form';
 
 interface Option {
 	label: string;
-	value: string | number;
+	value: string | number | boolean;
 }
 
 interface PSBSelectProps {
@@ -16,6 +16,8 @@ interface PSBSelectProps {
 	placeholder?: string;
 	isDisabled?: boolean;
 	isMulti?: boolean;
+	onChange?: (selectedOption: any) => void;
+	style?: React.CSSProperties;
 }
 
 export default function ZMultiSelect({
@@ -25,27 +27,34 @@ export default function ZMultiSelect({
 	placeholder = 'Select an option',
 	isDisabled = false,
 	isMulti = true,
+	onChange,
 }: PSBSelectProps) {
 	const {
 		formState: {errors},
 	} = useFormContext();
 
 	return (
-		<div className="mb-4">
+		<div className="mb-4 ">
 			<Controller
 				name={name}
+				defaultValue={isMulti ? [] : null}
 				render={({field}) => {
 					return (
 						<Select
-							{...field}
 							id={name}
 							options={options}
 							isMulti={isMulti}
 							isDisabled={isDisabled}
 							placeholder={placeholder}
 							className={`${isDisabled ? '!bg-gray-200' : ''} `}
+							// keep the component controlled from RHF value so `reset()` clears it
+							value={field.value ?? (isMulti ? [] : null)}
+							onBlur={field.onBlur}
 							onChange={(selectedOption: any) => {
 								field.onChange(selectedOption);
+								if (onChange) {
+									onChange(selectedOption);
+								}
 							}}
 						/>
 					);
