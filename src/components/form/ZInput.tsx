@@ -9,6 +9,7 @@ interface ZInputProps {
 	name: string;
 	isReadOnly?: boolean;
 	disabled?: boolean;
+	height?: string;
 }
 export default function ZInput({
 	type,
@@ -16,6 +17,7 @@ export default function ZInput({
 	name,
 	isReadOnly = false,
 	disabled = false,
+	height = '75px',
 }: ZInputProps) {
 	const {
 		register,
@@ -32,7 +34,7 @@ export default function ZInput({
 				readOnly={isReadOnly}
 				disabled={disabled}
 				className={``}
-				style={{height: '75px'}}
+				style={{height: height}}
 			/>
 			{errors[name]?.message && (
 				<span className="text-danger mt-1" style={{fontSize: '12px'}}>
