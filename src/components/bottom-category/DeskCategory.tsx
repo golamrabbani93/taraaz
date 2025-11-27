@@ -17,18 +17,18 @@ const DeskCategory = () => {
 				<div className="d-flex align-items-center justify-content-center gap-5">
 					<Link
 						className=""
-						href="#"
+						href="/shop?category=taraaz-fusion"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
 						// 	setText('hair-care-products');
 						// }}
 					>
-						{language === 'en' ? 'Taraaz Fashion' : 'হেয়ার কেয়ার পণ্য'}
+						{language === 'en' ? 'Taraaz Fusion' : 'হেয়ার কেয়ার পণ্য'}
 					</Link>
 					<Link
 						className=""
-						href="#"
+						href="/shop?category=designer's-choice"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
@@ -39,14 +39,14 @@ const DeskCategory = () => {
 					</Link>
 					<Link
 						className="d-flex align-items-center"
-						href="#"
+						href="/shop?category=pakistani-wear"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
 						// 	setText('');
 						// }}
 					>
-						{language === 'en' ? 'Pakisthani Wear' : 'সমস্ত পণ্য'}
+						{language === 'en' ? 'Pakistani Wear' : 'সমস্ত পণ্য'}
 						{/* <svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -64,7 +64,7 @@ const DeskCategory = () => {
 					</Link>
 					<Link
 						className="d-flex align-items-center"
-						href="#"
+						href="/shop?category=indian-wear"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
@@ -89,7 +89,7 @@ const DeskCategory = () => {
 					</Link>
 					<Link
 						className="d-flex align-items-center"
-						href="#"
+						href="/shop?category=saree"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
