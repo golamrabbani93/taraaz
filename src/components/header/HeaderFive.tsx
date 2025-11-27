@@ -375,7 +375,7 @@ function HeaderFive() {
 				{/* rts header area end */}
 			</>
 			<BackToTop />
-			<Sidebar />
+			{/* <Sidebar /> */}
 		</div>
 	);
 }
