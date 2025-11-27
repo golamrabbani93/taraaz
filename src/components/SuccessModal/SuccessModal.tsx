@@ -19,8 +19,12 @@ const SuccessModal: React.FC<SuccessModalProps> = ({isOpen, onClose, message}) =
 			aria-labelledby="success-modal-title"
 		>
 			<div className={deleteModalStyles.modalContent} onClick={(e) => e.stopPropagation()}>
-				<h2 id="success-modal-title">Success</h2>
-				<p>{message}</p>
+				<h2 id="success-modal-title" className="text-success">
+					Success
+				</h2>
+				<p className="py-5" style={{whiteSpace: 'pre-wrap', fontSize: '20px'}}>
+					{message}
+				</p>
 				<div className={deleteModalStyles.modalButtons}>
 					<button
 						className={`${deleteModalStyles.btn} ${deleteModalStyles.btnCancel}`}
