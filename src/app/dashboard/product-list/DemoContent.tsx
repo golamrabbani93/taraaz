@@ -40,6 +40,8 @@ const ProductTable = () => {
 		isError,
 	} = useGetAllProductsQuery('', {
 		refetchOnMountOrArgChange: true,
+		refetchOnFocus: true,
+		pollingInterval: 10000,
 	});
 
 	const [products, setProducts] = useState<Product[]>([]);
