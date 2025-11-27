@@ -18,6 +18,7 @@ export interface IProduct {
 	video_link_list?: any[];
 	weight: string;
 	category?: string;
+	categories?: ICategory;
 	type: string;
 	faqs?: any[];
 	product_details?: string;
@@ -27,4 +28,9 @@ export interface IProduct {
 	pin?: boolean;
 	system_date?: string;
 	isPublish?: boolean;
+}
+
+interface ICategory {
+	label: string;
+	value: string;
 }
