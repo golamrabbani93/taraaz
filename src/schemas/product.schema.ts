@@ -2,9 +2,9 @@ import {z} from 'zod';
 
 export const productSchema = z.object({
 	name: z
-		.string('Product English name is required')
-		.min(2, 'Product English name is required')
-		.max(200, 'Product English name must be under 200 characters'),
+		.string('Product name is required')
+		.min(2, 'Product name is required')
+		.max(200, 'Product name must be under 200 characters'),
 	original_price: z.string().min(1, 'Price is required'),
 	material: z.string('Material is required').optional(),
 	fit: z.string('Fit is required').optional(),
@@ -19,7 +19,9 @@ export const productSchema = z.object({
 			value: z.string().min(1, 'Value is required'),
 		})
 		.nullable()
-		.optional(),
+		.refine((val) => val !== null && val !== undefined, {
+			message: 'Category selection is required',
+		}),
 	isPublish: z
 		.object({
 			label: z.string().min(1, 'Label is required'),
