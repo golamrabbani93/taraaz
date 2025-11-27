@@ -1,4 +1,5 @@
 'use client';
+
 import MobileMenu from './MobileMenu';
 import {useState} from 'react';
 
@@ -22,7 +23,8 @@ const Sidebar = () => {
 
 	return (
 		<div>
-			<div id="side-bar" className="side-bar header-two d-none">
+			<div></div>
+			<div id="side-bar" className="side-bar header-two ">
 				<button className="close-icon-menu" onClick={handleMenuClickClose}>
 					<i className="far fa-times" />
 				</button>
