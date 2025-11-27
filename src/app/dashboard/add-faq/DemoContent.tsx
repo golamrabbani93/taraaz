@@ -59,7 +59,7 @@ const AddProductPage = () => {
 										<label className="fw-bold" style={{color: '#000'}}>
 											Enter FAQ Question And Answer
 										</label>
-										<DynamicTextRows rows={rows} setRows={setRows} />
+										{/* <DynamicTextRows rows={rows} setRows={setRows} /> */}
 									</div>
 
 									<div className="button-area-botton-wrapper-p-list">
