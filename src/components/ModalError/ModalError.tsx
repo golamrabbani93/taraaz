@@ -19,8 +19,12 @@ const ModalError: React.FC<ModalErrorProps> = ({isOpen, onClose, message}) => {
 			aria-labelledby="error-modal-title"
 		>
 			<div className={deleteModalStyles.modalContent} onClick={(e) => e.stopPropagation()}>
-				<h2 id="error-modal-title">Error</h2>
-				<p>{message}</p>
+				<h2 id="error-modal-title" className="text-danger">
+					Error
+				</h2>
+				<p className="py-5" style={{whiteSpace: 'pre-wrap', fontSize: '20px'}}>
+					{message}
+				</p>
 				<div className={deleteModalStyles.modalButtons}>
 					<button
 						className={`${deleteModalStyles.btn} ${deleteModalStyles.btnCancel}`}
