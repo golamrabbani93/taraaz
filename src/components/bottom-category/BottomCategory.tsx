@@ -16,19 +16,19 @@ const BottomCategory = () => {
 				<div className="d-flex justify-content-around align-items-center custom-category">
 					<Link
 						className=""
-						href="#"
+						href="/shop?category=taraaz-fusion"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
 						// 	setText('hair-care-products');
 						// }}
 					>
-						{language === 'en' ? 'Taraaz Fashion' : 'হেয়ার কেয়ার পণ্য'}
+						{language === 'en' ? 'Taraaz Fusion' : 'হেয়ার কেয়ার পণ্য'}
 					</Link>
 
 					<Link
 						className=""
-						href="#"
+						href="/shop?category=indian-wear"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
@@ -39,14 +39,14 @@ const BottomCategory = () => {
 					</Link>
 					<Link
 						className="d-flex align-items-center"
-						href="#"
+						href="/shop?category=pakistani-wear"
 						target="_self"
 						// onClick={() => {
 						// 	setCollapsed(true);
 						// 	setText('');
 						// }}
 					>
-						{language === 'en' ? 'Saree' : 'সমস্ত পণ্য'}
+						{language === 'en' ? 'Pakistani Wear' : 'সমস্ত পণ্য'}
 						{/* <svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -57,12 +57,10 @@ const BottomCategory = () => {
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
-							className="lucide lucide-menu-icon lucide-menu"
+							className="lucide lucide-chevron-down-icon lucide-chevron-down ms-2"
 						>
-							<path d="M4 5h16" />
-							<path d="M4 12h16" />
-							<path d="M4 19h16" />
-						</svg>*/}
+							<path d="m6 9 6 6 6-6" />
+						</svg> */}
 					</Link>
 				</div>
 			</div>
