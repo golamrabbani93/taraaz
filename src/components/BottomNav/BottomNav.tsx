@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import {useCart} from '../header/CartContext';
+import {useGetSingleCompanyContactQuery} from '@/redux/features/companyContact/companyContact';
 
 export default function BottomNav() {
 	const {cartItems} = useCart();
-
+	const {data: companyContact} = useGetSingleCompanyContactQuery('1');
 	const activeItems = cartItems.filter((item) => item.active);
 
 	return (
@@ -14,7 +15,10 @@ export default function BottomNav() {
 				<i className={`fa fa-home icon`}></i>
 				<span className="label">Home</span>
 			</Link>
-
+			<Link href="/shop" className="navItem">
+				<i className={`fas fa-store icon`}></i>
+				<span className="label">Shop</span>
+			</Link>
 			<a href="/cart" className="navItem" style={{position: 'relative'}}>
 				<span className="cartBadge">{activeItems.length || 0}</span>
 				<div className="relative">
@@ -22,6 +26,7 @@ export default function BottomNav() {
 					<span className="label">Cart</span>
 				</div>
 			</a>
+
 			<Link href="/account" className="navItem">
 				<i className={`fas fa-user icon`}></i>
 				<span className="label">Account</span>
@@ -32,7 +37,7 @@ export default function BottomNav() {
 
 				<span className="label">IMO</span>
 			</Link> */}
-			<Link target="_blank" href="#" className="navItem">
+			<Link target="_blank" href={companyContact?.whatsapp || ''} className="navItem">
 				<i className={`fa-brands fa-whatsapp icon`} style={{fontSize: '18px'}}></i>
 				<span className="label">WhatsApp</span>
 			</Link>
