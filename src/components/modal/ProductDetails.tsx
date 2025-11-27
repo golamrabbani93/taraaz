@@ -109,7 +109,7 @@ const ProductDetails: React.FC<ModalProps> = ({show, handleClose, product}) => {
 
 								<div className="contents">
 									<div className="product-status">
-										<span className="product-catagory">{product?.categories[0]?.value}</span>
+										<span className="product-catagory"></span>
 										{/* <div className="rating-stars-group">
 											<div className="rating-star">
 												<i className="fas fa-star" />
