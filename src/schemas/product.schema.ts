@@ -3,8 +3,8 @@ import {z} from 'zod';
 export const productSchema = z.object({
 	name: z
 		.string('Product English name is required')
-		.min(2, 'Product English name must be at least 2 characters')
-		.max(100, 'Product English name must be under 100 characters'),
+		.min(2, 'Product English name is required')
+		.max(200, 'Product English name must be under 200 characters'),
 	original_price: z.string().min(1, 'Price is required'),
 	material: z.string('Material is required').optional(),
 	fit: z.string('Fit is required').optional(),
@@ -33,7 +33,10 @@ export const productSchema = z.object({
 			value: z.boolean().optional(),
 		})
 		.nullable()
-		.optional(),
+		.refine((val) => val !== null && val !== undefined, {
+			message: 'Sizeable selection is required',
+		}),
+
 	size: z
 		.array(
 			z.object({
