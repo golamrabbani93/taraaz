@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './filterbar.css'; // <- custom CSS file
 import {useGetAllCategoriesQuery} from '@/redux/features/category/categoryApi';
 
@@ -11,6 +11,7 @@ interface FilterBarProps {
 	setMaxPrice: (price: number) => void;
 	selectedCategories: string[];
 	setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
+	setAllCategories: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const FilterBar = ({
@@ -22,13 +23,16 @@ const FilterBar = ({
 	setMaxPrice,
 	selectedCategories,
 	setSelectedCategories,
+	setAllCategories,
 }: FilterBarProps) => {
 	const allBrands = ['Nike', 'Adidas', 'Puma', "Levi's"];
 	const {data: categories} = useGetAllCategoriesQuery('');
 	const [selectedBrands, setSelectedBrands] = useState([]);
 	const allCategories = categories ? categories.map((cat: any) => cat.value) : [];
 	const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
+	useEffect(() => {
+		setAllCategories(allCategories);
+	}, [categories]);
 	return (
 		<div className="filter-wrapper">
 			{/* Toggle Button */}
@@ -38,11 +42,27 @@ const FilterBar = ({
 
 			{/* Sidebar */}
 			<aside className={`filter-sidebar ${isSidebarOpen ? 'open' : ''}`}>
-				<button className="close-btn mb-4" onClick={toggleSidebar}>
-					Close
+				<button
+					className="btn btn-danger mb-4"
+					onClick={toggleSidebar}
+					style={{
+						position: 'absolute',
+						top: '10px',
+						right: '10px',
+						zIndex: 3,
+						padding: '5px 10px',
+						borderRadius: '8px',
+						fontSize: '16px',
+						border: 'none',
+						color: 'white',
+						cursor: 'pointer',
+						width: '40px',
+					}}
+				>
+					<i className={`fa ${isSidebarOpen ? 'fa-times' : 'fa-filter'}`}></i>
 				</button>
 				{/* Section: Price */}
-				<div className="filter-section">
+				<div className="filter-section mt-5 pt-5">
 					<h4 className="filter-title">Price</h4>
 
 					<div className="filter-row">
@@ -80,7 +100,7 @@ const FilterBar = ({
 				</div>
 
 				{/* Section: Categories */}
-				<div className="filter-section pb-5">
+				{/* <div className="filter-section pb-5">
 					<h4 className="filter-title">Categories</h4>
 
 					{allCategories.map((cat: string, i: number) => (
@@ -98,7 +118,7 @@ const FilterBar = ({
 							{cat}
 						</label>
 					))}
-				</div>
+				</div> */}
 
 				{/* Section: Brands */}
 			</aside>
