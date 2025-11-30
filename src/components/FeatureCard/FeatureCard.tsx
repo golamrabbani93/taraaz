@@ -24,7 +24,7 @@ const FeatureCard = () => {
 		},
 		{
 			imgSrc: '/assets/images/feature-card/brand.png', // LazMall logo or similar
-			title: language === 'en' ? 'Taraaz Brands' : 'তারাজ ব্র্যান্ডস',
+			title: language === 'en' ? 'Taraaz Brand' : 'তারাজ ব্র্যান্ড',
 			description: language === 'en' ? '100% Authentic Brands' : '১০০% খাঁটি ব্র্যান্ড',
 		},
 	];
