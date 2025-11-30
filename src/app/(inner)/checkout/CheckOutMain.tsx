@@ -109,8 +109,12 @@ export default function CheckOutMain() {
 		}
 	};
 	const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+	console.log('🚀🚀 ~ CheckOutMain ~ cartItems:', cartItems);
+	console.log('🚀🚀 ~ CheckOutMain ~ subtotal:', subtotal);
 	const shippingCost = DEFAULT_SHIPPING_COST || 0;
+	console.log('🚀🚀 ~ CheckOutMain ~ shippingCost:', shippingCost);
 	const total = subtotal + shippingCost;
+	console.log('🚀🚀 ~ CheckOutMain ~ total:', total);
 
 	const handlePayment = async () => {
 		setRedirecting(true);
@@ -143,7 +147,7 @@ export default function CheckOutMain() {
 						quantity: item.quantity,
 						price: item.price,
 					})),
-					provider: DEFAULT_SHIPPING_COST === 60 ? 'Inside Dhaka' : 'Outside Dhaka',
+					provider: DEFAULT_SHIPPING_COST === 70 ? 'Inside Dhaka' : 'Outside Dhaka',
 				}),
 			});
 
@@ -174,10 +178,11 @@ export default function CheckOutMain() {
 				product_id: item.id,
 				quantity: item.quantity,
 				price: item.price,
+				size: item.size || '--',
 			})),
 			order_status: 'pending',
 			payment_method: 'cod',
-			provider: DEFAULT_SHIPPING_COST === 60 ? 'Inside Dhaka' : 'Outside Dhaka',
+			provider: DEFAULT_SHIPPING_COST === 70 ? 'Inside Dhaka' : 'Outside Dhaka',
 		};
 		if (currentUser?.id) {
 			// Logged-in user
@@ -298,7 +303,7 @@ export default function CheckOutMain() {
 													}}
 												/>
 												<span className="title">
-													{item.title} × {item.quantity}
+													{item.title} × {item.quantity} {item.size ? `(${item.size})` : ''}
 												</span>
 											</div>
 											<span className="price " style={{width: '80px', textAlign: 'right'}}>
@@ -328,7 +333,7 @@ export default function CheckOutMain() {
 											{language === 'en' ? 'Total Price:' : 'মোট মূল্য:'}
 										</span>
 									</div>
-									<span className="price" style={{color: '#629D23'}}>
+									<span className="price" style={{color: '#b4842d', fontWeight: '800'}}>
 										{total} ৳
 									</span>
 								</div>
