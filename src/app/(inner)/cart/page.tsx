@@ -11,6 +11,7 @@ import DeskCategory from '@/components/bottom-category/DeskCategory';
 export default function Home() {
 	return (
 		<div className="demo-one">
+			<HeaderFive />
 			<BottomCategory />
 			<DeskCategory />
 			<>
