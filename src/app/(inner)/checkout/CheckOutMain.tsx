@@ -233,20 +233,30 @@ export default function CheckOutMain() {
 									resolver={zodResolver(language === 'en' ? checkoutSchema : checkoutSchemaBangla)}
 								>
 									<div className="single-input">
-										<label>{language === 'en' ? 'Your Name' : 'আপনার নাম'}</label>
+										<label>
+											{language === 'en' ? 'Your Name' : 'আপনার নাম'}
+											<span className="text-danger">*</span>
+										</label>
 										<ZInput name="name" type="text" label="Your Name" />
 									</div>
 
 									<div className="single-input">
-										<label>{language === 'en' ? 'Email' : 'ইমেইল'}</label>
+										<label>
+											{language === 'en' ? 'Email' : 'ইমেইল'} <span className="text-danger">*</span>
+										</label>
 										<ZInput name="email" type="email" label="Your Email" />
 									</div>
 									<div className="single-input">
-										<label>{language === 'en' ? 'Phone' : 'ফোন'}</label>
+										<label>
+											{language === 'en' ? 'Phone' : 'ফোন'} <span className="text-danger">*</span>
+										</label>
 										<ZInput name="phone" type="tel" label="Your Phone" />
 									</div>
 									<div className="single-input">
-										<label>{language === 'en' ? 'Address' : 'ঠিকানা'}</label>
+										<label>
+											{language === 'en' ? 'Address' : 'ঠিকানা'}{' '}
+											<span className="text-danger">*</span>
+										</label>
 										<ZInput name="address" type="text" label="Your Address" />
 									</div>
 									<button type="submit" className="rts-btn btn-primary mb-5 mb-md-0">
