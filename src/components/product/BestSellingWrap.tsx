@@ -3,6 +3,7 @@ import WeeklyBestSellingMain from '@/components/product-main/WeeklyBestSellingMa
 import {IProduct} from '@/types/product.types';
 import {useAppSelector} from '@/redux/hooks';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
+import Link from 'next/link';
 const WeeklyBestSelling = ({
 	head,
 	data,
@@ -33,8 +34,14 @@ const WeeklyBestSelling = ({
 									<div className="col-lg-12 p-xl-0">
 										<div className="title-area-between">
 											<h2 className={`title-left m-0 mb-4 ${head ? '' : 'd-none'}`}>
-												{' '}
 												{language === 'en' ? title?.[2]?.title : title?.[2]?.b_title}
+												<Link
+													href="/shop"
+													className=" d-block text-decoration-underline me-lg-3"
+													style={{fontSize: '13px'}}
+												>
+													{language === 'en' ? 'See All Products' : 'সব প্রোডাক্ট দেখুন'}
+												</Link>
 											</h2>
 										</div>
 									</div>
@@ -43,7 +50,7 @@ const WeeklyBestSelling = ({
 									<div className="col-lg-12 p-xl-0">
 										<div className="row ">
 											{combinedProducts?.map((product: IProduct, index: number) => (
-												<div className="col-xl-2 col-lg-3 col-md-4 col-6 p-xl-0" key={index}>
+												<div className="col-xl-3 col-lg-3 col-md-4 col-6 mb-3" key={index}>
 													<div className="single-shopping-card-one m-0 mb-4">
 														<WeeklyBestSellingMain product={product} />
 													</div>
