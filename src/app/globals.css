@@ -496,3 +496,14 @@ label {
   font-weight: 600 !important;
   color: black !important;
 }
+
+.shop-category:hover {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.shop-category-active {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
