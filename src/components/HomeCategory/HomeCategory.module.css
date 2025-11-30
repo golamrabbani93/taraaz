@@ -1,0 +1,113 @@
+/* HomeCategory.module.css */
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 4px;
+  height: 400px;
+  width: 100%;
+}
+
+/* Full-height left image */
+.div1 {
+  grid-row: 1 / 6;
+  grid-column: 1 / 2;
+  background-image: url('/assets/images/category/taraaz.webp');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Top-middle image */
+.div2 {
+  grid-row: 1 / 2;
+  grid-column: 2 / 5;
+  background-image: url('/assets/images/category/indian.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Middle-left big block */
+.div3 {
+  grid-row: 2 / 6;
+  grid-column: 2 / 4;
+  background-image: url('/assets/images/category/designer.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Middle-right block */
+.div4 {
+  grid-row: 2 / 6;
+  grid-column: 4 / 5;
+  background-image: url('/assets/images/category/pakistani.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+/* Full-height right image */
+.div5 {
+  grid-row: 1 / 6;
+  grid-column: 5 / 6;
+  background-image: url('/assets/images/category/saree.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+}
+
+/*  add hover in all div */
+.div1:hover .overlay,
+.div2:hover .overlay,
+.div3:hover .overlay,
+.div4:hover .overlay,
+.div5:hover .overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: background-color 0.3s ease;
+}
+
+.categoryName {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 2;
+}
+
+/* 📱 Responsive (mobile collapse) */
+@media (max-width: 768px) {
+  .parent {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 180px);
+    height: auto;
+  }
+
+  .div1,
+  .div2,
+  .div3,
+  .div4,
+  .div5 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
