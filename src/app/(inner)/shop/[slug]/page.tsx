@@ -31,10 +31,16 @@ const CompareElements: React.FC = () => {
 	const {addToWishlist} = useWishlist();
 	const [wishlisted, setWishlisted] = useState(false);
 	const originalPrice = blogPost?.original_price?.split('.')[0] || '0'; // Default to '0' if undefined
+	const [size, setSize] = useState<string>('');
 	const {addToCart} = useCart();
 	const [added, setAdded] = useState(false);
 	const language = useAppSelector(selectLanguage);
 	const handleAdd = () => {
+		if (size === '' && blogPost?.size.length > 0) {
+			return toast(
+				language === 'en' ? 'Please select a size !' : 'দয়া করে একটি আকার নির্বাচন করুন !',
+			);
+		}
 		addToCart({
 			id: blogPost?.id,
 			image: `${blogPost.image1}`,
@@ -43,6 +49,7 @@ const CompareElements: React.FC = () => {
 			quantity: quantity,
 			b_name: blogPost?.b_name,
 			active: true,
+			size: size,
 		});
 		setAdded(true);
 		toast(language === 'en' ? 'Successfully Add To Cart !' : 'কার্টে সফলভাবে যোগ করা হয়েছে !');
@@ -171,7 +178,6 @@ const CompareElements: React.FC = () => {
 															</>
 														)}
 													</span>
-
 													<div className="product-uniques">
 														{/* <span className="sku product-unipue mb--10">
 															<strong>ID:</strong> {blogPost.id}
@@ -185,10 +191,24 @@ const CompareElements: React.FC = () => {
 														{/* <span className="tags product-unipue mb--10">
 															<strong>Weight:</strong> {blogPost.weight}
 														</span> */}
-														{/* <span className="tags product-unipue mb--10">
-															<strong>Type:</strong> {blogPost.type}
-														</span> */}
+														{blogPost?.size.length > 0 && (
+															<span className="tags product-unipue mb--10">
+																<strong>Size:</strong>{' '}
+																{blogPost.size.map((s: any, i: number) => (
+																	<span
+																		className={`border mx-3 pt-1 px-3 productSize${
+																			size === s.value ? ' productSize-active' : ''
+																		}`}
+																		key={i}
+																		onClick={() => setSize(s.value)}
+																	>
+																		{s.value}
+																	</span>
+																))}
+															</span>
+														)}
 													</div>
+
 													<div className="d-flex w-100 flex-wrap align-items-center gap-3 mb--20">
 														<div className="product-bottom-action justify-content-start align-items-start m-0 d-block">
 															<div className="d-flex w-auto  rounded quantity p-1 mb-3">
