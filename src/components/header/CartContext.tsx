@@ -9,15 +9,16 @@ interface CartItem {
 	price: number;
 	quantity: number;
 	active: boolean; // true = cart, false = wishlist
-	b_name?: string; // Optional Bengali name
+	b_name?: string;
+	size?: string;
 }
 
 interface CartContextProps {
 	cartItems: CartItem[];
 	addToCart: (item: CartItem) => void;
 	addToWishlist: (item: CartItem) => void;
-	removeFromCart: (id: number) => void;
-	updateItemQuantity: (id: number, quantity: number) => void;
+	removeFromCart: (id: number, size?: string) => void;
+	updateItemQuantity: (id: number, quantity: number, size?: string) => void;
 	isCartLoaded: boolean;
 }
 
@@ -33,34 +34,41 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
 	const [isCartLoaded, setIsCartLoaded] = useState(false);
 
-	// Load from localStorage on first mount
 	useEffect(() => {
 		const storedCart = localStorage.getItem('cart');
 		if (storedCart) {
 			try {
 				setCartItems(JSON.parse(storedCart));
-			} catch (error) {
-				console.error('Failed to parse cart from localStorage:', error);
+			} catch {
 				localStorage.removeItem('cart');
 			}
 		}
 		setIsCartLoaded(true);
 	}, []);
 
-	// Save to localStorage whenever cart changes
 	useEffect(() => {
 		if (isCartLoaded) {
 			localStorage.setItem('cart', JSON.stringify(cartItems));
 		}
 	}, [cartItems, isCartLoaded]);
 
-	// Add item to cart (active: true)
+	// Add item to cart
 	const addToCart = (item: CartItem) => {
 		setCartItems((prev) => {
-			const existing = prev.find((i) => i.id === item.id && i.active === true);
+			const existing = prev.find(
+				(i) =>
+					i.id === item.id &&
+					i.active === true &&
+					(item.size ? i.size === item.size : i.size === undefined),
+			);
+
 			if (existing) {
 				return prev.map((i) =>
-					i.id === item.id && i.active === true ? {...i, quantity: i.quantity + item.quantity} : i,
+					i.id === item.id &&
+					i.active === true &&
+					(item.size ? i.size === item.size : i.size === undefined)
+						? {...i, quantity: i.quantity + item.quantity}
+						: i,
 				);
 			} else {
 				return [...prev, item];
@@ -68,13 +76,23 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
 		});
 	};
 
-	// Add item to wishlist (active: false)
+	// Add item to wishlist
 	const addToWishlist = (item: CartItem) => {
 		setCartItems((prev) => {
-			const existing = prev.find((i) => i.id === item.id && i.active === false);
+			const existing = prev.find(
+				(i) =>
+					i.id === item.id &&
+					i.active === false &&
+					(item.size ? i.size === item.size : i.size === undefined),
+			);
+
 			if (existing) {
 				return prev.map((i) =>
-					i.id === item.id && i.active === false ? {...i, quantity: i.quantity + item.quantity} : i,
+					i.id === item.id &&
+					i.active === false &&
+					(item.size ? i.size === item.size : i.size === undefined)
+						? {...i, quantity: i.quantity + item.quantity}
+						: i,
 				);
 			} else {
 				return [...prev, item];
@@ -82,15 +100,24 @@ export const CartProvider = ({children}: {children: React.ReactNode}) => {
 		});
 	};
 
-	// Remove item by ID
-	const removeFromCart = (id: number) => {
-		setCartItems((prev) => prev.filter((item) => item.id !== id));
+	// Remove item
+	const removeFromCart = (id: number, size?: string) => {
+		setCartItems((prev) =>
+			// If size is provided, remove only the matching size variant.
+			// If size is NOT provided, remove all items with the given id regardless of size.
+			prev.filter((i) => !(i.id === id && (size ? i.size === size : true))),
+		);
 	};
 
-	// Update quantity (cart or wishlist)
-	const updateItemQuantity = (id: number, quantity: number) => {
+	// Update quantity
+	const updateItemQuantity = (id: number, quantity: number, size?: string) => {
 		setCartItems((prev) =>
-			prev.map((item) => (item.id === id ? {...item, quantity: Math.max(1, quantity)} : item)),
+			// If size is provided, update only that size variant; otherwise update all items with the id
+			prev.map((i) =>
+				i.id === id && (size ? i.size === size : true)
+					? {...i, quantity: Math.max(1, quantity)}
+					: i,
+			),
 		);
 	};
 
