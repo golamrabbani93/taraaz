@@ -24,6 +24,7 @@ import {
 } from '@/lib/serverPrefetch';
 import BottomCategory from '@/components/bottom-category/BottomCategory';
 import DeskCategory from '@/components/bottom-category/DeskCategory';
+import HomeCategory from '@/components/HomeCategory/HomeCategory';
 export default async function Home() {
 	const banner = await prefetchBanners();
 	const bottomBanner = await prefetchBottomBanners();
@@ -44,20 +45,27 @@ export default async function Home() {
 						<BottomCategory />
 						<DeskCategory />
 						<BannerFive data={bannerState} />
-						<FeatureCard />
+						{/* <FeatureCard /> */}
+						<HomeCategory />
 						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState[0] : null} />
 						<BestPickForYou
 							data={productData}
 							title={Array.isArray(titleState) ? titleState : []}
 						/>
-						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState[2] : null} />
+						<HomePageAd
+							margin="mt-5"
+							data={Array.isArray(bottomBannerState) ? bottomBannerState[2] : null}
+						/>
 						<BestVideos
 							data={Array.isArray(videoState) ? videoState : []}
 							title={Array.isArray(titleState) ? titleState : []}
 						/>
 						{/* <FeatureCategory /> */}
 						{/* <BestDiscount /> */}
-						<HomePageAd data={Array.isArray(bottomBannerState) ? bottomBannerState[1] : null} />
+						<HomePageAd
+							margin="mt-5"
+							data={Array.isArray(bottomBannerState) ? bottomBannerState[1] : null}
+						/>
 						<BestSellingWrap
 							head={true}
 							data={productData}
