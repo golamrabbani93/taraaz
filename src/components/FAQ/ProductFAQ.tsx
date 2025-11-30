@@ -13,7 +13,7 @@ const ProductFAQ = ({data}: {data: IProduct}) => {
 	};
 
 	return (
-		<div className="container">
+		<div className="container d-none">
 			<div className="accordion-container">
 				{data?.faqs?.map((product: any, index: number) => (
 					<div key={index} className="accordion-item">
