@@ -86,17 +86,21 @@ const CartMain = () => {
 								<div className="quantity">
 									<p>{language === 'en' ? 'Quantity' : 'পরিমাণ'}</p>
 								</div>
+
+								<div className="quantity">
+									<p>{language === 'en' ? 'Size' : 'আকার'}</p>
+								</div>
 								<div className="subtotal">
 									<p>{language === 'en' ? 'SubTotal' : 'সাবটোটাল'}</p>
 								</div>
 							</div>
 
-							{cartItems.map((item) => (
-								<div className="single-cart-area-list main item-parent" key={item.id}>
+							{cartItems.map((item, i) => (
+								<div className="single-cart-area-list main item-parent" key={i}>
 									<div className="product-main-cart">
 										<div
 											className="close section-activation"
-											onClick={() => removeFromCart(item.id)}
+											onClick={() => removeFromCart(item.id, item.size ? item.size : undefined)}
 										>
 											<i className="fa-regular fa-x" />
 										</div>
@@ -117,19 +121,33 @@ const CartMain = () => {
 												<button
 													className="button minus"
 													onClick={() =>
-														item.quantity > 1 && updateItemQuantity(item.id, item.quantity - 1)
+														item.quantity > 1 &&
+														updateItemQuantity(
+															item.id,
+															item.quantity - 1,
+															item.size ? item.size : undefined,
+														)
 													}
 												>
 													<i className="fa-regular fa-chevron-down" />
 												</button>
 												<button
 													className="button plus"
-													onClick={() => updateItemQuantity(item.id, item.quantity + 1)}
+													onClick={() =>
+														updateItemQuantity(
+															item.id,
+															item.quantity + 1,
+															item.size ? item.size : undefined,
+														)
+													}
 												>
 													<i className="fa-regular fa-chevron-up" />
 												</button>
 											</div>
 										</div>
+									</div>
+									<div className="quantity">
+										<p className="ms-3">{item.size ? item.size : '---'}</p>
 									</div>
 									<div className="subtotal ms-1">
 										<p>{item.price * item.quantity} ৳</p>

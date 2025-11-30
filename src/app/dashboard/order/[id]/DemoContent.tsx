@@ -28,7 +28,7 @@ const DemoContent: React.FC = () => {
 			product_image: product ? product.image1 : '/assets/images-placeholder.png',
 		};
 	});
-	const shippingCost = orderData?.provider == 'Outside Dhaka' ? 120 : 60;
+	const shippingCost = orderData?.provider == 'Outside Dhaka' ? 120 : 70;
 	const [status, setStatus] = useState(orderData?.order_status);
 	useEffect(() => {
 		if (orderData) {
@@ -178,6 +178,7 @@ const DemoContent: React.FC = () => {
 								<th style={{width: 300}}>Order Item</th>
 								<th className="text-center">Price</th>
 								<th className="text-center">Quantity</th>
+								<th className="text-center">Size</th>
 								<th className="text-right">Total</th>
 							</tr>
 						</thead>
@@ -201,23 +202,24 @@ const DemoContent: React.FC = () => {
 									</td>
 									<td className="text-center">{item.price} ৳</td>
 									<td className="text-center">{item.quantity}</td>
+									<td className="text-center">{item.size}</td>
 									<td className="text-right">{item.price * item.quantity} ৳</td>
 								</tr>
 							))}
 							<tr className="b-n">
-								<td colSpan={3} className="text-end f-w-600">
+								<td colSpan={4} className="text-end f-w-600">
 									Total
 								</td>
 								<td className="text-right f-w-600">{orderData.total_amount - shippingCost} ৳</td>
 							</tr>
 							<tr className="b-n">
-								<td colSpan={3} className="text-end f-w-600">
+								<td colSpan={4} className="text-end f-w-600">
 									Shipping Cost
 								</td>
 								<td className="text-right f-w-600">{shippingCost} ৳</td>
 							</tr>
 							<tr className="b-n">
-								<td colSpan={3} className="text-end f-w-600">
+								<td colSpan={4} className="text-end f-w-600">
 									Grand Total
 								</td>
 								<td className="text-right f-w-600">{orderData.total_amount} ৳</td>
