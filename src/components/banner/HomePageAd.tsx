@@ -8,11 +8,12 @@ interface HomePageAdProps {
 		image: string;
 		name?: string;
 	} | null;
+	margin?: string;
 }
 
-const HomePageAd = ({data}: HomePageAdProps) => {
+const HomePageAd = ({data, margin}: HomePageAdProps) => {
 	return (
-		<div className="container  rounded-lg overflow-hidden p-xl-0">
+		<div className={`container  rounded-lg overflow-hidden p-xl-0 ${margin}`}>
 			<Image
 				src={data?.image || '/assets/images/banner/homepage-ad.jpg'}
 				alt={data?.name || 'Home Page Ad'}
