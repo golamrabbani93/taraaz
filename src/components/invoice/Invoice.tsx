@@ -21,6 +21,7 @@ interface IOrderItemData {
 	product_id: number;
 	quantity: number;
 	amount?: number;
+	size?: string;
 }
 
 const Invoice: React.FC<InvoiceProps> = ({id}) => {
@@ -32,16 +33,20 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 		singleOrder?.items_data?.some((item: IOrderItemData) => item.product_id === product.id),
 	);
 	// map through orderd products and get quantity and price from order data
-	const finalData = orderedProducts?.map((product: IProduct) => {
-		const orderItem = singleOrder?.items_data.find(
-			(item: IOrderItemData) => item.product_id === product.id,
-		);
-		return {
+	const finalData = orderedProducts?.flatMap((product: IProduct) => {
+		// find all order items with same product id
+		const matchingItems =
+			singleOrder?.items_data.filter((item: IOrderItemData) => item.product_id === product.id) ||
+			[];
+
+		// map each variant separately
+		return matchingItems.map((orderItem: IOrderItemData) => ({
 			name: language === 'bn' ? product.b_name : product.name,
-			price: orderItem ? orderItem.price : 0,
-			quantity: orderItem ? orderItem.quantity : 0,
-			amount: orderItem ? orderItem.price * orderItem.quantity : 0,
-		};
+			price: orderItem.price,
+			quantity: orderItem.quantity,
+			amount: orderItem.price * orderItem.quantity,
+			size: orderItem.size || '', // size or empty string
+		}));
 	});
 
 	//get product totals
@@ -92,7 +97,7 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 			<div className={styles.container} ref={componentRef}>
 				{/* Header */}
 				<div className={styles.header}>
-					<img src="/assets/images/tz-main-logo.png" alt="" />
+					<img src="/assets/images/logo/tz-main-logo.png" alt="" style={{height: '30px'}} />
 					<p>Dhaka Bangladesh| Email: admin@taraaz.com</p>
 				</div>
 
@@ -138,6 +143,7 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 							<th>Item Name</th>
 							<th>Price</th>
 							<th>Quantity</th>
+							<th>Size</th>
 							<th className={styles.amount}>Amount</th>
 						</tr>
 					</thead>
@@ -147,6 +153,7 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 								<td>{item.name}</td>
 								<td>৳{item.price.toFixed(2)}</td>
 								<td>{item.quantity}</td>
+								<td>{item.size ? item.size : '--'}</td>
 								<td className={styles.amount}>৳{(item.amount ?? 0).toFixed(2)}</td>
 							</tr>
 						))}
@@ -160,9 +167,9 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 					<hr style={{border: 'none', borderTop: '1px solid #ddd', margin: '10px 0'}} />
 					<p>
 						Shipping Cost: ৳{' '}
-						{singleOrder?.provider === 'Outside Dhaka' ? (120.0).toFixed(2) : (60.0).toFixed(2)}
+						{singleOrder?.provider === 'Outside Dhaka' ? (120.0).toFixed(2) : (70.0).toFixed(2)}
 					</p>
-					<hr style={{border: 'none', borderTop: '1px solid #ddd', margin: '10px 0'}} />
+					{/* <hr style={{border: 'none', borderTop: '1px solid #ddd', margin: '10px 0'}} /> */}
 					<p className={styles.total}>Total: ৳ {Number(singleOrder?.total_amount)?.toFixed(2)}</p>
 				</div>
 

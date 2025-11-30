@@ -11,6 +11,7 @@ import {IProduct} from '@/types/product.types';
 import {useAppSelector} from '@/redux/hooks';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
 import Image from 'next/image';
+import SizeModal from '../SizeModal/SizeModal';
 
 const BlogGridMain = ({product}: {product: IProduct}) => {
 	const language = useAppSelector(selectLanguage);
@@ -26,6 +27,7 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 		image1: ProductImage,
 		image2,
 		offer,
+		size,
 	} = product;
 	type ModalType = 'one' | 'two' | 'three' | null;
 	const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -37,7 +39,14 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 	const [added, setAdded] = useState(false);
 	const [wishlisted, setWishlisted] = useState(false);
 	const original_Price = product.original_price?.split('.')[0] || 0; // Default to 0 if undefined
+	const [showSizeModal, setShowSizeModal] = useState(false);
+	const [sizeData, setSizeData] = useState<string>('');
 	const handleAdd = () => {
+		if (size && size.length > 0) {
+			setShowSizeModal(true);
+			return;
+		}
+		addcart();
 		addToCart({
 			id,
 			image: ProductImage ?? '',
@@ -46,6 +55,7 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 			quantity: quantity,
 			active: true,
 			b_name: b_name,
+			size: sizeData ? sizeData : '',
 		});
 		setAdded(true);
 		setQuantity(1);
@@ -74,7 +84,24 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 				? 'Successfully Add To Wishlist !'
 				: 'পছন্দের তালিকায় সফলভাবে যোগ করা হয়েছে !',
 		);
-
+	const handleModal = () => {
+		addcart();
+		setShowSizeModal(false);
+		addToCart({
+			id,
+			image: ProductImage ?? '',
+			title: ProductTitle ?? 'Default Product Title',
+			price: Price > 0 ? Price : Number(original_Price),
+			quantity: quantity,
+			active: true,
+			b_name: b_name,
+			size: sizeData,
+		});
+		setAdded(true);
+		setQuantity(1);
+		setTimeout(() => setAdded(false), 5000);
+		setSizeData('');
+	};
 	return (
 		<>
 			<div className="image-and-action-area-wrapper overflow-hidden">
@@ -255,7 +282,6 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 						onClick={(e) => {
 							e.preventDefault();
 							handleAdd();
-							addcart();
 						}}
 					>
 						{language === 'en' && <div className="btn-text">{added ? 'Added' : 'Add'}</div>}
@@ -277,6 +303,15 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 
 			{/* <CompareModal show={activeModal === 'one'} handleClose={handleClose} /> */}
 			<ProductDetails show={activeModal === 'two'} handleClose={handleClose} product={product} />
+			<SizeModal
+				data={size}
+				setSizeData={setSizeData}
+				isOpen={showSizeModal}
+				onClose={handleModal}
+				message="Size chart coming soon!"
+				sizeData={sizeData}
+				setShowSizeModal={setShowSizeModal}
+			/>
 		</>
 	);
 };
