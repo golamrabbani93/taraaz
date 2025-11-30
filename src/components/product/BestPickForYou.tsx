@@ -7,6 +7,7 @@ import {useGetAllWebsiteTitlesQuery} from '@/redux/features/companyTitle/company
 import {useAppSelector} from '@/redux/hooks';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
 import {IProduct} from '@/types/product.types';
+import Link from 'next/link';
 interface BestPickForYouProps {
 	data: IProduct[];
 	title: any[];
@@ -14,7 +15,7 @@ interface BestPickForYouProps {
 
 const BestPickForYou = ({data, title}: BestPickForYouProps) => {
 	const language = useAppSelector(selectLanguage);
-	const hairProducts = Array.isArray(data) ? data.filter((product) => product.pin).slice(0, 6) : [];
+	const hairProducts = Array.isArray(data) ? data.filter((product) => product.pin) : [];
 
 	return (
 		<div className="popular-product-col-7-area rts-section-gapBottom container pt-5 pe-xl-0">
@@ -28,6 +29,13 @@ const BestPickForYou = ({data, title}: BestPickForYouProps) => {
 										<div className="title-area-between">
 											<h2 className="title-left m-0 mb-4">
 												{language === 'en' ? title?.[0]?.title : title?.[0]?.b_title}
+												<Link
+													href="/shop"
+													className=" d-block text-decoration-underline me-lg-3"
+													style={{fontSize: '13px'}}
+												>
+													{language === 'en' ? 'See All Products' : 'সব প্রোডাক্ট দেখুন'}
+												</Link>
 											</h2>
 										</div>
 									</div>
@@ -37,7 +45,7 @@ const BestPickForYou = ({data, title}: BestPickForYouProps) => {
 										<div>
 											<div className="row">
 												{hairProducts?.map((product, index) => (
-													<div className="col-xl-2 col-lg-3 col-md-4 col-6 p-xl-0" key={index}>
+													<div className="col-xl-3 col-lg-3 col-md-4 col-6 mb-3" key={index}>
 														<div className="single-shopping-card-one m-0 mb-4">
 															<WeeklyBestSellingMain product={product} />
 														</div>
