@@ -265,10 +265,10 @@ const CompareElements: React.FC = () => {
 											</p>
 										</div>
 									</div>
-									<div className="container md-mt-5 pt-5">
+									{/* <div className="container md-mt-5 pt-5">
 										<h2>{language === 'en' ? 'Frequently Asked Questions' : 'সাধারণ জিজ্ঞাসা'}</h2>
 										<ProductFAQ data={blogPost} />
-									</div>
+									</div> */}
 								</div>
 							</div>
 
