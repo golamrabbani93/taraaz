@@ -78,7 +78,7 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 	return (
 		<>
 			<div className="image-and-action-area-wrapper overflow-hidden">
-				<Link href={`/shop/${Slug}`} className="thumbnail-preview">
+				<Link href={`/shop/${Slug}`} className="thumbnail-preview ">
 					{offer && (
 						<div className="badge">
 							<span>
@@ -131,13 +131,14 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 			<div className="body-content">
 				<a href={`/shop/${Slug}`}>
 					<h4 className="title">
-						{language === 'en'
+						{/* {language === 'en'
 							? ProductTitle.length > 30
 								? `${ProductTitle.slice(0, 30)}.....`
 								: ProductTitle
 							: b_name.length > 30
 							? `${b_name.slice(0, 30)}.....`
-							: b_name}
+							: b_name} */}
+						{language === 'en' ? ProductTitle : b_name}
 					</h4>
 				</a>
 				{/* <span className="availability">{weight} Pack</span> */}
