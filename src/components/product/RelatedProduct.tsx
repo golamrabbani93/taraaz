@@ -66,8 +66,7 @@ function FeatureProduct({type}: {type?: string | undefined}) {
 										320: {slidesPerView: 2, spaceBetween: 30},
 										480: {slidesPerView: 2, spaceBetween: 30},
 										640: {slidesPerView: 3, spaceBetween: 30},
-										840: {slidesPerView: 4, spaceBetween: 30},
-										1140: {slidesPerView: 6, spaceBetween: 10},
+										1140: {slidesPerView: 4, spaceBetween: 10},
 									}}
 								>
 									{displayProducts.map((post) => (
