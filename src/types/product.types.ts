@@ -28,6 +28,7 @@ export interface IProduct {
 	pin?: boolean;
 	system_date?: string;
 	isPublish?: boolean;
+	size?: ICategory[];
 }
 
 interface ICategory {
