@@ -93,7 +93,10 @@ function HeaderFive() {
 						<div className="container">
 							<div className="row">
 								<div className="col-lg-12">
-									<div className="bwtween-area-header-top">
+									<div
+										className="bwtween-area-header-top"
+										style={{position: 'relative', zIndex: '999'}}
+									>
 										<div className="contact-number-area d-flex align-items-center">
 											<p>
 												<Link className="me-3" href="/shop">
@@ -143,7 +146,7 @@ function HeaderFive() {
 										<div className="discount-area">
 											<p className="disc" suppressHydrationWarning>
 												{language === 'en'
-													? 'Oreder first, get special surprise on next 3 orders!'
+													? 'Order first, get special surprise on next 3 orders!'
 													: ''}
 											</p>
 										</div>
