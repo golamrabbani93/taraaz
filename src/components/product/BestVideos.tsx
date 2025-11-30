@@ -7,6 +7,7 @@ import BestPickSkeleton from '../Loader/Skeleton/BestPickSkeleton/BestPickSkelet
 import {IVideo} from '@/types/video.types';
 import {useAppSelector} from '@/redux/hooks';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
+import Link from 'next/link';
 
 const BestVideos = ({data, title}: {data: IVideo[]; title: any[]}) => {
 	const language = useAppSelector(selectLanguage);
@@ -23,6 +24,13 @@ const BestVideos = ({data, title}: {data: IVideo[]; title: any[]}) => {
 										<div className="title-area-between">
 											<h2 className="title-left m-0 mb-lg-4">
 												{language === 'en' ? title?.[1]?.title : title?.[1]?.b_title}
+												<Link
+													href="/videos"
+													className=" d-block text-decoration-underline me-lg-3"
+													style={{fontSize: '13px'}}
+												>
+													{language === 'en' ? 'See All Videos' : 'সব ভিডিও দেখুন'}
+												</Link>
 											</h2>
 											<div className="next-prev-swiper-wrapper pt-4">
 												<div className="swiper-button-prev border border-1">
@@ -52,8 +60,8 @@ const BestVideos = ({data, title}: {data: IVideo[]; title: any[]}) => {
 														0: {slidesPerView: 1, spaceBetween: 30},
 														320: {slidesPerView: 1, spaceBetween: 30},
 														480: {slidesPerView: 2, spaceBetween: 30},
-														640: {slidesPerView: 3, spaceBetween: 30},
-														840: {slidesPerView: 4, spaceBetween: 30},
+														640: {slidesPerView: 2, spaceBetween: 30},
+														840: {slidesPerView: 3, spaceBetween: 30},
 													}}
 												>
 													{data.map((post: IVideo, index: number) => (
