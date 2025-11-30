@@ -67,9 +67,7 @@ export default function Home() {
 										<img className="mb--10" src="/assets/images/logo/tz-main-logo.png" alt="logo" />
 									</div>
 									<h3 className="title">
-										{language === 'en'
-											? 'Register Into Your Account'
-											: 'আপনার অ্যাকাউন্টে নিবন্ধন করুন'}
+										{language === 'en' ? 'Register Your Account' : 'আপনার অ্যাকাউন্টে নিবন্ধন করুন'}
 									</h3>
 									<div className="registration-form">
 										<ZForm
@@ -79,7 +77,10 @@ export default function Home() {
 											)}
 										>
 											<div className="input-wrapper">
-												<label htmlFor="name">{language === 'en' ? 'Name*' : 'নাম*'}</label>
+												<label htmlFor="name">
+													{language === 'en' ? 'Name' : 'নাম'}
+													<span className="text-danger">*</span>
+												</label>
 												<ZInput
 													type="text"
 													label={language === 'en' ? 'Enter Name' : 'নাম লিখুন'}
@@ -87,7 +88,10 @@ export default function Home() {
 												/>
 											</div>
 											<div className="input-wrapper">
-												<label htmlFor="name">{language === 'en' ? '*Email' : '*ইমেইল'}</label>
+												<label htmlFor="name">
+													{language === 'en' ? 'Email' : 'ইমেইল'}
+													<span className="text-danger">*</span>
+												</label>
 												<ZInput
 													type="text"
 													label={language === 'en' ? 'Enter Email' : 'ইমেইল লিখুন'}
@@ -95,7 +99,10 @@ export default function Home() {
 												/>
 											</div>
 											<div className="input-wrapper">
-												<label htmlFor="phone">{language === 'en' ? 'Phone*' : 'ফোন*'}</label>
+												<label htmlFor="phone">
+													{language === 'en' ? 'Phone' : 'ফোন'}
+													<span className="text-danger">*</span>
+												</label>
 												<ZInput
 													type="text"
 													label={language === 'en' ? 'Enter Phone' : 'ফোন নম্বর লিখুন'}
@@ -105,7 +112,8 @@ export default function Home() {
 
 											<div className="input-wrapper">
 												<label htmlFor="password">
-													{language === 'en' ? 'Password*' : 'পাসওয়ার্ড*'}
+													{language === 'en' ? 'Password' : 'পাসওয়ার্ড'}
+													<span className="text-danger">*</span>
 												</label>
 												<ZInput
 													type="password"
