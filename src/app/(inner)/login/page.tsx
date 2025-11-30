@@ -69,7 +69,10 @@ export default function Home() {
 									<div className="registration-form">
 										<ZForm onSubmit={handleSubmit}>
 											<div className="input-wrapper">
-												<label htmlFor="name">{language === 'en' ? 'Email*' : 'ইমেইল*'}</label>
+												<label htmlFor="name">
+													{language === 'en' ? 'Email' : 'ইমেইল'}
+													<span className="text-danger">*</span>
+												</label>
 												<ZInput
 													type="text"
 													label={language === 'en' ? 'Enter Email' : 'ইমেইল লিখুন'}
@@ -79,7 +82,8 @@ export default function Home() {
 
 											<div className="input-wrapper">
 												<label htmlFor="email">
-													{language === 'en' ? 'Password*' : 'পাসওয়ার্ড*'}
+													{language === 'en' ? 'Password' : 'পাসওয়ার্ড'}
+													<span className="text-danger">*</span>
 												</label>
 												<ZInput
 													type="password"
