@@ -6,6 +6,7 @@ export const productSchema = z.object({
 		.min(2, 'Product name is required')
 		.max(200, 'Product name must be under 200 characters'),
 	original_price: z.string().min(1, 'Price is required'),
+	discount_price: z.string().optional(),
 	material: z.string('Material is required').optional(),
 	fit: z.string('Fit is required').optional(),
 	stock_S: z.any().optional(),
@@ -22,22 +23,9 @@ export const productSchema = z.object({
 		.refine((val) => val !== null && val !== undefined, {
 			message: 'Category selection is required',
 		}),
-	isPublish: z
-		.object({
-			label: z.string().min(1, 'Label is required'),
-			value: z.boolean().optional(),
-		})
-		.nullable()
-		.optional(),
-	isSizeable: z
-		.object({
-			label: z.string().min(1, 'Label is required'),
-			value: z.boolean().optional(),
-		})
-		.nullable()
-		.refine((val) => val !== null && val !== undefined, {
-			message: 'Sizeable selection is required',
-		}),
+	sub_categories: z.any().optional(),
+	isPublish: z.any().optional(),
+	isSizeable: z.any().optional(),
 
 	size: z
 		.array(
