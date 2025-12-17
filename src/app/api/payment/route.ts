@@ -6,12 +6,12 @@ export async function POST(req: Request) {
 		const body = await req.json();
 		const url = req.headers.get('origin');
 		const tran_id = crypto.randomBytes(10).toString('hex');
-		const res = await fetch('https://fitback.shop/zafran1Order/new', {
+		const res = await fetch('https://taraz.qwikbistro.shop/tarazOrder/new', {
 			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
 				user_id: body.id,
-				customer_email: body.email,
+				customer_email: body.email || '',
 				customer_name: body.name,
 				total_amount: body.amount, //60 is shipping cost
 				customer_phone: body.phone,
