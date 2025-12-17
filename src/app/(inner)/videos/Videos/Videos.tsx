@@ -21,9 +21,11 @@ const Videos = ({data}: {data?: IVideo[]}) => {
 								<div className="row">
 									<div className="col-lg-12 p-xl-0">
 										<div className="row ">
-											<h2 className={`title-left m-0 mb-4`}>Pin Videos</h2>
+											{pinVideos && pinVideos.length > 0 && (
+												<h2 className={`title-left m-0 mb-4`}>Pin Videos</h2>
+											)}
 											{pinVideos?.map((product: IVideo, index: number) => (
-												<div className="col-xl-2 col-lg-3 col-md-4 col-6 p-xl-0 gap-2" key={index}>
+												<div className="col-lg-4 col-md-4 col-6  p-xl-0 gap-2" key={index}>
 													<div className=" m-0 mb-4">
 														<VideoCard video={product} />
 													</div>
@@ -33,7 +35,7 @@ const Videos = ({data}: {data?: IVideo[]}) => {
 										<div className="row ">
 											<h2 className={`title-left m-0 mb-4`}>All Videos</h2>
 											{data?.map((product: IVideo, index: number) => (
-												<div className="col-xl-2 col-lg-3 col-md-4 col-6 p-xl-0 gap-2" key={index}>
+												<div className="col-lg-4 col-md-4 col-6 p-xl-0 gap-2" key={index}>
 													<div className=" m-0 mb-4">
 														<VideoCard video={product} />
 													</div>
