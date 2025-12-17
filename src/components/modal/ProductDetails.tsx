@@ -22,7 +22,7 @@ const ProductDetails: React.FC<ModalProps> = ({show, handleClose, product}) => {
 		slug: Slug,
 		b_name,
 		b_description,
-		discountPrice: Price,
+		discountPrice: discount_price,
 		image1: ProductImage,
 		original_price: originalPrice,
 		description,
@@ -143,11 +143,14 @@ const ProductDetails: React.FC<ModalProps> = ({show, handleClose, product}) => {
 					)} */}
 
 									<span className="product-price">
-										{Price > 0 ? (
+										{discount_price > 0 ? (
 											<>
-												<span className="old-price">{`${originalPrice}`}</span>
-												<span className="tk">৳</span> {Price}
-												<span className="tk">৳</span>
+												<span className="current">
+													{`${discount_price}`} <span className="tk">৳</span>
+												</span>
+												<span className="previous">
+													{`${originalPrice}`} <span className="tk">৳</span>
+												</span>
 											</>
 										) : (
 											<>
