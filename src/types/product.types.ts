@@ -29,6 +29,9 @@ export interface IProduct {
 	system_date?: string;
 	isPublish?: boolean;
 	size?: ICategory[];
+	sub_categories?: ICategory;
+	colors?: ICategory[];
+	materials?: String;
 }
 
 interface ICategory {

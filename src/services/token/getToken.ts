@@ -51,7 +51,6 @@ export const getCurrentUser = async () => {
 
 		return null;
 	} catch (err) {
-		console.log('Invalid or expired token', err);
 		return null;
 	}
 };

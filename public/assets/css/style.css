@@ -23618,10 +23618,18 @@ body.modal-open {
   width: 30px;
   border-radius: 50%;
   display: flex;
+  font-size: 16px;
   align-items: center;
-  background: #ff0000;
+  transition: all 0.3s;
   justify-content: center;
-  color: #fff;
+  color: red;
+}
+
+.single-cart-area-list.main .product-main-cart .close i:hover {
+
+  background: red;
+
+  color: white;
 }
 
 .single-cart-area-list.main .price {
