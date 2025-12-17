@@ -18,6 +18,7 @@ import ZMultiSelect from '@/components/form/ZMultiSelect';
 import DynamicTextRows from '@/components/DynamicTextRows/DynamicTextRows';
 import {colorOptions, sizeOptions} from '../edit-product/[id]/options';
 import {generateBarcode} from '@/utils/generateBarcode';
+import ZRadio from '@/components/form/ZRadio';
 
 const AddProductPage = () => {
 	const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
@@ -26,6 +27,11 @@ const AddProductPage = () => {
 	const [rows, setRows] = useState([{id: 1, question: '', answer: ''}]);
 	const [selectedSizes, setSelectedSizes] = useState<{label: string; value: string}[]>([]);
 	const [isSizeable, setIsSizeable] = useState<boolean | null>(null);
+	const [isSubcategoryDisabled, setIsSubcategoryDisabled] = useState<boolean>(true);
+	const [subcategoriesOption, setSubCategoriesOption] = useState<
+		{label: string; value: string}[] | null
+	>(null);
+
 	const router = useRouter();
 	const handleSubmit = async (data: FieldValues) => {
 		// get images name images like : image1:file1 , image2:file2
@@ -62,7 +68,9 @@ const AddProductPage = () => {
 		data.isSizeable = isSizeable;
 		data.stocks = isSizeable ? 0 : data.stocks;
 		data.barcode = barcode;
-		data.isPublish = data.isPublish?.value ?? false;
+		data.isPublish = data.isPublish === 'true' ? true : false;
+		data.sub_categories = data.sub_categories ? JSON.stringify(data.sub_categories) : null;
+
 		// append images to data
 		uploadedImages.forEach((image, index) => {
 			data[`image${index + 1}`] = image.file;
@@ -89,6 +97,25 @@ const AddProductPage = () => {
 			label: category.name,
 			value: category.value,
 		})) || [];
+	const handleCategoryChange = (value: string) => {
+		const selectedCat = categories?.find(
+			(cat: {name: string; value: string}) => cat.value === value,
+		);
+		if (selectedCat && selectedCat.sub_categories.length > 0) {
+			const subCatOptions = selectedCat.sub_categories.map(
+				(subCat: {name: string; value: string}) => ({
+					label: subCat.name,
+					value: subCat.value,
+				}),
+			);
+			setSubCategoriesOption(subCatOptions);
+			setIsSubcategoryDisabled(false);
+		} else {
+			setSubCategoriesOption([]);
+			setIsSubcategoryDisabled(true);
+			setSubCategoriesOption(null);
+		}
+	};
 	return (
 		<div className="body-root-inner">
 			<div className="transection">
@@ -102,50 +129,39 @@ const AddProductPage = () => {
 							</div>
 
 							<div className="input-main-wrapper">
-								<ZForm
-									onSubmit={handleSubmit}
-									resolver={zodResolver(productSchema)}
-									// defaultValues={{
-									// 	name: 'Hello',
-									// 	categories: [
-									// 		{
-									// 			label: 'Taraaz Clothing',
-									// 			value: 'Taraaz Clothing',
-									// 		},
-									// 	],
-									// 	size: selectedSizes,
-									// }}
-								>
+								<ZForm onSubmit={handleSubmit} resolver={zodResolver(productSchema)}>
 									<div className="row">
 										<div className="single-input col-md-6 col-12">
-											<label htmlFor="productName">Product English Name</label>
-											<ZInput name="name" label="Product English Name" type="text" />
+											<label htmlFor="productName">Product Name</label>
+											<ZInput name="name" label="Product Name" type="text" />
 										</div>
 										<div className="single-input col-md-6" style={{height: '60px'}}>
-											<label htmlFor="productName">Are You Publish This Product</label>
-											<ZMultiSelect
-												label="Select Sizes"
-												name="publish"
-												isMulti={false}
+											<label htmlFor="productName">Publish this product?</label>
+
+											<ZRadio
+												name="isPublish"
 												options={[
-													{label: 'Yes', value: true},
-													{label: 'No', value: false},
+													{label: 'Yes, Publish', value: 'true'},
+													{label: 'No, Save as Draft', value: 'false'},
 												]}
-												style={{height: '60px'}}
 											/>
 										</div>
 									</div>
 									<div className="row">
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Price </label>
 											<ZInput name="original_price" label="Price" type="text" />
 										</div>
+										<div className="single-input col-md-3">
+											<label htmlFor="productName">Discount Price </label>
+											<ZInput name="discount_price" label="Discount Price" type="text" />
+										</div>
 
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Material</label>
 											<ZInput name="material" label="Cotton, Silk, Wool" type="text" />
 										</div>
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Fit</label>
 											<ZInput name="fit" label="Slim, Regular, Loose" type="text" />
 										</div>
@@ -157,39 +173,56 @@ const AddProductPage = () => {
 												name="categories"
 												label="Product Category"
 												options={options}
+												onChange={(values: any) => {
+													handleCategoryChange(values.value);
+												}}
 											/>
 										</div>
 										<div className="single-input col-md-6">
-											<label htmlFor="productName">Is This Product Sizeable?</label>
+											<label htmlFor="productName">Product Sub Category </label>
 											<ZMultiSelect
 												isMulti={false}
-												name="isSizeable"
-												label="Is This Product Sizeable?"
-												options={[
-													{label: 'Yes', value: true},
-													{label: 'No', value: false},
-												]}
-												onChange={(values: any) => setIsSizeable(values.value)}
+												name="sub_categories"
+												label="Product Sub Category"
+												options={subcategoriesOption || []}
+												isDisabled={isSubcategoryDisabled}
 											/>
 										</div>
-
-										{isSizeable && (
-											<div className="single-input col-md-12">
-												<label htmlFor="productName">Size</label>
+										<div className="row">
+											<div
+												className={`single-input ${isSizeable === null ? 'col-md-12' : 'col-md-6'}`}
+											>
+												<label htmlFor="productName">Is This Product Sizeable?</label>
 												<ZMultiSelect
-													label="Select Sizes"
-													name="size"
-													options={sizeOptions}
-													onChange={(values: any) => setSelectedSizes(values)}
+													isMulti={false}
+													name="isSizeable"
+													label="Is This Product Sizeable?"
+													options={[
+														{label: 'Yes', value: true},
+														{label: 'No', value: false},
+													]}
+													onChange={(values: any) => setIsSizeable(values.value)}
 												/>
 											</div>
-										)}
-										{isSizeable === false && (
-											<div className="single-input col-md-12">
-												<label htmlFor="productName">Add Total Stocks </label>
-												<ZInput name="stocks" label="Stocks" type="text" />
-											</div>
-										)}
+
+											{isSizeable && (
+												<div className="single-input col-md-6">
+													<label htmlFor="productName">Size</label>
+													<ZMultiSelect
+														label="Select Sizes"
+														name="size"
+														options={sizeOptions}
+														onChange={(values: any) => setSelectedSizes(values)}
+													/>
+												</div>
+											)}
+											{isSizeable === false && (
+												<div className="single-input col-md-6">
+													<label htmlFor="productName">Add Total Stocks </label>
+													<ZInput name="stocks" label="Stocks" type="text" />
+												</div>
+											)}
+										</div>
 										{selectedSizes.length > 0 && (
 											<div className="row mt-3">
 												<h5>Enter Stocks Per Size</h5>
