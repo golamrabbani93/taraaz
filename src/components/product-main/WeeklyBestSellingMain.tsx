@@ -144,14 +144,14 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 					>
 						<i className="fa-light fa-heart" />
 					</span>
-					<span
+					{/* <span
 						className="single-action openuptip cta-quickview product-details-popup-btn ms-1"
 						data-flow="up"
 						title={language === 'en' ? 'Quick View' : 'দ্রুত দেখুন'}
 						onClick={() => setActiveModal('two')}
 					>
 						<i className="fa-regular fa-eye" />
-					</span>
+					</span> */}
 				</div>
 			</div>
 
@@ -171,16 +171,16 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 				{/* <span className="availability">{weight} Pack</span> */}
 				<div className="price-area">
 					{Price > 0 ? (
-						<>
+						<div className="current d-flex justify-content-between align-items-center w-full">
 							<span className="current">
-								{`${Price}`}
-								<span className="tk">TK</span>
+								{`${Price.toString().split('.')[0]}`}
+								<span className="tk">৳</span>
 							</span>
-							<div className="previous">
+							<span className="previous ms-3" style={{fontSize: '15px'}}>
 								{`${original_Price}`}
 								<span className="tk">৳</span>
-							</div>
-						</>
+							</span>
+						</div>
 					) : (
 						<div className="current d-flex justify-content-between align-items-center w-full">
 							<div>
@@ -302,7 +302,7 @@ const BlogGridMain = ({product}: {product: IProduct}) => {
 			</div>
 
 			{/* <CompareModal show={activeModal === 'one'} handleClose={handleClose} /> */}
-			<ProductDetails show={activeModal === 'two'} handleClose={handleClose} product={product} />
+			{/* <ProductDetails show={activeModal === 'two'} handleClose={handleClose} product={product} /> */}
 			<SizeModal
 				data={size}
 				setSizeData={setSizeData}
