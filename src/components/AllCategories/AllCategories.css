@@ -1,0 +1,304 @@
+/* ROOT */
+.all-categories {
+  position: relative;
+  z-index: 2;
+}
+
+/* TOGGLE BUTTON */
+.categories-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #111;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.categories-toggle:hover {
+  background: #333;
+}
+
+.categories-count {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* DROPDOWN */
+.categories-dropdown {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 320px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+
+  /* Changed from hidden to visible */
+  animation: fadeIn 0.2s ease-out;
+  max-height: 70vh;
+  /* Limit max height */
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HEADER */
+.categories-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  flex-shrink: 0;
+  /* Prevent header from shrinking */
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: red;
+  transition: color 0.2s;
+  width: 32px;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+/* CATEGORY LIST */
+.categories-list {
+  flex: 1;
+  /* Take remaining space */
+
+  /* Scroll only the list */
+  max-height: calc(70vh - 60px);
+  /* Adjust based on header height */
+  padding: 0;
+}
+
+/* CATEGORY ITEM */
+.category-item {
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.category-item:last-child {
+  border-bottom: none;
+}
+
+.main-category {
+  position: relative;
+  /* For subcategories positioning */
+}
+
+/* CATEGORY LINK */
+.category-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  width: 100%;
+  color: #222;
+  text-decoration: none;
+  transition: background 0.2s;
+  position: relative;
+  z-index: 2;
+  /* Ensure link is above subcategories */
+  background: white;
+  /* Ensure background covers subcategories */
+}
+
+.category-link:hover {
+  background: #f4f4f4;
+}
+
+.category-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.category-arrow {
+  font-size: 12px;
+  opacity: 0.6;
+  transition: transform 0.2s;
+}
+
+/* SUBCATEGORIES PANEL */
+.subcategories-container {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 260px;
+  background: #fff;
+  border-left: 1px solid #eee;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 1001;
+  /* Higher than dropdown */
+  max-height: 70vh;
+  /* Limit height */
+  /* overflow-y: auto; */
+  /* Add scroll if too many subcategories */
+  border-radius: 0 10px 10px 0;
+  /* Round right corners */
+}
+
+/* Show subcategories on hover */
+.category-item:hover .subcategories-container {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* SUBCATEGORY LIST */
+.subcategories-list {
+  padding: 10px 0;
+}
+
+.subcategory-item {
+  display: block;
+  padding: 10px 16px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s;
+  white-space: nowrap;
+  /* Prevent text wrapping */
+}
+
+.subcategory-item:hover {
+  background: #f2f2f2;
+}
+
+/* Scrollbar styling for categories list */
+.categories-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.categories-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.categories-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.categories-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Scrollbar styling for subcategories */
+.subcategories-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.subcategories-container::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+
+.subcategories-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* MOBILE FIXES */
+@media (max-width: 768px) {
+  .categories-dropdown {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    animation: slideIn 0.3s ease-out;
+    max-height: 100vh;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .categories-list {
+    max-height: calc(100vh - 60px);
+  }
+
+  .subcategories-container {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    border-left: none;
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+    max-height: 0;
+    /* overflow: hidden; */
+    animation: none;
+    margin: 0;
+    border-radius: 0;
+    background: #f9f9f9;
+  }
+
+  .category-item.active .subcategories-container {
+    max-height: 500px;
+    /* overflow-y: auto; */
+  }
+
+  .category-item:hover .subcategories-container {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .category-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .category-item.active .category-arrow {
+    transform: rotate(90deg);
+  }
+
+  .category-link {
+    background: white;
+  }
+
+  .category-item.active .category-link {
+    background: #f4f4f4;
+  }
+
+  .subcategory-item {
+    padding-left: 32px;
+    /* Indent subcategories on mobile */
+    background: #f9f9f9;
+  }
+
+  .subcategory-item:hover {
+    background: #eee;
+  }
+}
