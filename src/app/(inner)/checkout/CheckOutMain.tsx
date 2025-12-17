@@ -45,7 +45,7 @@ export default function CheckOutMain() {
 					id: userData?.id,
 					password_hash: userData?.password_hash,
 					name: data.name,
-					email: data.email,
+					email: data.email || '',
 					phone: data.phone,
 					address: data.address,
 				}).unwrap();
@@ -64,13 +64,7 @@ export default function CheckOutMain() {
 	const checkIfPlaceOrderShouldBeDisabled = () => {
 		if (currentUser?.id) {
 			// Logged-in user flow
-			if (
-				!userData?.id ||
-				!userData?.name ||
-				!userData?.email ||
-				!userData?.phone ||
-				!userData?.address
-			) {
+			if (!userData?.id || !userData?.name || !userData?.phone || !userData?.address) {
 				toast.error(
 					language === 'en'
 						? 'Please fill in your details to place the order.'
@@ -83,7 +77,6 @@ export default function CheckOutMain() {
 			if (
 				!optionalUserData?.id ||
 				!optionalUserData?.name ||
-				!optionalUserData?.email ||
 				!optionalUserData?.phone ||
 				!optionalUserData?.address
 			) {
@@ -109,12 +102,8 @@ export default function CheckOutMain() {
 		}
 	};
 	const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-	console.log('🚀🚀 ~ CheckOutMain ~ cartItems:', cartItems);
-	console.log('🚀🚀 ~ CheckOutMain ~ subtotal:', subtotal);
 	const shippingCost = DEFAULT_SHIPPING_COST || 0;
-	console.log('🚀🚀 ~ CheckOutMain ~ shippingCost:', shippingCost);
 	const total = subtotal + shippingCost;
-	console.log('🚀🚀 ~ CheckOutMain ~ total:', total);
 
 	const handlePayment = async () => {
 		setRedirecting(true);
@@ -122,7 +111,7 @@ export default function CheckOutMain() {
 			// Decide source of customer data
 			const customer = currentUser?.id ? userData : optionalUserData;
 
-			if (!customer?.name || !customer?.email || !customer?.phone || !customer?.address) {
+			if (!customer?.name || !customer?.phone || !customer?.address) {
 				toast.error(
 					language === 'en'
 						? 'Please fill in all billing details before placing the order.'
@@ -169,7 +158,7 @@ export default function CheckOutMain() {
 		const customer = currentUser?.id ? userData : optionalUserData;
 		const data = {
 			user_id: customer.id,
-			customer_email: customer.email,
+			customer_email: customer.email ? customer.email : '',
 			customer_name: customer.name,
 			total_amount: total,
 			customer_phone: customer.phone,
@@ -247,7 +236,8 @@ export default function CheckOutMain() {
 
 									<div className="single-input">
 										<label>
-											{language === 'en' ? 'Email' : 'ইমেইল'} <span className="text-danger">*</span>
+											{language === 'en' ? 'Email' : 'ইমেইল'}{' '}
+											<span style={{fontSize: '10px'}}>(optional)</span>
 										</label>
 										<ZInput name="email" type="email" label="Your Email" />
 									</div>
@@ -289,8 +279,8 @@ export default function CheckOutMain() {
 								{cartItems.length === 0 ? (
 									<p>{language === 'en' ? 'Your cart is empty.' : 'আপনার কার্ট খালি।'}</p>
 								) : (
-									cartItems.map((item) => (
-										<div className="single-shop-list" key={item.id}>
+									cartItems.map((item, i) => (
+										<div className="single-shop-list" key={i}>
 											<div className="left-area">
 												<img
 													src={item.image}
@@ -306,7 +296,7 @@ export default function CheckOutMain() {
 													{item.title} × {item.quantity} {item.size ? `(${item.size})` : ''}
 												</span>
 											</div>
-											<span className="price " style={{width: '80px', textAlign: 'right'}}>
+											<span className="price " style={{width: '90px', textAlign: 'right'}}>
 												{item.price * item.quantity} ৳
 											</span>
 										</div>
@@ -353,7 +343,7 @@ export default function CheckOutMain() {
 												{language === 'en' ? 'Cash On Delivery' : 'ক্যাশ অন ডেলিভারি'}
 											</label>
 										</li>
-										{/* <li onClick={() => setOnlinePaymentSelected(true)}>
+										<li onClick={() => setOnlinePaymentSelected(true)}>
 											<input
 												type="radio"
 												id="online"
@@ -364,7 +354,7 @@ export default function CheckOutMain() {
 											<label htmlFor="online">
 												{language === 'en' ? 'Online Payment' : 'অনলাইন পেমেন্ট'}
 											</label>
-										</li> */}
+										</li>
 									</ul>
 
 									{onlinePaymentSelected ? (
