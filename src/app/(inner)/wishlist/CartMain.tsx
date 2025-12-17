@@ -126,7 +126,7 @@ const CartMain = () => {
 										</div>
 									</div>
 									<div className="price">
-										<p>{item.price.toFixed(2)}৳</p>
+										<p>{item?.price?.toString()?.split('.')[0]}৳</p>
 									</div>
 									<div className="quantity">
 										<div className="quantity-edit">
@@ -150,7 +150,7 @@ const CartMain = () => {
 										</div>
 									</div>
 									<div className="subtotal">
-										<p>{(item.price * item.quantity).toFixed(2)}৳</p>
+										<p>{item.price * item.quantity}৳</p>
 									</div>
 									<div className="button-area">
 										<a
@@ -177,11 +177,11 @@ const CartMain = () => {
 							))}
 
 							{/* Coupon + Clear */}
-							<div className="bottom-cupon-code-cart-area">
+							{/* <div className="bottom-cupon-code-cart-area">
 								<button onClick={clearCart} className="rts-btn btn-primary mr--50">
 									{language === 'en' ? 'Clear Wishlist' : 'ইচ্ছেতালিকা পরিষ্কার করুন'}
 								</button>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
