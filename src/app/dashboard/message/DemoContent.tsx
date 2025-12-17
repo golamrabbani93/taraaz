@@ -76,13 +76,13 @@ const MessageTable = () => {
 					>
 						View
 					</button>
-					{/* <button
+					<button
 						onClick={() => openDeleteModal(row.id.toString())}
 						className="delete-button btn btn-danger"
 						style={{height: '36px', fontSize: '14px'}}
 					>
 						Delete
-					</button> */}
+					</button>
 				</>
 			),
 		},
