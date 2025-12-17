@@ -151,7 +151,7 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 						{finalData?.map((item: IOrderItemData, index: number) => (
 							<tr key={index}>
 								<td>{item.name}</td>
-								<td>৳{item.price.toFixed(2)}</td>
+								<td>৳{item.price}</td>
 								<td>{item.quantity}</td>
 								<td>{item.size ? item.size : '--'}</td>
 								<td className={styles.amount}>৳{(item.amount ?? 0).toFixed(2)}</td>
@@ -162,15 +162,12 @@ const Invoice: React.FC<InvoiceProps> = ({id}) => {
 
 				{/* Totals */}
 				<div className={styles.totals}>
-					<p>Subtotal: ৳ {productTotals?.toFixed(2)}</p>
+					<p>Subtotal: ৳ {productTotals}</p>
 
 					<hr style={{border: 'none', borderTop: '1px solid #ddd', margin: '10px 0'}} />
-					<p>
-						Shipping Cost: ৳{' '}
-						{singleOrder?.provider === 'Outside Dhaka' ? (120.0).toFixed(2) : (70.0).toFixed(2)}
-					</p>
+					<p>Shipping Cost: ৳ {singleOrder?.provider === 'Outside Dhaka' ? 120.0 : 70.0}</p>
 					{/* <hr style={{border: 'none', borderTop: '1px solid #ddd', margin: '10px 0'}} /> */}
-					<p className={styles.total}>Total: ৳ {Number(singleOrder?.total_amount)?.toFixed(2)}</p>
+					<p className={styles.total}>Total: ৳ {Number(singleOrder?.total_amount)}</p>
 				</div>
 
 				{/* Footer */}
