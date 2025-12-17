@@ -16,6 +16,7 @@ interface Product {
 	id: number;
 	name: string;
 	original_price: string;
+	discount_price?: string; // Fixed: consistent with getPrice function
 	stocks: number;
 	barcode: string | number;
 	stocks_size?: {size: string; stock: number; barcode: number}[];
@@ -46,6 +47,13 @@ const POSDashboard = () => {
 	const [loadingText, setLoadingText] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
 
+	// Helper function to get price (use discount_price if > 0, otherwise original_price)
+	const getPrice = (product: Product | CartItem): number => {
+		const discountPrice = parseFloat(product.discount_price || '0'); // Fixed: changed to discount_price
+		const originalPrice = parseFloat(product.original_price || '0');
+		return discountPrice > 0 ? discountPrice : originalPrice;
+	};
+
 	// Load products
 	useEffect(() => {
 		if (productsData) setProducts(productsData);
@@ -56,59 +64,142 @@ const POSDashboard = () => {
 		inputRef.current?.focus();
 	});
 
-	// AUTO-SCANNER INPUT
-	let scanTimer: NodeJS.Timeout | null = null;
+	const isProcessingRef = useRef(false);
+	const scanTimerRef = useRef<NodeJS.Timeout | null>(null);
+	const barcodeDigitsRef = useRef('');
 
 	const handleKeyPress = (e: any) => {
 		const char = e.key;
 		if (!/^[0-9]$/.test(char)) return;
 
-		setBarcode((prev) => {
-			const newCode = prev + char;
-			if (scanTimer) clearTimeout(scanTimer);
-			scanTimer = setTimeout(() => {
-				handleScanBarcode(newCode);
-				setBarcode('');
-			}, 120);
-			return newCode;
-		});
+		// Add to ref
+		barcodeDigitsRef.current += char;
+		setBarcode(barcodeDigitsRef.current);
+
+		// Clear previous timer
+		if (scanTimerRef.current) clearTimeout(scanTimerRef.current);
+
+		// If we have exactly 12 digits, process immediately
+		if (barcodeDigitsRef.current.length === 12) {
+			handleScanBarcode(barcodeDigitsRef.current);
+			return;
+		}
+
+		// Set timeout for scanner
+		scanTimerRef.current = setTimeout(() => {
+			if (barcodeDigitsRef.current.length >= 8) {
+				handleScanBarcode(barcodeDigitsRef.current);
+			}
+		}, 80);
 	};
 
 	const handleScanBarcode = (code: string) => {
-		if (!code.trim()) return;
+		// Prevent multiple processing
+		if (isProcessingRef.current) {
+			console.log('Already processing barcode, skipping:', code);
+			return;
+		}
+
+		isProcessingRef.current = true;
+
+		if (!code.trim() || code.length < 8) {
+			isProcessingRef.current = false;
+			return;
+		}
+
+		console.log('Processing barcode:', code);
 
 		let product: Product | undefined;
 		let stockItem: {size: string; stock: number; barcode: number} | undefined;
+		const prefix = code.substring(0, 2);
 
-		if (code.startsWith('11')) {
-			// Normal product barcode
-			product = products.find((p) => String(p.barcode) === code.trim());
-		} else if (code.startsWith('22')) {
-			// Size-specific barcode
+		if (prefix === '11') {
+			product = products.find((p) => String(p.barcode).trim() === code);
+		} else if (prefix === '22') {
 			for (let p of products) {
-				const found = p.stocks_size?.find((s) => String(s.barcode) === code.trim());
-				if (found) {
-					product = p;
-					stockItem = found;
-					break;
+				if (p.stocks_size) {
+					const found = p.stocks_size?.find((s) => String(s.barcode).trim() === code);
+					if (found) {
+						product = p;
+						stockItem = found;
+						break;
+					}
+				}
+			}
+		} else {
+			product = products.find((p) => String(p.barcode).trim() === code);
+			if (!product) {
+				for (let p of products) {
+					if (p.stocks_size) {
+						const found = p.stocks_size?.find((s) => String(s.barcode).trim() === code);
+						if (found) {
+							product = p;
+							stockItem = found;
+							break;
+						}
+					}
 				}
 			}
 		}
 
 		if (!product) {
-			setErrorMessage('❌ Product Not Found');
+			console.log('❌ Product not found:', code);
+			setErrorMessage(`❌ Product Not Found\nBarcode: ${code}`);
 			setIsErrorModalOpen(true);
-			return;
+		} else {
+			console.log('✅ Found product:', product.name);
+
+			// Check stock before adding to cart
+			if (stockItem) {
+				// Check size-specific stock
+				// if (stockItem.stock <= 0) {
+				// 	setErrorMessage(
+				// 		`❌ Out of Stock\n${product.name} - Size: ${stockItem.size}\nCurrent stock: ${stockItem.stock}`,
+				// 	);
+				// 	setIsErrorModalOpen(true);
+				// } else {
+				addToCartSize(product, stockItem);
+				// }
+			} else {
+				// Check normal product stock
+				// if (product.stocks <= 0) {
+				// 	setErrorMessage(`❌ Out of Stock\n${product.name}\nCurrent stock: ${product.stocks}`);
+				// 	setIsErrorModalOpen(true);
+				// } else {
+				addToCart(product);
+				// }
+			}
 		}
 
-		if (stockItem) {
-			addToCartSize(product, stockItem);
-		} else {
-			addToCart(product);
+		// Reset everything
+		barcodeDigitsRef.current = '';
+		setBarcode('');
+		if (scanTimerRef.current) {
+			clearTimeout(scanTimerRef.current);
+			scanTimerRef.current = null;
 		}
+
+		// Allow new scans after a short delay
+		setTimeout(() => {
+			isProcessingRef.current = false;
+		}, 100);
 	};
 
+	// Cleanup effect
+	useEffect(() => {
+		return () => {
+			if (scanTimerRef.current) clearTimeout(scanTimerRef.current);
+		};
+	}, []);
+
 	const addToCart = (product: Product) => {
+		// Double-check stock before adding
+		// if (product.stocks <= 0) {
+		// 	setErrorMessage(`❌ Out of Stock\n${product.name}\nCurrent stock: ${product.stocks}`);
+		// 	setIsErrorModalOpen(true);
+		// 	return;
+		// }
+
 		setCart((prev) => {
 			const existing = prev.find((c) => c.id === product.id);
 			if (existing)
@@ -122,6 +213,15 @@ const POSDashboard = () => {
 		product: Product,
 		stockItem: {size: string; stock: number; barcode: number},
 	) => {
+		// Double-check stock before adding
+		// if (stockItem.stock <= 0) {
+		// 	setErrorMessage(
+		// 		`❌ Out of Stock\n${product.name} - Size: ${stockItem.size}\nCurrent stock: ${stockItem.stock}`,
+		// 	);
+		// 	setIsErrorModalOpen(true);
+		// 	return;
+		// }
+
 		setCart((prev) => {
 			const existing = prev.find((c) => c.id === product.id && c.size === stockItem.size);
 			if (existing)
@@ -140,19 +240,63 @@ const POSDashboard = () => {
 			return;
 		}
 
+		// Check stock before manual add
+		if (product.stocks <= 0) {
+			setErrorMessage(`❌ Out of Stock\n${product.name}\nCurrent stock: ${product.stocks}`);
+			setIsErrorModalOpen(true);
+			return;
+		}
+
 		addToCart(product);
 		setShowManualList(false);
 	};
 
-	const changeQty = (id: number, type: 'inc' | 'dec', isSizeable?: boolean) => {
+	const changeQty = (id: number, type: 'inc' | 'dec', isSizeable?: boolean, size?: string) => {
 		setCart((prev) =>
 			prev.map((item) => {
-				if (item.id !== id || item.isSizeable !== isSizeable) return item;
+				// For sizeable products
+				if (isSizeable && size) {
+					// Check if this is the exact sizeable item we want to update
+					if (item.id !== id || !item.isSizeable || item.size !== size) {
+						return item;
+					}
 
-				if (type === 'inc') {
-					return {...item, quantity: item.quantity + 1};
+					if (type === 'inc') {
+						const stockItem = item.stocks_size?.find((s) => s.size === size);
+						if (stockItem && stockItem.stock <= item.quantity) {
+							setErrorMessage(
+								`❌ Not enough stock for size ${size}\nCurrent stock: ${stockItem.stock}`,
+							);
+							setIsErrorModalOpen(true);
+							return item;
+						}
+						return {...item, quantity: item.quantity + 1};
+					}
+					if (type === 'dec' && item.quantity > 1) {
+						return {...item, quantity: item.quantity - 1};
+					}
 				}
-				if (type === 'dec' && item.quantity > 1) return {...item, quantity: item.quantity - 1};
+				// For non-sizeable products
+				else {
+					// Check if this is the exact non-sizeable item we want to update
+					if (item.id !== id || item.isSizeable) {
+						return item;
+					}
+
+					if (type === 'inc') {
+						if (item.stocks <= item.quantity) {
+							setErrorMessage(
+								`❌ Not enough stock for ${item.name}\nCurrent stock: ${item.stocks}`,
+							);
+							setIsErrorModalOpen(true);
+							return item;
+						}
+						return {...item, quantity: item.quantity + 1};
+					}
+					if (type === 'dec' && item.quantity > 1) {
+						return {...item, quantity: item.quantity - 1};
+					}
+				}
 
 				return item;
 			}),
@@ -312,14 +456,20 @@ const POSDashboard = () => {
 							{cart.map((item) => (
 								<tr key={item.id + (item.size ?? '')} className="text-black">
 									<td>{item.name}</td>
-									<td>{parseInt(item.original_price)} ৳</td>
+									<td>{getPrice(item)} ৳</td>
 									{item?.isSizeable ? <td>{item.size ?? '-'}</td> : <td>-</td>}
-									<td className="d-flex gap-3 justify-content-between align-items-center">
-										<button onClick={() => changeQty(item.id, 'dec', item.isSizeable)}>-</button>
-										<span>{item.quantity}</span>
-										<button onClick={() => changeQty(item.id, 'inc', item.isSizeable)}>+</button>
+									<td>
+										<span className="d-flex gap-3 justify-content-between align-items-center">
+											<button onClick={() => changeQty(item.id, 'dec', item.isSizeable, item.size)}>
+												-
+											</button>
+											<span>{item.quantity}</span>
+											<button onClick={() => changeQty(item.id, 'inc', item.isSizeable, item.size)}>
+												+
+											</button>
+										</span>
 									</td>
-									<td>{parseInt(item.original_price) * item.quantity} ৳</td>
+									<td>{getPrice(item) * item.quantity} ৳</td>
 									<td>
 										<button
 											className="btn btn-danger"
@@ -334,7 +484,7 @@ const POSDashboard = () => {
 					</table>
 
 					<div className={styles.checkout}>
-						<p>Total: {cart.reduce((s, i) => s + parseInt(i.original_price) * i.quantity, 0)} ৳</p>
+						<p>Total: {cart.reduce((s, i) => s + getPrice(i) * i.quantity, 0)} ৳</p>
 
 						<div className="d-flex gap-4 justify-content-between">
 							<button onClick={completeSale} className={styles.saleBtn} disabled={isLoading}>
@@ -353,77 +503,6 @@ const POSDashboard = () => {
 				</div>
 			</div>
 
-			{/* MANUAL PRODUCT POPUP */}
-			{showManualList && (
-				<div className={styles.manualPopup} onClick={() => setShowManualList(false)}>
-					<div className={styles.manualBox} onClick={(e) => e.stopPropagation()}>
-						<h3>Select Product</h3>
-						<button
-							className="btn btn-danger mb-4 me-auto"
-							onClick={() => setShowManualList(false)}
-							style={{width: '40px', height: '40px', fontSize: '20px'}}
-						>
-							✖
-						</button>
-
-						<table className={styles.productTable}>
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Price</th>
-									<th>Stock</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								{products.map((p) => (
-									<tr key={p.id}>
-										<td>{p.name}</td>
-										<td>৳ {p.original_price}</td>
-										<td>
-											{p.isSizeable ? (
-												<span
-													style={{
-														backgroundColor: '#28a745',
-														color: 'white',
-														padding: '2px 6px',
-														borderRadius: '4px',
-														fontSize: '16px',
-														fontWeight: 'bold',
-													}}
-												>
-													Sizeable
-												</span>
-											) : (
-												<span style={{fontSize: '16px', fontWeight: 'bold'}}>{p.stocks}</span>
-											)}
-										</td>
-										<td>
-											<button
-												className="btn btn-primary text-white"
-												onClick={() => manualAddProduct(p)}
-												style={{fontSize: '12px'}}
-											>
-												Add
-											</button>
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			)}
-			<button
-				onClick={() => handleScanBarcode('229804092989')} // Replace "12345" with a real barcode from your products
-			>
-				Simulate Scan
-			</button>
-			<button
-				onClick={() => handleScanBarcode('221605007722')} // Replace "12345" with a real barcode from your products
-			>
-				Simulate Scan
-			</button>
 			{/* Modals */}
 			<SuccessModal
 				isOpen={isSuccessModalOpen}
