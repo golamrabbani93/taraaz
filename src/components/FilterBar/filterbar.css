@@ -1,149 +1,286 @@
-/* GENERAL WRAPPER */
-.filter-wrapper {
-  position: relative;
+/* FilterBar.css - Updated for permanent sidebar */
+
+/* Permanent Sidebar */
+.filter-sidebar-permanent {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-/* TOGGLE BUTTON */
-.filter-toggle-btn {
-  /* position: fixed; */
-  top: 20px;
-  left: 20px;
-  background: #232f3e;
-  /* Amazon dark blue */
-  color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  z-index: 1001;
+/* Mobile Sidebar (keeps existing behavior) */
+.filter-sidebar-mobile {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 320px;
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+  padding: 20px;
 }
 
-.filter-toggle-btn:hover {
-  background: #131921;
+.filter-sidebar-mobile.open {
+  left: 0;
 }
 
-/* OVERLAY */
+/* Overlay for Mobile */
 .filter-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   z-index: 999;
-
+  display: none;
 }
 
-/* SIDEBAR */
-.filter-sidebar {
-  position: fixed;
-  top: 0;
-  left: -320px;
-  width: 300px;
-  height: 100vh;
-  background: white;
-  border-right: 1px solid #ddd;
-  padding: 20px;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  z-index: 1000;
-  /* add scroll bar width 0 */
-  scrollbar-width: thin;
-  scrollbar-color: #ccc transparent;
+@media (max-width: 992px) {
+  .filter-overlay {
+    display: block;
+  }
 }
 
-.filter-sidebar.open {
-  left: 0;
+/* Filter Section Styling */
+.filter-section {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
 }
 
-/* SECTION TITLE */
+.filter-section:last-child {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
 .filter-title {
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 10px;
-  color: #111;
+  color: #333;
+  margin: 0;
 }
 
-/* SECTION BLOCK */
-.filter-section {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
+.filter-main-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 20px 0;
+}
+
+/* Price Inputs */
+.price-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-/* INPUT ROW */
 .filter-row {
   display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.filter-row label {
-  width: 50px;
-  color: #333;
+.price-label {
   font-size: 14px;
+  font-weight: 500;
+  color: #555;
 }
 
-/* INPUT BOX */
+.price-input-wrapper {
+  position: relative;
+}
+
+.price-prefix {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-weight: 500;
+}
+
 .input-box {
   width: 100%;
-  padding: 7px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 8px 10px 8px 30px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 .input-box:focus {
-  border-color: #f0c14b;
-  /* Amazon yellow border */
   outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
-/* RANGE SLIDER */
+/* Range Slider */
+.range-slider-container {
+  position: relative;
+  height: 40px;
+  margin: 20px 0;
+}
+
 .range-slider {
+  position: absolute;
   width: 100%;
-  margin: 10px 0;
+  height: 4px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-/* PRICE LABEL */
-.price-label {
+.range-slider::-webkit-slider-thumb {
+  pointer-events: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Price Display */
+.price-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.current-price {
+  font-weight: 600;
+  color: #333;
+}
+
+.reset-price-btn {
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-price-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Categories */
+.categories-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.category-group {
+  margin-bottom: 10px;
+}
+
+.main-category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.main-category-checkbox {
+  flex: 1;
+}
+
+.category-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.category-count {
+  font-size: 12px;
+  color: #666;
+  margin-left: 5px;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 12px;
+}
+
+.expand-btn:hover {
+  color: #333;
+}
+
+/* Subcategories */
+.subcategories-list {
+  padding-left: 20px;
+  margin-top: 5px;
+  border-left: 2px solid #eee;
+}
+
+.subcategory-checkbox {
+  padding: 5px 0;
+}
+
+.subcategory-name {
   font-size: 14px;
-  color: #444;
+  color: #555;
 }
 
-/* CHECKBOX STYLES */
+/* Checkbox Styling */
 .checkbox-item {
   display: flex;
   align-items: center;
-  margin: 8px 0;
   cursor: pointer;
-  font-size: 14px;
+  margin-bottom: 8px;
   position: relative;
-  padding-left: 28px;
+  padding-left: 30px;
 }
 
-.checkbox-item input {
+.checkbox-item input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
 .checkmark {
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   height: 18px;
   width: 18px;
   background-color: #fff;
-  border: 1px solid #777;
+  border: 2px solid #ddd;
   border-radius: 3px;
 }
 
-/* Checked state */
 .checkbox-item input:checked~.checkmark {
-  background-color: #f0c14b;
-  /* Amazon yellow */
-  border-color: #b38b00;
+  background-color: #007bff;
+  border-color: #007bff;
 }
 
 .checkmark:after {
@@ -156,13 +293,78 @@
   display: block;
 }
 
-/* Check icon */
-.checkmark:after {
+.checkbox-item .checkmark:after {
   left: 5px;
-  top: 1px;
-  width: 4px;
-  height: 10px;
-  border: solid #111;
+  top: 2px;
+  width: 5px;
+  height: 8px;
+  border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+}
+
+/* Selected Summary */
+.selected-summary {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* Active Filters */
+.active-filters {
+  background: #f8f9fa;
+}
+
+/* Buttons */
+.clear-all-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.clear-all-btn:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Actions */
+.filter-actions {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 15px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+}
+
+.apply-filters-btn {
+  flex: 2;
+}
+
+.reset-filters-btn {
+  flex: 1;
+}
+
+/* Scrollbar Styling */
+.categories-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.categories-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.categories-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
