@@ -21,13 +21,9 @@ const FilterBar = ({
 	maxPrice,
 	setMinPrice,
 	setMaxPrice,
-	selectedCategories,
-	setSelectedCategories,
 	setAllCategories,
 }: FilterBarProps) => {
-	const allBrands = ['Nike', 'Adidas', 'Puma', "Levi's"];
 	const {data: categories} = useGetAllCategoriesQuery('');
-	const [selectedBrands, setSelectedBrands] = useState([]);
 	const allCategories = categories ? categories.map((cat: any) => cat.value) : [];
 	const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 	useEffect(() => {
