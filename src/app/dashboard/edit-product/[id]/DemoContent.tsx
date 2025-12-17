@@ -22,6 +22,8 @@ import ZMultiSelect from '@/components/form/ZMultiSelect';
 import DynamicTextRows from '@/components/DynamicTextRows/DynamicTextRows';
 import {colorOptions, sizeOptions} from './options';
 import {generateBarcode} from '@/utils/generateBarcode';
+import ZRadio from '@/components/form/ZRadio'; // Added import
+
 const AddProductPage = () => {
 	const {id} = useParams();
 	const router = useRouter();
@@ -32,7 +34,11 @@ const AddProductPage = () => {
 	const [rows, setRows] = useState([{id: 1, question: '', answer: ''}]);
 	const [selectedSizes, setSelectedSizes] = useState<{label: string; value: string}[]>([]);
 	const [isSizeable, setIsSizeable] = useState<boolean | null>(null);
-	//set images link to uploaded images and update images
+	const [isSubcategoryDisabled, setIsSubcategoryDisabled] = useState<boolean>(true);
+	const [subcategoriesOption, setSubCategoriesOption] = useState<
+		{label: string; value: string}[] | null
+	>(null);
+
 	const {data: categories} = useGetAllCategoriesQuery('');
 	const options =
 		categories?.map((category: {name: string; value: string}) => ({
@@ -40,8 +46,31 @@ const AddProductPage = () => {
 			value: category.value,
 		})) || [];
 
+	// Handle category change to load subcategories
+	const handleCategoryChange = (value: string) => {
+		const selectedCat = categories?.find(
+			(cat: {name: string; value: string; sub_categories?: any[]}) => cat.value === value,
+		);
+
+		if (selectedCat && selectedCat.sub_categories && selectedCat.sub_categories.length > 0) {
+			const subCatOptions = selectedCat.sub_categories.map(
+				(subCat: {name: string; value: string}) => ({
+					label: subCat.name,
+					value: subCat.value,
+				}),
+			);
+			setSubCategoriesOption(subCatOptions);
+			setIsSubcategoryDisabled(false);
+		} else {
+			setSubCategoriesOption([]);
+			setIsSubcategoryDisabled(true);
+			setSubCategoriesOption(null);
+		}
+	};
+
 	useEffect(() => {
 		if (!getSingleProduct) return;
+
 		// helper function to get stock per size
 		const getStock = (size: string) => {
 			const item = getSingleProduct.stocks_size.find(
@@ -49,10 +78,15 @@ const AddProductPage = () => {
 			);
 			return item?.stock ?? '';
 		};
+
+		// Get selected category for subcategory loading
+		const selectedCategory = getSingleProduct?.categories.value;
+
 		// Set default values for the form fields
 		setDefaultValues({
-			original_price: getSingleProduct?.original_price.split('.')[0] || '',
+			original_price: getSingleProduct?.original_price?.split?.('.')?.[0] || '',
 			name: getSingleProduct?.name || '',
+			discount_price: getSingleProduct?.discount_price?.split?.('.')?.[0] || '',
 			categories: getSingleProduct?.categories || [],
 			description: getSingleProduct?.description || '',
 			b_name: getSingleProduct?.b_name || '',
@@ -69,16 +103,15 @@ const AddProductPage = () => {
 			stock_S: getStock('S'),
 			stock_M: getStock('M'),
 			stock_XXL: getStock('XXL'),
-			isPublish: {
-				label: getSingleProduct.isPublish ? 'Yes' : 'No',
-				value: getSingleProduct.isPublish ? true : false,
-			},
+			isPublish: getSingleProduct.isPublish ? 'true' : 'false',
 			isSizeable: {
 				label: getSingleProduct.isSizeable ? 'Yes' : 'No',
 				value: getSingleProduct.isSizeable ? true : false,
 			},
 			stocks: getSingleProduct?.stocks || '',
+			sub_categories: getSingleProduct?.sub_categories || [],
 		});
+
 		const imageFields = ['image1', 'image2', 'image3', 'image4', 'image5', 'image6'];
 		const images = imageFields
 			.map((key) => getSingleProduct[key])
@@ -89,21 +122,44 @@ const AddProductPage = () => {
 				previewUrl: url,
 				name: `image${index + 1}.jpg`,
 			}));
+
 		setUploadedImages(images);
+
 		//set faq to rows
 		if (getSingleProduct.faqs && getSingleProduct.faqs.length > 0) {
 			setRows(getSingleProduct.faqs);
 		}
+
 		setSelectedSizes(
-			getSingleProduct.stocks_size.map((item: {size: string}) => ({
+			getSingleProduct.stocks_size?.map((item: {size: string}) => ({
 				label: item.size,
 				value: item.size,
 			})) || [],
 		);
-		setIsSizeable(getSingleProduct?.isSizeable ?? null);
-	}, [getSingleProduct]);
 
-	//  handle form submit
+		setIsSizeable(getSingleProduct?.isSizeable ?? null);
+
+		// Load subcategories based on selected category
+		if (selectedCategory) {
+			const selectedCat = categories?.find(
+				(cat: {name: string; value: string; sub_categories?: any[]}) =>
+					cat.value === selectedCategory,
+			);
+
+			if (selectedCat && selectedCat.sub_categories && selectedCat.sub_categories.length > 0) {
+				const subCatOptions = selectedCat.sub_categories.map(
+					(subCat: {name: string; value: string}) => ({
+						label: subCat.name,
+						value: subCat.value,
+					}),
+				);
+				setSubCategoriesOption(subCatOptions);
+				setIsSubcategoryDisabled(false);
+			}
+		}
+	}, [getSingleProduct, categories]);
+
+	// handle form submit
 	const handleSubmit = async (data: FieldValues) => {
 		if (uploadedImages.length < 1) {
 			toast.error('Please upload at least 1 images');
@@ -118,17 +174,19 @@ const AddProductPage = () => {
 			size: size.value,
 			stock: Number(data[`stock_${size.value}`] || 0),
 			barcode:
-				getSingleProduct?.stocks_size.find((item: {size: string}) => item.size === size.value)
+				getSingleProduct?.stocks_size?.find((item: {size: string}) => item.size === size.value)
 					?.barcode || Number(generateBarcode('22')), // keep existing barcode if available
 		}));
 
 		data.faqs = JSON.stringify(rows);
+
 		//make slug from name
 		const slug = data.name
 			.toLowerCase()
 			.replace(/ /g, '-')
 			.replace(/[^\w-]+/g, '');
 		data.slug = slug;
+
 		const tag = data?.tags as string;
 		data.tags = tag ? JSON.stringify(tag.split(',')) : null;
 		data.categories = data?.categories ? JSON.stringify(data.categories) : null;
@@ -138,7 +196,10 @@ const AddProductPage = () => {
 		data.stocks_size = isSizeable ? JSON.stringify(sizeStocks) : JSON.stringify([]);
 		data.isSizeable = isSizeable;
 		data.stocks = isSizeable ? 0 : data.stocks;
-		data.isPublish = data.isPublish?.value ?? false;
+		data.isPublish = data.isPublish === 'true' ? true : false; // Changed for ZRadio
+		data.sub_categories = data.sub_categories ? JSON.stringify(data.sub_categories) : null;
+		data.discounted_price = data.discounted_price || data.original_price;
+
 		// append images to data
 		uploadedImages.forEach((image, index) => {
 			if (!image.file) return;
@@ -149,15 +210,18 @@ const AddProductPage = () => {
 		for (const key in data) {
 			formData.append(key, data[key]);
 		}
+
 		const result = await updateProduct({id, data: formData});
 		if (result.data?.id) {
 			toast.success('Product updated successfully');
 			router.push('/dashboard/product-list');
 		}
 	};
+
 	if (productDataLoading) {
 		return <DashboardLoader />;
 	}
+
 	return (
 		<div className="body-root-inner">
 			<div className="transection">
@@ -178,34 +242,36 @@ const AddProductPage = () => {
 								>
 									<div className="row">
 										<div className="single-input col-md-6 col-12">
-											<label htmlFor="productName">Product English Name</label>
-											<ZInput name="name" label="Product English Name" type="text" />
+											<label htmlFor="productName">Product Name</label>
+											<ZInput name="name" label="Product Name" type="text" />
 										</div>
 										<div className="single-input col-md-6" style={{height: '60px'}}>
-											<label htmlFor="productName">Are You Publish This Product</label>
-											<ZMultiSelect
-												label="Select Sizes"
+											<label htmlFor="productName">Publish this product?</label>
+											<ZRadio
 												name="isPublish"
-												isMulti={false}
 												options={[
-													{label: 'Yes', value: true},
-													{label: 'No', value: false},
+													{label: 'Yes, Publish', value: 'true'},
+													{label: 'No, Save as Draft', value: 'false'},
 												]}
-												style={{height: '60px'}}
 											/>
 										</div>
 									</div>
+
 									<div className="row">
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Price </label>
 											<ZInput name="original_price" label="Price" type="text" />
 										</div>
+										<div className="single-input col-md-3">
+											<label htmlFor="productName">Discounted Price </label>
+											<ZInput name="discount_price" label="Discounted Price" type="text" />
+										</div>
 
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Material</label>
 											<ZInput name="material" label="Cotton, Silk, Wool" type="text" />
 										</div>
-										<div className="single-input col-md-4">
+										<div className="single-input col-md-3">
 											<label htmlFor="productName">Fit</label>
 											<ZInput name="fit" label="Slim, Regular, Loose" type="text" />
 										</div>
@@ -217,40 +283,57 @@ const AddProductPage = () => {
 												name="categories"
 												label="Product Category"
 												options={options}
+												onChange={(values: any) => {
+													handleCategoryChange(values.value);
+												}}
 											/>
 										</div>
 										<div className="single-input col-md-6">
-											<label htmlFor="productName">Is This Product Sizeable?</label>
+											<label htmlFor="productName">Product Sub Category </label>
 											<ZMultiSelect
 												isMulti={false}
-												name="isSizeable"
-												label="Is This Product Sizeable?"
-												options={[
-													{label: 'Yes', value: true},
-													{label: 'No', value: false},
-												]}
-												onChange={(values: any) => setIsSizeable(values.value)}
+												name="sub_categories"
+												label="Product Sub Category"
+												options={subcategoriesOption || []}
+												isDisabled={isSubcategoryDisabled}
 											/>
 										</div>
-
-										{isSizeable && (
-											<div className="single-input col-md-12">
-												<label htmlFor="productName">Size</label>
+										<div className="row">
+											<div
+												className={`single-input ${isSizeable === null ? 'col-md-12' : 'col-md-6'}`}
+											>
+												<label htmlFor="productName">Is This Product Sizeable?</label>
 												<ZMultiSelect
-													label="Select Sizes"
-													name="size"
-													options={sizeOptions}
-													onChange={(values: any) => setSelectedSizes(values)}
+													isMulti={false}
+													name="isSizeable"
+													label="Is This Product Sizeable?"
+													options={[
+														{label: 'Yes', value: true},
+														{label: 'No', value: false},
+													]}
+													onChange={(values: any) => setIsSizeable(values.value)}
 												/>
 											</div>
-										)}
-										{isSizeable === false && (
-											<div className="single-input col-md-12">
-												<label htmlFor="productName">Add Total Stocks </label>
-												<ZInput name="stocks" label="Stocks" type="text" />
-											</div>
-										)}
-										{selectedSizes.length > 0 && isSizeable && (
+
+											{isSizeable && (
+												<div className="single-input col-md-6">
+													<label htmlFor="productName">Size</label>
+													<ZMultiSelect
+														label="Select Sizes"
+														name="size"
+														options={sizeOptions}
+														onChange={(values: any) => setSelectedSizes(values)}
+													/>
+												</div>
+											)}
+											{isSizeable === false && (
+												<div className="single-input col-md-6">
+													<label htmlFor="productName">Add Total Stocks </label>
+													<ZInput name="stocks" label="Stocks" type="text" />
+												</div>
+											)}
+										</div>
+										{selectedSizes.length > 0 && (
 											<div className="row mt-3">
 												<h5>Enter Stocks Per Size</h5>
 												<div className="d-flex gap-3 ">
@@ -284,10 +367,13 @@ const AddProductPage = () => {
 											<ZTextArea name="meta_description" />
 										</div>
 									</div>
+
 									<h2 className="title">
+										{' '}
 										Image Uploader
 										<p style={{fontSize: '12px', color: '#666'}}>
-											At least 1 image and maximum 4 image
+											{' '}
+											At least 1 image and maximum 4 image{' '}
 										</p>
 									</h2>
 									<ImageUploader
@@ -295,6 +381,7 @@ const AddProductPage = () => {
 										setUploadedImages={setUploadedImages}
 										maxImages={4}
 									/>
+
 									<div className="row">
 										<div className="single-input ol-12">
 											<label htmlFor="productName">Product Tags</label>
@@ -302,11 +389,13 @@ const AddProductPage = () => {
 										</div>
 										<div className="row">
 											<label className="fw-bold" style={{color: '#000'}}>
-												Enter FAQ Question And Answer
+												{' '}
+												Enter FAQ Question And Answer{' '}
 											</label>
 											<DynamicTextRows rows={rows} setRows={setRows} required={false} />
 										</div>
 									</div>
+
 									<div className="button-area-botton-wrapper-p-list">
 										<button type="submit" className="rts-btn btn-primary" disabled={isLoading}>
 											{isLoading ? 'Updating...' : 'Update Product'}
