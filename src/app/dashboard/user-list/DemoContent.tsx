@@ -88,20 +88,20 @@ const UserList = () => {
 			),
 		},
 
-		// {
-		// 	name: 'Action',
-		// 	cell: (row) => (
-		// 		<>
-		// 			<button
-		// 				onClick={() => openDeleteModal(row.id.toString())}
-		// 				className="delete-button btn btn-danger ms-3"
-		// 				style={{height: '36px', width: '100px', fontSize: '14px'}}
-		// 			>
-		// 				Delete
-		// 			</button>
-		// 		</>
-		// 	),
-		// },
+		{
+			name: 'Action',
+			cell: (row) => (
+				<>
+					<button
+						onClick={() => openDeleteModal(row.id.toString())}
+						className="delete-button btn btn-danger ms-3"
+						style={{height: '36px', width: '100px', fontSize: '14px'}}
+					>
+						Delete
+					</button>
+				</>
+			),
+		},
 	];
 
 	// Filter users by name or email
