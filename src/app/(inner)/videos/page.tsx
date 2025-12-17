@@ -23,7 +23,7 @@ export default function Home() {
 			<DeskCategory />
 			<>
 				{/* rts contact main wrapper */}
-				<div className="rts-contact-main-wrapper-banner bg_image">
+				{/* <div className="rts-contact-main-wrapper-banner bg_image">
 					<div className="container">
 						<div className="row">
 							<div className="col-lg-12">
@@ -33,7 +33,7 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 				{/* rts contact main wrapper end */}
 
 				{isLoading ? <BestPickSkeleton /> : <Videos data={products} />}
