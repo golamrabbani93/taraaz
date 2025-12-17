@@ -72,13 +72,13 @@ const CompanyTable = () => {
 							Edit
 						</button>
 					</Link>
-					<button
+					{/* <button
 						onClick={() => openDeleteModal(row.id.toString())}
 						className="delete-button btn btn-danger ms-3"
 						style={{height: '36px', width: '100px', fontSize: '14px'}}
 					>
 						Delete
-					</button>
+					</button> */}
 				</>
 			),
 		},
