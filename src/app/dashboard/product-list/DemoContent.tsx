@@ -30,6 +30,7 @@ interface Product {
 	isPublish?: boolean;
 	stocks_size?: {size: string; stock: number; barcode: number}[];
 	isSizeable?: boolean;
+	discount_price?: string;
 }
 
 const ProductTable = () => {
@@ -140,14 +141,13 @@ const ProductTable = () => {
 
 	const handleAddStock = (row: Product) => {
 		setSelectedProductForStock(row);
-		setStockToAdd(''); // Reset input
+		setStockToAdd(row.stocks); // Reset input
 		setIsAddStockModalOpen(true);
 	};
 
 	//barcode modal
 	const handleViewBarcode = (row: Product) => {
 		const barcodeImage = generateBarcodeImage(row.barcode || '');
-
 		setSelectedProductForBarcode({...row, barcode: barcodeImage});
 		setIsBarcodeModalOpen(true);
 	};
@@ -155,7 +155,7 @@ const ProductTable = () => {
 	const confirmAddStock = async () => {
 		if (!selectedProductForStock || parseInt(stockToAdd as string) <= 0) return;
 		try {
-			const newStock = selectedProductForStock.stocks + parseInt(stockToAdd as string);
+			const newStock = parseInt(stockToAdd as string);
 			const res = await updateProduct({
 				id: selectedProductForStock.id,
 				data: {stocks: newStock, name: selectedProductForStock.name},
@@ -189,16 +189,45 @@ const ProductTable = () => {
 
 		{
 			name: 'Price',
+			selector: (row) => {
+				const discountedPrice = parseFloat(row.discount_price || '0');
+				const originalPrice = parseFloat(row.original_price || '0');
+				const price = discountedPrice > 0 ? discountedPrice : originalPrice;
+				return price.toFixed(2).split('.')[0];
+			},
+			cell: (row) => {
+				const discountedPrice = parseFloat(row.discount_price || '0');
+				const originalPrice = parseFloat(row.original_price || '0');
+				const displayPrice = discountedPrice > 0 ? discountedPrice : originalPrice;
+				const hasDiscount = discountedPrice > 0 && discountedPrice < originalPrice;
 
-			selector: (row) => parseFloat(row.original_price).toFixed(2).split('.')[0],
-			cell: (row) => (
-				<>
-					<span style={{fontWeight: 'bold', fontSize: '16px'}}>
-						{parseFloat(row.original_price).toFixed(2).split('.')[0]}
-					</span>
-					৳
-				</>
-			),
+				return (
+					<>
+						{hasDiscount ? (
+							<>
+								<div style={{display: 'flex', flexDirection: 'column', gap: '2px'}}>
+									<span style={{textDecoration: 'line-through', color: '#999', fontSize: '14px'}}>
+										{originalPrice.toFixed(2).split('.')[0]} ৳
+									</span>
+									<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+										<span style={{fontWeight: 'bold', fontSize: '16px'}}>
+											{displayPrice.toFixed(2).split('.')[0]}
+										</span>
+										<span>৳</span>
+									</div>
+								</div>
+							</>
+						) : (
+							<div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+								<span style={{fontWeight: 'bold', fontSize: '16px'}}>
+									{displayPrice.toFixed(2).split('.')[0]}
+								</span>
+								<span>৳</span>
+							</div>
+						)}
+					</>
+				);
+			},
 		},
 		{
 			name: 'Stocks',
@@ -516,6 +545,7 @@ const ProductTable = () => {
 				productName={selectedSizeAbleProduct?.name || ''}
 				stocks_size={selectedSizeAbleProduct?.stocks_size ?? []}
 				price={selectedSizeAbleProduct?.original_price ?? ''}
+				discount_price={selectedSizeAbleProduct?.discount_price ?? ''}
 			/>
 
 			<DeleteModal
