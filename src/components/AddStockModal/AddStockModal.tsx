@@ -34,7 +34,7 @@ const AddStockModal: React.FC<AddStockModalProps> = ({
 				<h2 id="add-stock-modal-title">Add Stock for {product?.name}</h2>
 				<div style={{marginBottom: '16px'}}>
 					<label htmlFor="stockInput" style={{display: 'block', marginBottom: '8px'}}>
-						Quantity to Add
+						Enter Stock to Add:
 					</label>
 					<input
 						type="text"
