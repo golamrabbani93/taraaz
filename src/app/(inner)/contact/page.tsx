@@ -33,7 +33,7 @@ export default function Home() {
 			<DeskCategory />
 			<>
 				{/* rts contact main wrapper */}
-				<div className="rts-contact-main-wrapper-banner bg_image">
+				{/* <div className="rts-contact-main-wrapper-banner bg_image">
 					<div className="container">
 						<div className="row">
 							<div className="col-lg-12">
@@ -41,15 +41,12 @@ export default function Home() {
 									<h1 className="title">
 										{language === 'en' ? 'Ask Us Question' : 'আমাদের প্রশ্ন করুন'}
 									</h1>
-									{/* <p className="disc">  
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque pretium mollis
-										ex, vel interdum augue faucibus sit amet. Proin tempor purus ac suscipit...
-									</p> */}
+								
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 				{/* rts contact main wrapper end */}
 
 				<div className="rts-map-contact-area rts-section-gap2">
