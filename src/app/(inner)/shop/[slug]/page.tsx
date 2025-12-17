@@ -31,7 +31,7 @@ const CompareElements: React.FC = () => {
 	const {addToWishlist} = useWishlist();
 	const [wishlisted, setWishlisted] = useState(false);
 	const originalPrice = blogPost?.original_price?.split('.')[0] || '0'; // Default to '0' if undefined
-	const [size, setSize] = useState<string>('');
+	const [size, setSize] = useState<string>('S');
 	const {addToCart} = useCart();
 	const [added, setAdded] = useState(false);
 	const language = useAppSelector(selectLanguage);
@@ -164,18 +164,18 @@ const CompareElements: React.FC = () => {
 													</p>
 													<span className="product-price mb--15 d-block" style={{fontWeight: 800}}>
 														{blogPost.discount_price > 0
-															? blogPost.discount_price
-															: blogPost.original_price.split('.')[0]}{' '}
+															? blogPost.discount_price.toString().split('.')[0]
+															: blogPost.original_price.toString().split('.')[0]}
 														<span className="tk">৳</span>
 														{blogPost.discount_price > 0 && (
-															<>
-																<span className="old-price ml--15">
+															<span className="text-danger">
+																<span className="old-price ml--15 text-danger">
 																	{blogPost.original_price.split('.')[0]}
 																</span>
-																<span className="tk" style={{color: '#cfcfcf'}}>
+																<span className="tk text-danger" style={{color: '#cfcfcf'}}>
 																	৳
 																</span>
-															</>
+															</span>
 														)}
 													</span>
 													<div className="product-uniques">
@@ -277,7 +277,9 @@ const CompareElements: React.FC = () => {
 								<div className="tab-content" id="myTabContent">
 									<div>
 										<div className="single-tab-content-shop-details md-mt-5 pt-5">
-											<h2>{language === 'en' ? 'Description' : 'বিবরণ'}</h2>
+											{blogPost?.b_meta_description || blogPost?.meta_description ? (
+												<h2>{language === 'en' ? 'Product Description' : 'পণ্যের বিবরণ'}</h2>
+											) : null}
 											<p className="disc">
 												{language === 'bn'
 													? blogPost.b_meta_description
@@ -292,12 +294,13 @@ const CompareElements: React.FC = () => {
 								</div>
 							</div>
 
-							<div className="col-xl-3 col-lg-4 col-md-12 offset-xl-1  rts-sticky-column-item">
+							<div className="col-xl-3 col-lg-4 col-md-12 offset-xl-1 rts-sticky-column-item">
 								<div className="theiaStickySidebar">
 									<div className="shop-sight-sticky-sidevbar mb--20">
 										<h6 className="title">
-											{language === 'en' ? 'Available offers' : 'উপলব্ধ অফারসমূহ'}
+											{language === 'en' ? 'Why Shop with Taraaz' : 'কেন তারাজ থেকে কেনাকাটা করবেন'}
 										</h6>
+
 										<div className="single-offer-area">
 											<div className="icon">
 												<img src="/assets/images/shop/01.svg" alt="icon" />
@@ -305,11 +308,12 @@ const CompareElements: React.FC = () => {
 											<div className="details">
 												<p>
 													{language === 'en'
-														? 'Use Nagad to pay and enjoy 5% off on your first order.'
-														: 'নগদ ব্যবহার করে পেমেন্ট করুন এবং আপনার প্রথম অর্ডারে ৫% ছাড় উপভোগ করুন।'}
+														? 'Curated fashion collections designed for comfort, elegance, and everyday wear.'
+														: 'আরাম, স্টাইল ও দৈনন্দিন ব্যবহারের জন্য যত্নসহকারে নির্বাচিত ফ্যাশন কালেকশন।'}
 												</p>
 											</div>
 										</div>
+
 										<div className="single-offer-area">
 											<div className="icon">
 												<img src="/assets/images/shop/02.svg" alt="icon" />
@@ -317,11 +321,12 @@ const CompareElements: React.FC = () => {
 											<div className="details">
 												<p>
 													{language === 'en'
-														? 'Rocket users save 5% on their first order — place it now!'
-														: 'রকেট ব্যবহারকারীরা তাদের প্রথম অর্ডারে ৫% সাশ্রয় করে — এখনই অর্ডার করুন!'}
+														? 'Premium fabrics with attention to detail to ensure long-lasting quality.'
+														: 'দীর্ঘস্থায়ী মান নিশ্চিত করতে উন্নতমানের কাপড় ও নিখুঁত কাজ।'}
 												</p>
 											</div>
 										</div>
+
 										<div className="single-offer-area">
 											<div className="icon">
 												<img src="/assets/images/shop/03.svg" alt="icon" />
@@ -329,16 +334,12 @@ const CompareElements: React.FC = () => {
 											<div className="details">
 												<p>
 													{language === 'en'
-														? 'Make your first order using Upay and enjoy 5% off instantly.'
-														: 'আপনার প্রথম অর্ডারটি আপয় ব্যবহার করে করুন এবং সাথে সাথে ৫% ছাড় উপভোগ করুন।'}
+														? 'Trendy yet timeless designs that match both modern and traditional styles.'
+														: 'আধুনিক ও ঐতিহ্যবাহী উভয় স্টাইলের সাথে মানানসই ট্রেন্ডি ও চিরন্তন ডিজাইন।'}
 												</p>
 											</div>
 										</div>
 									</div>
-									{/* <div className="our-payment-method">
-										<h5 className="title">Guaranteed Safe Checkout</h5>
-										<img src="/assets/images/shop/03.png" alt="" />
-									</div> */}
 								</div>
 							</div>
 						</div>
