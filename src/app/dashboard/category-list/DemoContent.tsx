@@ -94,7 +94,6 @@ const CompanyTable = () => {
 				<div className="title-right-actioin-btn-wrapper-product-list">
 					<div>
 						<h3 className="title">Product Categories</h3>
-						<span className="d-block">Do Not Delete Only Update</span>
 					</div>
 					<div className="button-wrapper d-block">
 						<Link href="/dashboard/add-category">

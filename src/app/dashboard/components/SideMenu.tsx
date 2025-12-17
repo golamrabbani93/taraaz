@@ -13,11 +13,14 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
 	{
 		title: 'Dashboard',
-		icon: 'far fa-game-board',
+		icon: 'fas fa-tachometer-alt',
 		href: '/dashboard',
-		children: [{title: 'Dashboard', href: '/dashboard'}],
 	},
-
+	{
+		title: 'Orders',
+		icon: 'fas fa-shopping-cart',
+		href: '/dashboard/order',
+	},
 	{
 		title: 'Product',
 		icon: 'fab fa-product-hunt',
@@ -28,34 +31,16 @@ const menuItems: MenuItem[] = [
 		],
 	},
 	{
-		title: 'Order',
-		icon: 'far fa-box',
-		children: [{title: 'Order', href: '/dashboard/order'}],
+		title: 'Users',
+		icon: 'far fa-user',
+		href: '/dashboard/user-list',
 	},
-
 	{
 		title: 'Messages',
 		icon: 'far fa-envelope',
-		children: [{title: 'All Messages', href: '/dashboard/message'}],
+		href: '/dashboard/message',
 	},
 
-	{
-		title: 'Users',
-		icon: 'far fa-user',
-		children: [{title: 'User List', href: '/dashboard/user-list'}],
-	},
-
-	// {
-	// 	title: 'FAQ',
-	// 	icon: 'far fa-user',
-	// 	children: [
-	// 		{
-	// 			title: 'FAQ List',
-	// 			href: '/dashboard/faq-list',
-	// 		},
-	// 		{title: 'Add FAQ', href: '/dashboard/add-faq'},
-	// 	],
-	// },
 	{
 		title: 'Banners',
 		icon: 'fas fa-photo-video',
@@ -92,13 +77,13 @@ const menuItems: MenuItem[] = [
 		title: 'Company Contact',
 		icon: 'fas fa-address-book',
 		children: [
-			{title: 'View Company Contact', href: '/dashboard/company-contact'},
-			// {title: 'Add Company Contact', href: '/dashboard/add-company-contact'},
+			{title: 'Company Contact', href: '/dashboard/company-contact'},
+			{title: 'Add Company Contact', href: '/dashboard/add-company-contact'},
 		],
 	},
 	{
 		title: 'Product Category',
-		icon: 'fas fa-address-book',
+		icon: 'fas fa-barcode',
 		children: [
 			{title: 'Category List', href: '/dashboard/category-list'},
 			{title: 'Add Category', href: '/dashboard/add-category'},
@@ -112,18 +97,29 @@ const menuItems: MenuItem[] = [
 			{title: 'Add Title', href: '/dashboard/add-title'},
 		],
 	},
+	{
+		title: 'Change Password',
+		icon: 'fas fa-key',
+		href: '/dashboard/change-password',
+	},
 ];
 
 const SidebarMenu = () => {
-	const [openIndex, setOpenIndex] = useState<number | null>(0); // 0 means Dashboard open by default
+	const [openIndex, setOpenIndex] = useState<number | null>(null);
 	const pathname = usePathname();
 
 	useEffect(() => {
 		// Find the index of the menu item that has a child matching the current path
 		const activeIndex = menuItems.findIndex((item) => {
-			return item.children?.some((child) => {
-				return pathname === child.href || (child.title === 'dashboard' && pathname === '/index');
-			});
+			// Check if current path matches a dropdown child
+			if (item.children?.some((child) => pathname === child.href)) {
+				return true;
+			}
+			// Check if current path matches a single menu item
+			if (item.href && pathname === item.href) {
+				return true;
+			}
+			return false;
 		});
 
 		if (activeIndex !== -1) {
@@ -140,44 +136,53 @@ const SidebarMenu = () => {
 			{menuItems.map((item, index) => {
 				const hasSubmenu = !!item.children?.length;
 				const isOpen = openIndex === index;
+				const isActiveSingle = item.href && pathname === item.href;
+				const childActive = hasSubmenu && item.children!.some((c) => pathname === c.href);
+				const parentActive = isActiveSingle || childActive;
 
 				return (
 					<li className="single-menu-item" key={index}>
 						{hasSubmenu ? (
+							<>
+								<Link
+									href="#"
+									className={`with-plus ${parentActive ? 'active-parent' : ''}`}
+									onClick={(e) => {
+										e.preventDefault();
+										handleToggle(index);
+									}}
+									style={parentActive && !isOpen ? {background: '#b4842d', color: '#fff'} : {}}
+								>
+									<i className={item.icon}></i>
+									<p style={parentActive && !isOpen ? {color: '#fff'} : {}}>{item.title}</p>
+								</Link>
+
+								<ul className={`submenu mm-collapse parent-nav ${isOpen ? 'mm-show' : ''}`}>
+									{item.children!.map((sub, subIndex) => {
+										const isActive = pathname === sub.href;
+										return (
+											<li key={subIndex}>
+												<Link
+													href={sub.href}
+													className={`mobile-menu-link ${isActive ? 'active' : ''}`}
+													style={isActive ? {background: '#b4842d', color: '#fff'} : {}}
+												>
+													{sub.title}
+												</Link>
+											</li>
+										);
+									})}
+								</ul>
+							</>
+						) : (
 							<Link
-								href="#"
-								className={`with-plus ${isOpen ? 'active' : ''}`}
-								onClick={(e) => {
-									e.preventDefault();
-									handleToggle(index);
-								}}
+								href={item.href || '#'}
+								className={`${isActiveSingle ? 'active' : ''}`}
+								style={isActiveSingle ? {background: '#b4842d', color: '#fff'} : {}}
 							>
 								<i className={item.icon}></i>
-								<p>{item.title}</p>
+								<p style={isActiveSingle ? {color: '#fff'} : {}}>{item.title}</p>
 							</Link>
-						) : (
-							<Link href={item.href || '#'}>
-								<p>{item.title}</p>
-							</Link>
-						)}
-
-						{hasSubmenu && (
-							<ul className={`submenu mm-collapse parent-nav ${isOpen ? 'mm-show' : ''}`}>
-								{item.children!.map((sub, subIndex) => {
-									const isActive =
-										pathname === sub.href || (sub.title === 'Main Demo' && pathname === '/index');
-									return (
-										<li key={subIndex}>
-											<Link
-												href={sub.href}
-												className={`mobile-menu-link ${isActive ? 'active' : ''}`}
-											>
-												{sub.title}
-											</Link>
-										</li>
-									);
-								})}
-							</ul>
 						)}
 					</li>
 				);
