@@ -4,15 +4,29 @@ import {useCart} from '@/components/header/CartContext';
 import {toast} from 'react-toastify';
 import {useAppSelector} from '@/redux/hooks';
 import {selectLanguage} from '@/redux/features/language/languageSlice';
+import {useGetAllProductsQuery} from '@/redux/features/product/productApi';
+import {IProduct} from '@/types/product.types';
 
 const CartMain = () => {
 	const {cartItems, removeFromCart, updateItemQuantity} = useCart();
 	const language = useAppSelector(selectLanguage);
+	const {data: products, isLoading, isError} = useGetAllProductsQuery(undefined);
 	const [coupon, setCoupon] = useState('');
 	const [discount, setDiscount] = useState(0);
 	const [couponMessage, setCouponMessage] = useState('');
 	const [subtotal, setSubtotal] = useState(0);
 	const [selectedOption, setSelectedOption] = useState<number | null>(null);
+
+	//filter cart items to get full product details
+	const detailedCartItems = cartItems.map((cartItem) => {
+		const product = products?.find((p: IProduct) => p.id === cartItem.id);
+		return {
+			...cartItem,
+
+			base_price: product ? product.original_price : 0,
+			discount_price: product ? product.discount_price : 0,
+		};
+	});
 
 	// ✅ Load from localStorage only on client
 	useEffect(() => {
@@ -95,7 +109,7 @@ const CartMain = () => {
 								</div>
 							</div>
 
-							{cartItems.map((item, i) => (
+							{detailedCartItems?.map((item, i) => (
 								<div className="single-cart-area-list main item-parent" key={i}>
 									<div className="product-main-cart">
 										<div
@@ -112,7 +126,22 @@ const CartMain = () => {
 										</div>
 									</div>
 									<div className="price">
-										<p>{item.price} ৳</p>
+										{item.discount_price > 0 ? (
+											<p>
+												<span className="discounted-price">
+													{item.discount_price.toString().split('.')[0]} ৳
+												</span>
+												<br />
+												<span
+													className="original-price"
+													style={{textDecoration: 'line-through', color: 'red'}}
+												>
+													{item.base_price.toString().split('.')[0]} ৳
+												</span>
+											</p>
+										) : (
+											<p>{item.base_price.toString().split('.')[0]} ৳</p>
+										)}
 									</div>
 									<div className="quantity">
 										<div className="quantity-edit">
@@ -161,24 +190,24 @@ const CartMain = () => {
 									<input
 										type="text"
 										placeholder="Coupon Code"
-										value={coupon}
-										onChange={(e) => {
-											setCoupon(e.target.value);
-											setCouponMessage('');
-										}}
+										// value={coupon}
+										// onChange={(e) => {
+										// 	setCoupon(e.target.value);
+										// 	setCouponMessage('');
+										// }}
 									/>
 									<button type="submit" className="rts-btn btn-primary">
 										Apply Coupon
-									</button>
-									{couponMessage && (
+									</button> */}
+								{/* {couponMessage && (
 										<p style={{color: coupon === '12345' ? 'green' : 'red', marginTop: '8px'}}>
 											{couponMessage}
 										</p>
-									)}
-								</form> */}
-								<button onClick={clearCart} className="rts-btn btn-primary mr--50">
+									)} */}
+								{/* </form> */}
+								{/* <button onClick={clearCart} className="rts-btn btn-primary mr--50">
 									{language === 'en' ? 'Clear Cart' : 'কার্ট পরিষ্কার করুন'}
-								</button>
+								</button> */}
 							</div>
 						</div>
 					</div>
