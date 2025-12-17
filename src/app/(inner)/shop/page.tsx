@@ -15,23 +15,26 @@ import {IProduct} from '@/types/product.types';
 import FilterBar from '@/components/FilterBar/FilterBar';
 import {Suspense, use, useEffect, useState} from 'react';
 import Link from 'next/link';
+import AllCategories from '@/components/AllCategories/AllCategories ';
 function Home() {
 	const {data: products, isLoading} = useGetAllProductsQuery('');
 	//get search params here
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const category = searchParams.get('category');
+	const subcategory = searchParams.get('subcategory'); // Add subcategory param
+	const searchQuery = searchParams.get('q'); // Add search query param
 	const [openSidebar, setOpenSidebar] = useState(false);
 
 	const [minPrice, setMinPrice] = useState(0);
 	const [maxPrice, setMaxPrice] = useState(40000);
+	const [searchInput, setSearchInput] = useState(searchQuery || '');
 
 	const publishedProducts = products?.filter((p: IProduct) => p.isPublish);
 	// set Filtered Products Based on Category and removeed taraaz-fusion dash
 	const [allCategories, setAllCategories] = useState<Array<string>>([]);
 	const [selectedCategories, setSelectedCategories] = useState<Array<string>>([]);
-	console.log('🚀🚀 ~ Home ~ selectedCategories:', selectedCategories);
-
+	const [selectedSubcategories, setSelectedSubcategories] = useState<Array<string>>([]);
 	// Only published products
 
 	// ------------------------------
@@ -39,47 +42,144 @@ function Home() {
 	// ------------------------------
 	let filteredProducts = publishedProducts;
 
+	// ------------------------------
+	// 1.5) Search Query from URL (ADDED)
+	// ------------------------------
+	if (searchQuery) {
+		const cleanSearch = searchQuery.toLowerCase().trim();
+		filteredProducts = filteredProducts?.filter((product: IProduct) => {
+			// Search in name
+			const nameMatch = product.name?.toLowerCase().includes(cleanSearch);
+			// Search in description
+			const descriptionMatch = product.description?.toLowerCase().includes(cleanSearch);
+			// Search in category name
+			const categoryMatch = product.categories?.value?.toLowerCase().includes(cleanSearch);
+			// Search in subcategory name
+			const subcategoryMatch = product.sub_categories?.value?.toLowerCase().includes(cleanSearch);
+			// Search in tags
+			const tagsMatch = product.tags?.some((tag: string) =>
+				tag.toLowerCase().includes(cleanSearch),
+			);
+			// Search in material
+			const materialMatch = product.materials?.toLowerCase().includes(cleanSearch);
+
+			return (
+				nameMatch ||
+				descriptionMatch ||
+				categoryMatch ||
+				subcategoryMatch ||
+				tagsMatch ||
+				materialMatch
+			);
+		});
+	}
+
 	if (category) {
 		const cleanCategory = category.toLowerCase().replace(/-/g, ' ');
 
-		filteredProducts = publishedProducts?.filter(
-			(product: IProduct) => product.categories?.value?.toLowerCase() === cleanCategory,
-		);
+		filteredProducts = publishedProducts?.filter((product: IProduct) => {
+			// Check if product belongs to this category
+			const productCategory = product.categories?.value?.toLowerCase() || '';
+			return productCategory === cleanCategory;
+		});
 	}
 
 	// ------------------------------
-	// 2) Category Sidebar Filters (Multiple)
+	// 2) Subcategory from URL
+	// ------------------------------
+	if (subcategory) {
+		const cleanSubcategory = subcategory.toLowerCase().replace(/-/g, ' ');
+
+		filteredProducts = (filteredProducts || publishedProducts)?.filter((product: IProduct) => {
+			// Check if product belongs to this subcategory
+			const productSubcategory = product.sub_categories?.value?.toLowerCase() || '';
+			return productSubcategory === cleanSubcategory;
+		});
+	}
+
+	// ------------------------------
+	// 3) Category Sidebar Filters (Multiple)
 	// ------------------------------
 	let finalFilteredProducts = filteredProducts;
+
 	useEffect(() => {
-		// Reset search params when category is selected from sidebar
-		if (selectedCategories.length > 0) {
+		// Reset search params when category/subcategory is selected from sidebar
+		if (selectedCategories.length > 0 || selectedSubcategories.length > 0) {
 			const params = new URLSearchParams(window.location.search);
 			params.delete('category');
+			params.delete('subcategory');
+			params.delete('q'); // Also clear search when using sidebar filters
 			const newUrl = `${window.location.pathname}?${params.toString()}`;
 			window.history.replaceState({}, '', newUrl);
 		}
-	}, [selectedCategories]);
-	useEffect(() => {
-		// Reset search params when category is selected from sidebar
-		if (category) {
-			setSelectedCategories([]);
-		}
-	}, [category]);
-	if (selectedCategories.length > 0 && selectedCategories[0] !== '') {
-		finalFilteredProducts = filteredProducts?.filter((product: IProduct) => {
-			//clear searchparam when category is selected from sidebar
+	}, [selectedCategories, selectedSubcategories]);
 
+	useEffect(() => {
+		// Reset sidebar filters when URL params are present
+		if (category || subcategory || searchQuery) {
+			setSelectedCategories([]);
+			setSelectedSubcategories([]);
+		}
+		// Update search input when query changes
+		if (searchQuery) {
+			setSearchInput(searchQuery);
+		} else {
+			setSearchInput('');
+		}
+	}, [category, subcategory, searchQuery]);
+
+	// Filter by selected categories from sidebar
+	if (selectedCategories.length > 0) {
+		finalFilteredProducts = filteredProducts?.filter((product: IProduct) => {
 			const productCategory = product.categories?.value?.toLowerCase() || '';
 			return selectedCategories.map((c) => c.toLowerCase()).includes(productCategory);
 		});
 	}
-	// filter price range
+
+	// Filter by selected subcategories from sidebar
+	if (selectedSubcategories.length > 0) {
+		finalFilteredProducts = (finalFilteredProducts || filteredProducts)?.filter(
+			(product: IProduct) => {
+				const productSubcategory = product.sub_categories?.value?.toLowerCase() || '';
+				return selectedSubcategories.map((sc) => sc.toLowerCase()).includes(productSubcategory);
+			},
+		);
+	}
+
+	// Filter by price range
 	finalFilteredProducts = finalFilteredProducts?.filter((product: IProduct) => {
 		const price = parseFloat(product.original_price);
 		return price >= minPrice && price <= maxPrice;
 	});
-	//
+
+	// Handle search form submission (ADDED)
+	const handleSearch = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (searchInput.trim()) {
+			const params = new URLSearchParams();
+			params.set('q', searchInput.trim());
+			// Clear category and subcategory when searching
+			if (category) params.delete('category');
+			if (subcategory) params.delete('subcategory');
+			router.push(`/shop?${params.toString()}`);
+		} else {
+			// Clear search if input is empty
+			const params = new URLSearchParams(window.location.search);
+			params.delete('q');
+			router.push(`/shop?${params.toString()}`);
+		}
+	};
+
+	// Clear search function (ADDED)
+	const clearSearch = () => {
+		setSearchInput('');
+		const params = new URLSearchParams(window.location.search);
+		params.delete('q');
+		router.push(`/shop?${params.toString()}`);
+	};
+
+	// Log for debugging
+
 	return (
 		<div className="demo-one">
 			<HeaderFive />
@@ -88,27 +188,17 @@ function Home() {
 
 			<>
 				{/* rts contact main wrapper */}
-				{/* <div className="rts-contact-main-wrapper-banner">
-					<div className="container">
-						<div className="row">
-							<div className="col-lg-12">
-								<div className="contact-banner-content">
-									<h1 className="title text-uppercase h2">
-										{category ? category : 'All Products'}
-									</h1>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> */}
+				{/* <div className="rts-contact-main-wrapper-banner"> */}
+
+				{/* </div> */}
 				{/* rts contact main wrapper end */}
 
 				{isLoading ? (
 					<BestPickSkeleton />
 				) : (
-					<div className="">
-						<div className="d-flex justify-content-center align-items-center m-3 m-md-5 gap-3 flex-wrap">
-							{/* LEFT — Filter Toggle (Small Button) */}
+					<div className="container my-5">
+						<div className="d-flex justify-content-start align-items-center m-3 m-md-5 gap-3 flex-wrap">
+							{/* LEFT — Filter Toggle (Small Button)
 							<button
 								className="filter-toggle-btn btn btn-outline-primary btn-sm"
 								onClick={() => {
@@ -126,145 +216,11 @@ function Home() {
 							>
 								<i className={`fa ${openSidebar ? 'fa-times' : 'fa-filter'} me-2`}></i>
 								{openSidebar ? 'Close Filters' : 'Open Filters'}
-							</button>
-
+							</button> */}
 							{/* CENTER/RIGHT — Additional Dropdowns */}
-
 							{/* Sort by Price Dropdown */}
-							<Link
-								target="_self"
-								href="/shop"
-								className={`shop-category ${!category ? 'shop-category-active ' : ''}`}
-								style={{
-									textDecoration: 'none',
-									fontWeight: 'bold',
-									border: '2px solid #b4842d',
-									padding: '5px 10px',
-									borderRadius: '8px',
-								}}
-							>
-								All
-							</Link>
-							<Link
-								target="_self"
-								href="/shop?category=taraaz-fusion"
-								className={`shop-category ${
-									category === 'taraaz-fusion' ? 'shop-category-active ' : ''
-								}`}
-								style={{
-									textDecoration: 'none',
-									fontWeight: 'bold',
-									border: '2px solid #b4842d',
-									padding: '5px 10px',
-									borderRadius: '8px',
-								}}
-							>
-								Taraaz Fusion
-							</Link>
-
-							{/* Size Dropdown */}
-							<Link
-								target="_self"
-								href="/shop?category=designer's-choice"
-								className={`shop-category ${
-									category === "designer's-choice" ? 'shop-category-active ' : ''
-								}`}
-								style={{
-									textDecoration: 'none',
-									fontWeight: 'bold',
-									border: '2px solid #b4842d',
-									padding: '5px 10px',
-									borderRadius: '8px',
-								}}
-							>
-								Desinger's Choice
-							</Link>
-
-							{/* Color Dropdown */}
-							<Link
-								target="_self"
-								href="/shop?category=pakistani-wear"
-								className={`shop-category ${
-									category === 'pakistani-wear' ? 'shop-category-active ' : ''
-								}`}
-								style={{
-									textDecoration: 'none',
-									fontWeight: 'bold',
-									border: '2px solid #b4842d',
-									padding: '5px 10px',
-									borderRadius: '8px',
-								}}
-							>
-								Pakistani Wear
-							</Link>
-
-							{/* Material Dropdown */}
-							<Link
-								target="_self"
-								href="/shop?category=indian-wear"
-								className={`shop-category ${
-									category === 'indian-wear' ? 'shop-category-active ' : ''
-								}`}
-								style={{
-									textDecoration: 'none',
-									fontWeight: 'bold',
-									border: '2px solid #b4842d',
-									padding: '5px 10px',
-									borderRadius: '8px',
-								}}
-							>
-								Indian Wear
-							</Link>
-							<Link
-								target="_self"
-								href="/shop?category=saree"
-								className={`shop-category ${category === 'saree' ? 'shop-category-active ' : ''}`}
-								style={{
-									textDecoration: 'none',
-									fontWeight: 'bold',
-									border: '2px solid #b4842d',
-									padding: '5px 10px',
-									borderRadius: '8px',
-								}}
-							>
-								Saree
-							</Link>
-
-							{/* RIGHT — Category Dropdown (Big Select) */}
-							<select
-								className="form-select "
-								value={selectedCategories[0] || ''}
-								onChange={(e) => setSelectedCategories([e.target.value])}
-								style={{
-									fontSize: '16px',
-									padding: '6px 12px',
-									borderRadius: '8px',
-									border: '2px solid #b4842d',
-									backgroundColor: '#f8f9fa',
-									fontWeight: 'bold',
-									width: '200px',
-								}}
-							>
-								<option value="">All Categories</option>
-								{allCategories.map((cat: string, i: number) => (
-									<option key={i} value={cat}>
-										{cat}
-									</option>
-								))}
-							</select>
+							<AllCategories />
 						</div>
-
-						<FilterBar
-							isSidebarOpen={openSidebar}
-							setIsSidebarOpen={setOpenSidebar}
-							minPrice={minPrice}
-							maxPrice={maxPrice}
-							setMinPrice={setMinPrice}
-							setMaxPrice={setMaxPrice}
-							selectedCategories={selectedCategories}
-							setSelectedCategories={setSelectedCategories}
-							setAllCategories={setAllCategories}
-						/>
 						<BestSellingWrap head={false} data={finalFilteredProducts} />
 					</div>
 				)}
