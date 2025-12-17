@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 		const customer_id = searchParams.get('customer_id');
 
 		//update order in database here
-		const res = await fetch(`https://fitback.shop/zafran1Order/${id}`, {
+		const res = await fetch(`https://taraz.qwikbistro.shop/tarazOrder/${id}`, {
 			method: 'PUT',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -30,7 +30,5 @@ export async function POST(req: NextRequest) {
 		} else {
 			return NextResponse.redirect(new URL('/payment/failed', req.url), 303);
 		}
-	} catch (error) {
-		console.log(error);
-	}
+	} catch (error) {}
 }
